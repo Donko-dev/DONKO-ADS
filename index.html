@@ -4,12 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>DONKO ADS — Annonces &amp; publicités locales</title>
-<meta name="description" content="Publiez la vitrine de votre commerce, artisanat ou service et soyez vu par toute la zone UEMOA.">
+<meta name="description" content="DONKO ADS : petites annonces et publicités gratuites au Bénin, Togo, Côte d'Ivoire, Sénégal, Niger, Mali et Burkina Faso. Publiez votre boutique, trouvez des produits et services près de chez vous, payez en Mobile Money.">
+<meta name="keywords" content="annonces Bénin, petites annonces UEMOA, publicité boutique, vendre en ligne Bénin, acheter Cotonou, annonces Togo, annonces Côte d'Ivoire, annonces Sénégal, marketplace Afrique de l'Ouest, mobile money, FedaPay, commerce local Bénin">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://donko-dev.github.io/donko-ads/">
 <meta name="theme-color" content="#131B33">
+
+<!-- Open Graph / réseaux sociaux -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="DONKO ADS — Annonces & publicités locales, zone UEMOA">
+<meta property="og:description" content="Publiez la vitrine de votre boutique et soyez vu par toute la zone UEMOA. Recherchez produits et services près de chez vous. Paiement Mobile Money via FedaPay.">
+<meta property="og:image" content="icon-512.png">
+<meta property="og:url" content="https://donko-dev.github.io/donko-ads/">
+<meta property="og:locale" content="fr_BJ">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DONKO ADS — Annonces & publicités locales">
+<meta name="twitter:description" content="Publiez votre boutique, trouvez des produits et services près de chez vous, zone UEMOA.">
+<meta name="twitter:image" content="icon-512.png">
+
+<!-- Données structurées (schema.org) : décrivent le SITE, pas chaque annonce individuelle -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DONKO ADS",
+  "url": "https://donko-dev.github.io/donko-ads/",
+  "description": "Annonces et publicités locales pour commerçants et entreprises de la zone UEMOA.",
+  "publisher": { "@type": "Organization", "name": "Empire Donko" },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://donko-dev.github.io/donko-ads/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Donko Ads">
@@ -115,6 +150,7 @@
   .ad-card .body{padding:10px 12px;flex:1;display:flex;flex-direction:column;}
   .ad-card h3{font-size:13.5px;margin-bottom:3px;line-height:1.25;}
   .ad-card .cat{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--brick);margin-bottom:5px;}
+  .ad-card .price-tag{font-size:13px;font-weight:600;color:var(--jade);margin-bottom:4px;}
   .ad-card p{font-size:12px;color:var(--muted);margin:0 0 8px;flex:1;
     display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
   .ad-card .row-actions{display:flex;gap:6px;flex-wrap:wrap;}
@@ -237,15 +273,34 @@
   .city-list button{text-align:left;background:none;border:none;padding:11px 6px;font-size:14px;
     color:var(--text);border-bottom:1px solid var(--border);cursor:pointer;}
 
+  /* RUBAN DÉFILANT */
+  .ribbon{background:var(--gold);color:#241a04;overflow:hidden;white-space:nowrap;
+    padding:6px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;}
+  .ribbon-track{display:inline-block;padding-left:100%;animation:ribbonScroll 22s linear infinite;}
+  @keyframes ribbonScroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
+
   .install-banner{background:var(--gold);color:#241a04;padding:10px 16px;font-size:13px;display:flex;
     align-items:center;justify-content:space-between;gap:10px;}
   .install-banner button{background:var(--navy);color:#fff;border:none;border-radius:7px;padding:8px 12px;
     font-size:12.5px;cursor:pointer;white-space:nowrap;}
+  @keyframes installAttention{
+    0%,100%{transform:translateX(0) scale(1);box-shadow:0 0 0 0 rgba(193,68,14,0);}
+    10%{transform:translateX(-2px) scale(1.01);} 20%{transform:translateX(2px) scale(1.01);}
+    30%{transform:translateX(-2px);} 40%{transform:translateX(2px);} 50%{transform:translateX(0);
+      box-shadow:0 0 0 6px rgba(193,68,14,0.18);}
+  }
+  .install-banner.attention{animation:installAttention 2.6s ease-in-out infinite;}
+  .install-banner.attention button{animation:pulseGlow 1.6s ease-in-out infinite;}
+
+  .type-cursor{display:inline-block;margin-left:2px;animation:cursorBlink 0.9s step-end infinite;
+    color:var(--gold);font-weight:400;}
+  @keyframes cursorBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
 
   /* FLOATING FEEDBACK BUTTONS */
   .fab-stack{position:fixed;right:14px;bottom:150px;display:flex;flex-direction:column;gap:10px;z-index:75;}
-  .fab{width:48px;height:48px;border-radius:50%;border:none;font-size:20px;cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,0.25);color:#fff;}
+  .fab{width:50px;height:50px;border-radius:50%;border:none;cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);color:#fff;display:flex;align-items:center;justify-content:center;}
+  .fab svg{width:24px;height:24px;}
 
   /* MY SHOPS (boost per listing) */
   .my-shop-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
@@ -271,14 +326,19 @@
 </head>
 <body>
 
+  <!-- RUBAN DÉFILANT : message modifiable dans le JS, voir commentaire "RIBBON_MESSAGES" -->
+  <div class="ribbon">
+    <div class="ribbon-track" id="ribbonTrack"><span id="ribbonText"></span></div>
+  </div>
+
   <div id="installBanner" class="install-banner hidden">
-    <span data-i18n="installMsg">Installez DONKO ADS sur votre écran d'accueil.</span>
+    <span data-i18n="installMsg">📲 Installez DONKO ADS sur votre écran d'accueil !</span>
     <button id="installBtn" data-i18n="installBtn">Installer</button>
   </div>
 
   <nav class="nav">
     <div class="brand">
-      <img src="icons/icon-192.png" alt="Donko Ads">
+      <img src="icon-192.png" alt="Donko Ads">
       <span>DONKO ADS</span>
     </div>
     <div class="actions">
@@ -290,7 +350,7 @@
   <header class="hero">
     <span class="eyebrow" data-i18n="eyebrow">Annonces &amp; publicités locales — zone UEMOA</span>
     <h1 data-i18n="heroTitle">Votre commerce, vu par tout le monde.</h1>
-    <p data-i18n="heroText">Créez la vitrine de votre boutique, trouvez ce dont vous avez besoin près de chez vous, et publiez en Mobile Money — sans connexion permanente.</p>
+    <p id="heroTypeText">Créez la vitrine de votre boutique, trouvez ce dont vous avez besoin près de chez vous, et publiez en Mobile Money — sans connexion permanente.<span class="type-cursor">|</span></p>
     <div class="hero-actions">
       <button class="btn btn-brick" id="heroPublishBtn" data-i18n="btnAdd2">📣 Publier ma boutique</button>
       <button class="btn btn-outline" id="heroExploreBtn" style="color:#F7F2E7;border-color:rgba(247,242,231,0.4);" data-i18n="exploreBtn">Explorer les annonces</button>
@@ -308,6 +368,10 @@
       <div class="search-bar">
         <input type="text" id="searchInput" data-i18n-ph="searchPh" placeholder="Rechercher un produit, un service, une boutique...">
         <button class="btn btn-navy" id="openLocationBtn" style="white-space:nowrap;">📍 <span id="currentCityLabel" data-i18n="allCountries">Toute la zone</span></button>
+      </div>
+      <div class="search-bar">
+        <label style="margin:0;display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;white-space:nowrap;" data-i18n="displayCurrencyLabel">💱 Afficher les prix en :</label>
+        <select id="displayCurrencySelect" style="flex:1;"></select>
       </div>
       <div class="cat-chips" id="catChips"></div>
 
@@ -367,6 +431,13 @@
           <label data-i18n="lblDesc">Description bien détaillée</label>
           <textarea id="fDesc" data-i18n-ph="phDesc" placeholder="Décrivez votre activité, vos produits, vos horaires..."></textarea>
 
+          <label data-i18n="lblPrice">Prix (optionnel)</label>
+          <div class="file-row">
+            <input type="text" inputmode="decimal" id="fPrice" data-i18n-ph="phPrice" placeholder="Ex : 5000" style="flex:2;">
+            <select id="fPriceCurrency" style="flex:1;"></select>
+          </div>
+          <p class="hint" data-i18n="priceHint">Le montant est enregistré dans la devise choisie ; chaque visiteur peut ensuite l'afficher dans la devise de son choix.</p>
+
           <label data-i18n="lblLogo">Logo (jpg/png/webp)</label>
           <div class="file-row">
             <label class="file-btn" for="fLogo" data-i18n="chooseFile">Choisir un fichier</label>
@@ -412,7 +483,12 @@
           <h2 data-i18n="pricingTitle">Un plan pour chaque budget</h2>
           <p data-i18n="pricingText">3 publications gratuites pour commencer. Ensuite, un abonnement débloque des publications illimitées pendant toute sa durée.</p>
         </div>
+        <div class="search-bar" style="margin-bottom:14px;">
+          <label style="margin:0;display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;white-space:nowrap;" data-i18n="displayCurrencyLabel">💱 Afficher les prix en :</label>
+          <select id="displayCurrencySelectPro" style="flex:1;"></select>
+        </div>
         <div class="plans" id="plansGrid"></div>
+        <p class="notice tip" data-i18n="currencyPaymentNotice">💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), pris en charge par FedaPay, uniquement en Mobile Money.</p>
         <p class="disclaimer" data-i18n="disclaimerText">
           Paiement unique via FedaPay (Mobile Money) — aucun prélèvement automatique, aucune carte ni numéro enregistré chez nous.
           À la fin de la période, votre boutique disparaît automatiquement de la liste ; revenez payer le plan de votre choix pour continuer.
@@ -456,8 +532,12 @@
 
   <!-- FLOATING FEEDBACK BUTTONS -->
   <div class="fab-stack">
-    <button class="fab blink-jade" id="fabWhats" style="background:var(--jade);" title="WhatsApp">💬</button>
-    <button class="fab blink" id="fabEmail" style="background:var(--gold);color:#241a04;" title="Email">✉️</button>
+    <button class="fab blink-jade" id="fabWhats" style="background:#25D366;" title="WhatsApp">
+      <svg viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.362.687 4.564 1.872 6.417L4 29l7.78-2.04A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.46-1.507l-.392-.232-4.62 1.21 1.234-4.505-.255-.406A9.77 9.77 0 0 1 5.182 15c0-5.967 4.85-10.818 10.819-10.818 5.966 0 10.818 4.851 10.818 10.818 0 5.968-4.852 10.818-10.818 10.818zm5.94-8.106c-.326-.163-1.928-.951-2.227-1.06-.299-.109-.516-.163-.733.163-.217.326-.84 1.06-1.03 1.278-.19.217-.38.244-.706.081-.326-.163-1.375-.507-2.62-1.615-.968-.863-1.622-1.929-1.812-2.255-.19-.326-.02-.502.143-.664.147-.146.326-.38.489-.57.163-.19.217-.326.326-.543.109-.217.054-.407-.027-.57-.081-.163-.733-1.765-1.004-2.417-.264-.634-.532-.548-.733-.558l-.624-.011c-.217 0-.57.081-.868.407-.299.326-1.14 1.114-1.14 2.718 0 1.604 1.167 3.153 1.33 3.37.163.217 2.294 3.5 5.556 4.91.777.335 1.383.535 1.856.685.78.248 1.489.213 2.05.129.625-.093 1.928-.788 2.2-1.549.272-.76.272-1.412.19-1.549-.081-.136-.298-.217-.624-.38z"/></svg>
+    </button>
+    <button class="fab blink" id="fabEmail" style="background:var(--gold);" title="Email">
+      <svg viewBox="0 0 24 24" fill="#241a04" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </button>
   </div>
 
   <footer>
@@ -472,8 +552,14 @@
     <a class="store-btn" href="https://majesticfordonko.mychariow.shop" target="_blank" rel="noopener" data-i18n="storeBtn">🛒 EMPIRE DONKO TOOLS STORE</a>
 
     <div class="footer-contact">
-      <a class="blink-jade" href="https://wa.me/22901968091" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="email blink" href="mailto:empiredonko@gmail.com">✉️ Email</a>
+      <a class="blink-jade" href="https://wa.me/2290196809106" target="_blank" rel="noopener">
+        <svg viewBox="0 0 32 32" fill="#fff" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.362.687 4.564 1.872 6.417L4 29l7.78-2.04A11.94 11.94 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.818c-1.99 0-3.86-.55-5.46-1.507l-.392-.232-4.62 1.21 1.234-4.505-.255-.406A9.77 9.77 0 0 1 5.182 15c0-5.967 4.85-10.818 10.819-10.818 5.966 0 10.818 4.851 10.818 10.818 0 5.968-4.852 10.818-10.818 10.818zm5.94-8.106c-.326-.163-1.928-.951-2.227-1.06-.299-.109-.516-.163-.733.163-.217.326-.84 1.06-1.03 1.278-.19.217-.38.244-.706.081-.326-.163-1.375-.507-2.62-1.615-.968-.863-1.622-1.929-1.812-2.255-.19-.326-.02-.502.143-.664.147-.146.326-.38.489-.57.163-.19.217-.326.326-.543.109-.217.054-.407-.027-.57-.081-.163-.733-1.765-1.004-2.417-.264-.634-.532-.548-.733-.558l-.624-.011c-.217 0-.57.081-.868.407-.299.326-1.14 1.114-1.14 2.718 0 1.604 1.167 3.153 1.33 3.37.163.217 2.294 3.5 5.556 4.91.777.335 1.383.535 1.856.685.78.248 1.489.213 2.05.129.625-.093 1.928-.788 2.2-1.549.272-.76.272-1.412.19-1.549-.081-.136-.298-.217-.624-.38z"/></svg>
+        WhatsApp
+      </a>
+      <a class="email blink" href="mailto:empiredonko@gmail.com">
+        <svg viewBox="0 0 24 24" fill="#241a04" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Email
+      </a>
     </div>
 
     <p style="text-align:center;font-size:13px;color:#F7F2E7;max-width:420px;margin:0 auto 14px;" data-i18n="partnershipText">
@@ -512,14 +598,51 @@
 const CONFIG = {
   FEDAPAY_PUBLIC_KEY: 'pk_live_9iYiCnrfVLTqtOQ6-aDRynRV',
   APPS_SCRIPT_URL: 'VOTRE_URL_APPS_SCRIPT_/exec',
-  ADMIN_PASSCODE: 'donko2026',
+  // Le code d'accès pro n'est jamais stocké en clair : seul son empreinte SHA-256
+  // figure ici. Voir GUIDE-INSTALLATION.md pour changer ce code vous-même.
+  ADMIN_PASSCODE_HASH: '081c544db69c4da35f6fe39ce13cf5b63c534f788add9937b46011bf426e72cc',
   FREE_POSTS_LIMIT: 3,
   FREE_POST_VALIDITY_DAYS: 30,
   BOOST_PRICE: 3000,
   BOOST_DAYS: 31,
-  DISCOUNT: 0.85
+  DISCOUNT: 0.85,
+  MAX_SHOPS: 3,              // nombre maximum de boutiques (noms) différentes par appareil
+  MAX_LISTINGS_PER_SHOP: 100, // annonces max par boutique
+  MAX_LISTINGS_TOTAL: 300     // annonces max au total par appareil (3 x 100)
 };
 /* ===================================================== */
+
+/* ================== RUBAN DÉFILANT ==================
+   Message affiché en boucle dans le bandeau tout en haut du site.
+   Pour changer ce message plus tard : modifiez simplement le texte
+   ci-dessous (fr et en), enregistrez, puis republiez index.html sur GitHub.
+======================================================= */
+const RIBBON_MESSAGES = {
+  fr: "👋 Bienvenue sur DONKO ADS — publiez votre boutique et soyez vu par toute la zone UEMOA !  •  📣 3 publications gratuites pour commencer  •  💳 Paiement 100% Mobile Money via FedaPay",
+  en: "👋 Welcome to DONKO ADS — publish your shop and get seen across the whole UEMOA zone!  •  📣 3 free listings to get started  •  💳 100% Mobile Money payment via FedaPay"
+};
+
+/* ================== DEVISES D'AFFICHAGE ==================
+   XOF (FCFA) est la devise de référence et la seule utilisée pour le
+   paiement réel (FedaPay / Mobile Money). Les autres devises ne servent
+   qu'à l'affichage. EUR est un taux fixe réel (parité XOF/EUR). USD et
+   GBP sont des taux indicatifs approximatifs à mettre à jour si besoin.
+=========================================================== */
+const CURRENCIES = [
+  { id:'XOF', symbol:'F CFA', rateToXOF:1,       decimals:0 },
+  { id:'EUR', symbol:'€',     rateToXOF:655.957, decimals:2 },
+  { id:'USD', symbol:'$',     rateToXOF:605,     decimals:2 },
+  { id:'GBP', symbol:'£',     rateToXOF:765,     decimals:2 }
+];
+function convertFromXOF(amountXOF, toId){
+  const cur = CURRENCIES.find(c=>c.id===toId) || CURRENCIES[0];
+  const val = amountXOF / cur.rateToXOF;
+  return val.toLocaleString(state && state.lang==='fr' ? 'fr-FR' : 'en-US', {minimumFractionDigits:cur.decimals, maximumFractionDigits:cur.decimals}) + ' ' + cur.symbol;
+}
+function convertToXOF(amount, fromId){
+  const cur = CURRENCIES.find(c=>c.id===fromId) || CURRENCIES[0];
+  return Math.round(amount * cur.rateToXOF);
+}
 
 console.log('%cSTOP', 'color:#C1440E;font-size:36px;font-weight:bold;');
 console.log('%cCet espace est reserve aux developpeurs. Coller du code ici peut compromettre votre boutique ou vos donnees.', 'font-size:14px;');
@@ -625,6 +748,10 @@ I18N.fr = {
   lblContact:"Contact (téléphone / WhatsApp)", phContact:"+229...",
   lblLink:"Lien du site à promouvoir (optionnel)",
   lblDesc:"Description bien détaillée", phDesc:"Décrivez votre activité, vos produits, vos horaires...",
+  lblPrice:"Prix (optionnel)", phPrice:"Ex : 5000",
+  priceHint:"Le montant est enregistré dans la devise choisie ; chaque visiteur peut ensuite l'afficher dans la devise de son choix.",
+  displayCurrencyLabel:"💱 Afficher les prix en :",
+  currencyPaymentNotice:"💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), pris en charge par FedaPay, uniquement en Mobile Money.",
   lblLogo:"Logo (jpg/png/webp)",
   lblImages:"Images (jpg/png/webp, 2 Mo max chacune, 4 maximum)",
   lblVideo:"Lien vidéo YouTube/Vimeo (optionnel)",
@@ -635,7 +762,7 @@ I18N.fr = {
   downloadBackup:"⬇️ Télécharger une sauvegarde",
   backupHint:"Envoyez ce fichier vers votre nouveau téléphone (WhatsApp, email, Bluetooth ou Drive), puis ouvrez DONKO ADS et utilisez « Restaurer » ci-dessous.",
   lblRestoreFile:"Fichier de sauvegarde", restoreBtn:"⬆️ Restaurer cette sauvegarde",
-  tagFeedback:"Votre avis", feedbackTitle:"Une suggestion, un souci ?", fbPh:"Écrivez votre message ici...", fbSend:"Envoyer",
+  tagFeedback:"Votre avis", feedbackTitle:"Une suggestion, un souci ?", fbPh:"Écrivez-nous vos suggestions pour nous aider à améliorer le fonctionnement de DONKO ADS.", fbSend:"Envoyer",
   navGuide:"Guide d'utilisation", navPolicy:"Politique d'utilisation", navAbout:"À propos",
   navMentions:"Mentions légales", navCgu:"CGU",
   storeBtn:"🛒 EMPIRE DONKO TOOLS STORE",
@@ -653,6 +780,9 @@ I18N.fr = {
   errLink:"Le lien doit commencer par http:// ou https://",
   errImgSize:"Une image dépasse 2 Mo.",
   errImgCount:"4 images maximum.",
+  errMaxTotal:"Vous avez atteint la limite de 300 publications au total. Supprimez-en une avant d'en ajouter une nouvelle.",
+  errMaxShops:"Vous avez déjà 3 boutiques différentes (maximum autorisé). Utilisez un nom de boutique déjà enregistré, ou supprimez-en une.",
+  errMaxPerShop:"Cette boutique a atteint sa limite de 100 publications. Supprimez d'anciennes annonces avant d'en ajouter de nouvelles.",
   errExpired:"Votre accès a expiré ou vous avez utilisé vos publications gratuites. Choisissez un abonnement.",
   errRate:"Merci de patienter un instant avant de publier à nouveau.",
   okAdded:"Votre boutique a été publiée ✅ Partagez-la :",
@@ -664,11 +794,19 @@ I18N.fr = {
   boostNoListing:"Créez d'abord votre boutique avant de la booster.",
   boostSelectLabel:"Quelle boutique souhaitez-vous booster ?",
   boostDone:"Boost activé ✅ Votre boutique est maintenant en vedette pour 31 jours.",
+  deleteBtn:"Supprimer", confirmDelete:"Supprimer définitivement cette annonce ?",
+  renewDone:"Vos anciennes annonces ont été réactivées automatiquement avec votre nouveau plan ✅",
   adminPromptTitle:"Code d'accès pro",
   adminUnlocked:"Accès pro activé sur cet appareil.",
   adminWrongCode:"Code incorrect.",
   adminCustomDays:"Durée personnalisée (jours)",
   adminInfo:"Pour offrir un accès gratuit ou une réduction à un client précis, vous pouvez aussi modifier directement la colonne « Expiration » de sa ligne dans votre Google Sheet.",
+  adminGrantTitle:"Donner un accès à n'importe quel utilisateur",
+  adminGrantSearch:"Choisir la boutique/annonce concernée",
+  adminGrantChoose:"Choisissez une annonce",
+  adminGrantDays:"Nombre de jours à accorder",
+  adminGrantApply:"Appliquer cet accès",
+  adminGrantDone:"Accès mis à jour ✅",
   backupOk:"Sauvegarde restaurée ✅", backupErr:"Fichier de sauvegarde invalide.",
   installIOS:"Sur iPhone : appuyez sur Partager 📤 puis « Sur l'écran d'accueil ».",
   noResults:"Aucune boutique pour le moment. Soyez le premier à publier !",
@@ -706,6 +844,10 @@ I18N.en = {
   lblContact:"Contact (phone / WhatsApp)", phContact:"+229...",
   lblLink:"Website link to promote (optional)",
   lblDesc:"Detailed description", phDesc:"Describe your activity, products, opening hours...",
+  lblPrice:"Price (optional)", phPrice:"E.g.: 5000",
+  priceHint:"The amount is stored in the chosen currency; each visitor can then display it in the currency of their choice.",
+  displayCurrencyLabel:"💱 Show prices in:",
+  currencyPaymentNotice:"💳 Prices above are indicative. Subscription payment is always made in CFA Francs (FCFA), processed by FedaPay, Mobile Money only.",
   lblLogo:"Logo (jpg/png/webp)",
   lblImages:"Images (jpg/png/webp, 2 MB max each, 4 max)",
   lblVideo:"YouTube/Vimeo video link (optional)",
@@ -716,7 +858,7 @@ I18N.en = {
   downloadBackup:"⬇️ Download a backup",
   backupHint:"Send this file to your new phone (WhatsApp, email, Bluetooth or Drive), then open DONKO ADS and use \"Restore\" below.",
   lblRestoreFile:"Backup file", restoreBtn:"⬆️ Restore this backup",
-  tagFeedback:"Your feedback", feedbackTitle:"A suggestion, an issue?", fbPh:"Write your message here...", fbSend:"Send",
+  tagFeedback:"Your feedback", feedbackTitle:"A suggestion, an issue?", fbPh:"Send us your suggestions to help us improve how DONKO ADS works.", fbSend:"Send",
   navGuide:"User guide", navPolicy:"Usage policy", navAbout:"About",
   navMentions:"Legal notice", navCgu:"Terms of use",
   storeBtn:"🛒 EMPIRE DONKO TOOLS STORE",
@@ -734,6 +876,9 @@ I18N.en = {
   errLink:"The link must start with http:// or https://",
   errImgSize:"An image exceeds 2 MB.",
   errImgCount:"4 images maximum.",
+  errMaxTotal:"You've reached the 300 total listings limit. Delete one before adding a new one.",
+  errMaxShops:"You already have 3 different shops (maximum allowed). Use an already registered shop name, or delete one.",
+  errMaxPerShop:"This shop has reached its 100 listings limit. Delete older listings before adding new ones.",
   errExpired:"Your access has expired or you've used your free listings. Choose a subscription.",
   errRate:"Please wait a moment before publishing again.",
   okAdded:"Your shop has been published ✅ Share it:",
@@ -745,11 +890,19 @@ I18N.en = {
   boostNoListing:"Create your shop first before boosting it.",
   boostSelectLabel:"Which shop would you like to boost?",
   boostDone:"Boost activated ✅ Your shop is now featured for 31 days.",
+  deleteBtn:"Delete", confirmDelete:"Permanently delete this listing?",
+  renewDone:"Your previous listings were automatically reactivated with your new plan ✅",
   adminPromptTitle:"Pro access code",
   adminUnlocked:"Pro access enabled on this device.",
   adminWrongCode:"Incorrect code.",
   adminCustomDays:"Custom duration (days)",
   adminInfo:"To grant free access or a discount to a specific customer, you can also directly edit the \"Expiration\" column of their row in your Google Sheet.",
+  adminGrantTitle:"Grant access to any user",
+  adminGrantSearch:"Choose the shop/listing concerned",
+  adminGrantChoose:"Choose a listing",
+  adminGrantDays:"Number of days to grant",
+  adminGrantApply:"Apply this access",
+  adminGrantDone:"Access updated ✅",
   backupOk:"Backup restored ✅", backupErr:"Invalid backup file.",
   installIOS:"On iPhone: tap Share 📤 then \"Add to Home Screen\".",
   noResults:"No shops yet. Be the first to publish!",
@@ -856,6 +1009,7 @@ let state = {
   theme: localStorage.getItem('donko_theme') || 'light',
   listings: [],
   selectedPlan: PLANS[0],
+  displayCurrency: localStorage.getItem('donko_currency') || 'XOF',
   selectedCountry: '',
   selectedCity: '',
   selectedCategory: '',
@@ -878,6 +1032,8 @@ function applyI18n(){
   document.getElementById('langToggle').textContent = state.lang === 'fr' ? 'EN' : 'FR';
   renderCategorySelects();
   renderFormCountrySelect();
+  renderFormPriceCurrency();
+  renderCurrencySelects();
   renderCatChips();
   renderPlans();
   updatePayBar();
@@ -886,6 +1042,8 @@ function applyI18n(){
   renderMyListingsList();
   renderHistory();
   renderGallery();
+  renderRibbon();
+  startTypewriter();
 }
 document.getElementById('langToggle').addEventListener('click', ()=>{
   state.lang = state.lang === 'fr' ? 'en' : 'fr';
@@ -932,6 +1090,12 @@ function updateFormCityAndPhone(){
   if(!trimmed || COUNTRIES.some(c => trimmed === c.dial)){
     contactInput.value = country.dial + ' ';
   }
+}
+
+function renderFormPriceCurrency(){
+  const sel = document.getElementById('fPriceCurrency');
+  if(!sel) return;
+  sel.innerHTML = CURRENCIES.map(c => `<option value="${c.id}">${c.id}</option>`).join('');
 }
 
 function renderCatChips(){
@@ -996,14 +1160,16 @@ document.getElementById('openLocationBtn').addEventListener('click', ()=>{
 });
 
 /* ================== PLANS ================== */
+function displayPrice(xofAmount){ return convertFromXOF(xofAmount, state.displayCurrency); }
+
 function renderPlans(){
   const grid = document.getElementById('plansGrid');
   grid.innerHTML = PLANS.map(p => `
     <div class="plan ${p.id===state.selectedPlan.id?'selected':''}" data-id="${p.id}">
       ${p.badge ? `<span class="badge ${p.blink?'blink':''}">${p.badge[state.lang]}</span>` : ''}
       <div class="label">${p.label[state.lang]}</div>
-      <span class="price-old">${fcfa(p.old)}</span>
-      <span class="price-new">${fcfa(p.priceNew)}</span>
+      <span class="price-old">${displayPrice(p.old)}</span>
+      <span class="price-new">${displayPrice(p.priceNew)}</span>
       <div class="divider"></div>
       <div class="days">${p.days>=36500 ? (state.lang==='fr'?'Accès illimité':'Unlimited access') : p.days+(state.lang==='fr'?' jours':' days')}</div>
     </div>
@@ -1019,7 +1185,30 @@ function updatePayBar(){
   const p = state.selectedPlan;
   document.getElementById('barPlanName').textContent = p.label[state.lang];
   document.getElementById('barPlanDays').textContent = p.days>=36500 ? (state.lang==='fr'?'Accès illimité':'Unlimited access') : p.days+(state.lang==='fr'?" jours d'accès":' days access');
-  document.getElementById('barPrice').textContent = fcfa(p.priceNew);
+  document.getElementById('barPrice').textContent = displayPrice(p.priceNew);
+}
+
+/* ================== CURRENCY SELECTOR (Accueil + Pro) ================== */
+function renderCurrencySelects(){
+  const optsHtml = CURRENCIES.map(c => `<option value="${c.id}">${c.id} (${c.symbol})</option>`).join('');
+  ['displayCurrencySelect','displayCurrencySelectPro'].forEach(id=>{
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    sel.innerHTML = optsHtml;
+    sel.value = state.displayCurrency;
+    if(!sel.dataset.bound){
+      sel.addEventListener('change', ()=>{
+        state.displayCurrency = sel.value;
+        localStorage.setItem('donko_currency', state.displayCurrency);
+        ['displayCurrencySelect','displayCurrencySelectPro'].forEach(otherId=>{
+          const other = document.getElementById(otherId);
+          if(other) other.value = state.displayCurrency;
+        });
+        renderPlans(); updatePayBar(); renderGallery();
+      });
+      sel.dataset.bound = '1';
+    }
+  });
 }
 
 /* ================== ACCESS / FREE POSTS ================== */
@@ -1092,6 +1281,7 @@ function launchPayment(amount, description){
           renderAccessState();
           renderProAccessState();
           renderHistory();
+          renewMyListings();
           alert(t('payConfirmed'));
           showView('publish');
         } else if(paymentContext === 'boost'){
@@ -1113,6 +1303,10 @@ function addMyListing(id, name){
   list.unshift({ id, name, date: new Date().toISOString() });
   localStorage.setItem('donko_my_listings', JSON.stringify(list));
 }
+function removeMyListing(id){
+  const list = getMyListings().filter(m=>m.id!==id);
+  localStorage.setItem('donko_my_listings', JSON.stringify(list));
+}
 function renderMyListingsList(){
   const el = document.getElementById('myListingsList');
   if(!el) return;
@@ -1121,10 +1315,13 @@ function renderMyListingsList(){
     el.innerHTML = `<p class="hint">${t('boostNoListing')}</p>`;
     return;
   }
-  el.innerHTML = mine.map(m => `
+  el.innerHTML = `<p class="hint">${mine.length}/${CONFIG.MAX_LISTINGS_TOTAL} ${t('resultsCount')}</p>` + mine.map(m => `
     <div class="my-shop-card">
       <div><div class="name">${escapeHtml(m.name)}</div><div class="date">${new Date(m.date).toLocaleDateString(state.lang==='fr'?'fr-FR':'en-US')}</div></div>
-      <button class="btn btn-brick" data-id="${m.id}" data-name="${escapeHtml(m.name)}">🚀 ${t('boostBtn')}</button>
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-brick" data-id="${m.id}" data-name="${escapeHtml(m.name)}">🚀 ${t('boostBtn')}</button>
+        <button class="btn btn-outline" data-del="${m.id}" title="${t('deleteBtn')}">🗑️</button>
+      </div>
     </div>`).join('');
   el.querySelectorAll('button[data-id]').forEach(b=>{
     b.addEventListener('click', ()=>{
@@ -1132,6 +1329,17 @@ function renderMyListingsList(){
       window._boostTargetId = b.dataset.id;
       window._boostTargetName = b.dataset.name;
       launchPayment(CONFIG.BOOST_PRICE, 'DONKO ADS - Boost');
+    });
+  });
+  el.querySelectorAll('button[data-del]').forEach(b=>{
+    b.addEventListener('click', async ()=>{
+      if(!confirm(t('confirmDelete'))) return;
+      try{
+        await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'delete', id: b.dataset.del }) });
+        removeMyListing(b.dataset.del);
+        renderMyListingsList();
+        loadGallery();
+      }catch(e){ alert(t('connErr')); }
     });
   });
 }
@@ -1150,6 +1358,24 @@ async function finalizeBoost(txnId){
   }catch(e){
     alert(t('connErr'));
   }
+}
+
+// Dès qu'un abonnement est (re)payé, toutes les annonces déjà publiées depuis cet
+// appareil (mêmes expirées) sont automatiquement réactivées avec le nouveau plan,
+// sans que le vendeur ait besoin de tout republier. Il garde la possibilité de
+// republier une annonce (via le formulaire) s'il veut en modifier le contenu.
+async function renewMyListings(){
+  const mine = getMyListings();
+  if(mine.length === 0) return;
+  const access = getAccess();
+  if(!access) return;
+  try{
+    await fetch(CONFIG.APPS_SCRIPT_URL, {
+      method:'POST',
+      body: JSON.stringify({ action:'renew', ids: mine.map(m=>m.id), plan: access.plan, planWeight: access.weight, expiry: access.expiry })
+    });
+    loadGallery();
+  }catch(e){ /* la prochaine ouverture de l'app réessaiera silencieusement via loadGallery */ }
 }
 
 /* ================== HISTORY (abonnements + boosts) ================== */
@@ -1256,6 +1482,8 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
   const link = document.getElementById('fLink').value.trim();
   const desc = document.getElementById('fDesc').value.trim();
   const video = document.getElementById('fVideo').value.trim();
+  const priceRaw = document.getElementById('fPrice').value.trim();
+  const priceCurrency = document.getElementById('fPriceCurrency').value;
   const logoFile = document.getElementById('fLogo').files[0];
   const imageFiles = Array.from(document.getElementById('fImages').files);
 
@@ -1269,6 +1497,23 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
   if(imageFiles.length > 4){ msg.textContent = t('errImgCount'); msg.className = 'form-msg err'; return; }
   for(const f of imageFiles){ if(f.size > 2*1024*1024){ msg.textContent = t('errImgSize'); msg.className = 'form-msg err'; return; } }
   if(logoFile && logoFile.size > 2*1024*1024){ msg.textContent = t('errImgSize'); msg.className = 'form-msg err'; return; }
+
+  // Limites boutiques / annonces (contournées pour l'accès admin illimité)
+  if(!admin){
+    const mine = getMyListings();
+    if(mine.length >= CONFIG.MAX_LISTINGS_TOTAL){
+      msg.textContent = t('errMaxTotal'); msg.className='form-msg err'; return;
+    }
+    const distinctShops = [...new Set(mine.map(m=>m.name))];
+    const isNewShop = !distinctShops.includes(name);
+    if(isNewShop && distinctShops.length >= CONFIG.MAX_SHOPS){
+      msg.textContent = t('errMaxShops'); msg.className='form-msg err'; return;
+    }
+    const countForThisShop = mine.filter(m=>m.name===name).length;
+    if(countForThisShop >= CONFIG.MAX_LISTINGS_PER_SHOP){
+      msg.textContent = t('errMaxPerShop'); msg.className='form-msg err'; return;
+    }
+  }
 
   btn.disabled = true;
   btn.textContent = t('publishing');
@@ -1292,8 +1537,10 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
       expiry = new Date(Date.now() + CONFIG.FREE_POST_VALIDITY_DAYS*86400000).toISOString();
     }
 
+    const priceXOF = priceRaw ? convertToXOF(parseFloat(priceRaw), priceCurrency) : '';
+
     const payload = {
-      action:'add', name, category, country, city, description: desc, address, contact, link,
+      action:'add', name, category, country, city, description: desc, price: priceXOF, address, contact, link,
       logo: logoData, image1: imagesData[0]||'', image2: imagesData[1]||'',
       image3: imagesData[2]||'', image4: imagesData[3]||'', videoUrl: video,
       plan, planWeight, expiry, txnId
@@ -1407,6 +1654,7 @@ function renderGallery(){
         <div class="body">
           <div class="cat">${escapeHtml(catLabel(item.Categorie))}${item.Ville ? ' · '+escapeHtml(item.Ville) : ''}${item.Pays ? ' ('+escapeHtml(countryLabel(item.Pays))+')' : ''}</div>
           <h3>${escapeHtml(item.Nom)}</h3>
+          ${item.Prix ? `<div class="price-tag mono">${displayPrice(Number(item.Prix))}</div>` : ''}
           <p>${escapeHtml(item.Description)}</p>
           <div class="row-actions">
             ${item.Lien ? `<a class="visit" href="${item.Lien}" target="_blank" rel="noopener">${t('visit')}</a>` : ''}
@@ -1441,7 +1689,11 @@ async function loadGallery(){
 }
 
 /* ================== ADMIN ================== */
-document.getElementById('adminToggleLink').addEventListener('click', ()=>{
+async function sha256Hex(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+document.getElementById('adminToggleLink').addEventListener('click', async ()=>{
   const panel = document.getElementById('adminPanel');
   if(isAdmin()){
     panel.classList.toggle('hidden');
@@ -1450,7 +1702,8 @@ document.getElementById('adminToggleLink').addEventListener('click', ()=>{
   }
   const code = prompt(t('adminPromptTitle'));
   if(code === null) return;
-  if(code === CONFIG.ADMIN_PASSCODE){
+  const hash = await sha256Hex(code);
+  if(hash === CONFIG.ADMIN_PASSCODE_HASH){
     localStorage.setItem('donko_admin', 'true');
     alert(t('adminUnlocked'));
     renderAccessState();
@@ -1468,7 +1721,29 @@ function renderAdminPanel(){
     <label>${t('adminCustomDays')}</label>
     <input type="text" id="adminCustomDaysInput" value="365" class="mono">
     <p class="hint">${t('adminInfo')}</p>
+    <h3 style="margin-top:18px;">${t('adminGrantTitle')}</h3>
+    <label>${t('adminGrantSearch')}</label>
+    <select id="adminGrantSelect"><option value="">${t('adminGrantChoose')}</option>${state.listings.map(l=>`<option value="${l.ID}">${escapeHtml(l.Nom)} — ${escapeHtml(catLabel(l.Categorie))}${l.Ville?' ('+escapeHtml(l.Ville)+')':''}</option>`).join('')}</select>
+    <label>${t('adminGrantDays')}</label>
+    <input type="text" id="adminGrantDaysInput" value="365" class="mono">
+    <button class="btn btn-brick" id="adminGrantBtn" style="width:100%;margin-top:10px;">${t('adminGrantApply')}</button>
+    <div class="form-msg" id="adminGrantMsg"></div>
   `;
+  document.getElementById('adminGrantBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('adminGrantSelect').value;
+    const days = parseInt(document.getElementById('adminGrantDaysInput').value || '0', 10);
+    const msg = document.getElementById('adminGrantMsg');
+    if(!id || !days){ msg.textContent = t('adminGrantChoose'); msg.className='form-msg err'; return; }
+    const expiry = new Date(Date.now() + days*86400000).toISOString();
+    try{
+      await fetch(CONFIG.APPS_SCRIPT_URL, {
+        method:'POST',
+        body: JSON.stringify({ action:'adminGrant', id, expiry, plan:'admin', planWeight: 99 })
+      });
+      msg.textContent = t('adminGrantDone'); msg.className='form-msg ok';
+      loadGallery();
+    }catch(e){ msg.textContent = t('connErr'); msg.className='form-msg err'; }
+  });
 }
 
 /* ================== BACKUP / RESTORE ================== */
@@ -1584,7 +1859,7 @@ function openFeedbackModal(channel){
     const text = document.getElementById('fbInput').value.trim();
     if(!text) return;
     if(isWhats){
-      window.open('https://wa.me/22901968091?text=' + encodeURIComponent(text), '_blank');
+      window.open('https://wa.me/2290196809106?text=' + encodeURIComponent(text), '_blank');
     } else {
       window.location.href = 'mailto:empiredonko@gmail.com?subject=' + encodeURIComponent('Suggestion DONKO ADS') + '&body=' + encodeURIComponent(text);
     }
@@ -1594,27 +1869,84 @@ function openFeedbackModal(channel){
 document.getElementById('fabWhats').addEventListener('click', ()=> openFeedbackModal('whats'));
 document.getElementById('fabEmail').addEventListener('click', ()=> openFeedbackModal('email'));
 
-/* ================== PWA INSTALL ================== */
+/* ================== RUBAN DÉFILANT ================== */
+function renderRibbon(){
+  const text = RIBBON_MESSAGES[state.lang] || RIBBON_MESSAGES.fr;
+  // Le texte est dupliqué pour un défilement continu sans "trou" visuel.
+  document.getElementById('ribbonText').textContent = text + '   •   ' + text;
+}
+
+/* ================== MACHINE À ÉCRIRE (hero) ================== */
+let _typewriterTimer = null;
+function startTypewriter(){
+  if(_typewriterTimer) clearTimeout(_typewriterTimer);
+  const el = document.getElementById('heroTypeText');
+  const fullText = t('heroText');
+  const totalDurationMs = 60000; // le texte complet se saisit en 1 minute
+  const delay = Math.max(15, totalDurationMs / Math.max(1, fullText.length));
+  let i = 0;
+
+  function tick(){
+    el.innerHTML = escapeHtml(fullText.slice(0, i)) + '<span class="type-cursor">|</span>';
+    i++;
+    if(i <= fullText.length){
+      _typewriterTimer = setTimeout(tick, delay);
+    } else {
+      // Texte complet affiché : pause, puis on efface et on reprend la saisie, en boucle.
+      _typewriterTimer = setTimeout(()=>{ i = 0; tick(); }, 1800);
+    }
+  }
+  tick();
+}
+
+/* ================== PWA INSTALL (robuste) ================== */
 let deferredPrompt = null;
+
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function updateInstallBanner(){
+  const banner = document.getElementById('installBanner');
+  if(isStandalone()){
+    // Application déjà installée et lancée en mode autonome : le bouton n'a plus lieu d'être.
+    banner.classList.add('hidden');
+    banner.classList.remove('attention');
+  } else {
+    // Toujours visible dans le navigateur, pour permettre une (ré)installation à tout moment.
+    banner.classList.remove('hidden');
+    banner.classList.add('attention');
+  }
+}
+
 window.addEventListener('beforeinstallprompt', (e)=>{
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('installBanner').classList.remove('hidden');
+  updateInstallBanner();
 });
+
 document.getElementById('installBtn').addEventListener('click', async ()=>{
   if(deferredPrompt){
     deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
+    const choice = await deferredPrompt.userChoice;
     deferredPrompt = null;
-    document.getElementById('installBanner').classList.add('hidden');
+    if(choice && choice.outcome === 'accepted'){
+      document.getElementById('installBanner').classList.add('hidden');
+    }
   } else {
     alert(t('installIOS'));
   }
 });
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-if(isIOS && !window.navigator.standalone){
-  document.getElementById('installBanner').classList.remove('hidden');
-}
+
+// Se déclenche après une installation réussie (Chrome/Android), qu'elle vienne de
+// notre bouton ou du menu natif du navigateur ("Ajouter à l'écran d'accueil").
+window.addEventListener('appinstalled', ()=>{
+  document.getElementById('installBanner').classList.add('hidden');
+  document.getElementById('installBanner').classList.remove('attention');
+});
+
+updateInstallBanner();
+
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
     navigator.serviceWorker.register('sw.js').catch(()=>{});

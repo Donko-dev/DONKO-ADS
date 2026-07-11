@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://donko-dev.github.io/donko-ads/sitemap.xml
