@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>DONKO ADS — Annonces &amp; publicités locales</title>
 <meta name="description" content="DONKO ADS : petites annonces et publicités gratuites au Bénin, Togo, Côte d'Ivoire, Sénégal, Niger, Mali et Burkina Faso. Publiez votre boutique, trouvez des produits et services près de chez vous, payez en Mobile Money.">
-<meta name="keywords" content="annonces Bénin, petites annonces UEMOA, publicité boutique, vendre en ligne Bénin, acheter Cotonou, annonces Togo, annonces Côte d'Ivoire, annonces Sénégal, marketplace Afrique de l'Ouest, mobile money, FedaPay, commerce local Bénin">
+<meta name="keywords" content="annonces Bénin, petites annonces UEMOA, publicité boutique, vendre en ligne Bénin, acheter Cotonou, annonces Togo, annonces Côte d'Ivoire, annonces Sénégal, marketplace Afrique de l'Ouest, mobile money, Kkiapay, commerce local Bénin">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://donko-dev.github.io/donko-ads/">
 <meta name="theme-color" content="#131B33">
@@ -13,7 +13,7 @@
 <!-- Open Graph / réseaux sociaux -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="DONKO ADS — Annonces & publicités locales, zone UEMOA">
-<meta property="og:description" content="Publiez la vitrine de votre boutique et soyez vu par toute la zone UEMOA. Recherchez produits et services près de chez vous. Paiement Mobile Money via FedaPay.">
+<meta property="og:description" content="Publiez la vitrine de votre boutique et soyez vu par toute la zone UEMOA. Recherchez produits et services près de chez vous. Paiement Mobile Money via Kkiapay.">
 <meta property="og:image" content="icon-512.png">
 <meta property="og:url" content="https://donko-dev.github.io/donko-ads/">
 <meta property="og:locale" content="fr_BJ">
@@ -51,7 +51,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
+<script src="https://cdn.kkiapay.me/k.js"></script>
 <style>
   :root{
     --gold:#E8A93D; --brick:#C1440E; --jade:#2F6F4E; --navy:#131B33; --navy-2:#1E2A4D;
@@ -399,31 +399,67 @@
 
     <!-- ================= VIEW: PUBLISH ================= -->
     <div id="viewPublish" class="hidden">
+
+      <!-- ---- Créer une boutique ---- -->
+      <section class="section" id="createShop">
+        <div class="section-head">
+          <span class="tag" data-i18n="tagShop">Votre boutique</span>
+          <h2 data-i18n="shopFormTitle">Créer une boutique</h2>
+          <p class="hint" data-i18n="shopFormHint">Une boutique reste privée (visible seulement dans « Mes boutiques ») tant qu'elle n'est pas boostée. Ce sont vos annonces publiées dedans qui apparaissent publiquement.</p>
+        </div>
+        <div id="shopLimitState"></div>
+
+        <div class="form-card" id="shopFormCard">
+          <label data-i18n="lblName">Nom de l'entreprise / boutique</label>
+          <input type="text" id="sName" data-i18n-ph="phName" placeholder="Ex : Boutique Awa">
+
+          <label data-i18n="lblCategory">Catégorie / activité</label>
+          <select id="sCategory"></select>
+
+          <label data-i18n="lblCountry">Pays</label>
+          <select id="sCountry"></select>
+
+          <label data-i18n="lblCity">Ville</label>
+          <select id="sCity"></select>
+
+          <label data-i18n="lblAddress">Adresse / quartier</label>
+          <input type="text" id="sAddress" data-i18n-ph="phAddress" placeholder="Quartier, repère...">
+
+          <label data-i18n="lblContact">Contact (téléphone / WhatsApp)</label>
+          <input type="tel" id="sContact" data-i18n-ph="phContact" placeholder="+229...">
+
+          <label data-i18n="lblShopDesc">Description détaillée de la boutique</label>
+          <textarea id="sDesc" data-i18n-ph="phShopDesc" placeholder="Présentez votre boutique, vos horaires, votre spécialité..."></textarea>
+
+          <label data-i18n="lblCurrency">Devise préférée de la boutique</label>
+          <select id="sCurrency"></select>
+
+          <label data-i18n="lblLogo2">Logo de l'entreprise / boutique (jpg/png/webp)</label>
+          <div class="file-row">
+            <label class="file-btn" for="sLogo" data-i18n="chooseFile">Choisir un fichier</label>
+            <input type="file" id="sLogo" accept="image/jpeg,image/png,image/webp" style="display:none;">
+            <span class="file-name" id="sLogoName" data-i18n="noFile">Aucun fichier choisi</span>
+          </div>
+
+          <input type="text" id="sWebsite" name="website" autocomplete="off" tabindex="-1"
+            style="position:absolute;left:-9999px;" aria-hidden="true">
+
+          <button class="btn submit-btn" id="submitShop" data-i18n="btnCreateShop">Créer la boutique</button>
+          <div class="form-msg" id="shopFormMsg"></div>
+        </div>
+      </section>
+
+      <!-- ---- Publier une annonce ---- -->
       <section class="section" id="postAd">
         <div class="section-head">
-          <span class="tag" data-i18n="tagForm">Votre boutique</span>
-          <h2 data-i18n="formTitle">Créer votre boutique / publicité</h2>
+          <span class="tag" data-i18n="tagForm">Votre annonce</span>
+          <h2 data-i18n="formTitle">Publier une annonce</h2>
         </div>
         <div id="accessState"></div>
 
         <div class="form-card" id="formCard" style="display:none;">
-          <label data-i18n="lblName">Nom de l'entreprise / boutique</label>
-          <input type="text" id="fName" data-i18n-ph="phName" placeholder="Ex : Boutique Awa">
-
-          <label data-i18n="lblCategory">Catégorie / activité</label>
-          <select id="fCategory"></select>
-
-          <label data-i18n="lblCountry">Pays</label>
-          <select id="fCountry"></select>
-
-          <label data-i18n="lblCity">Ville</label>
-          <select id="fCity"></select>
-
-          <label data-i18n="lblAddress">Adresse / quartier</label>
-          <input type="text" id="fAddress" data-i18n-ph="phAddress" placeholder="Quartier, repère...">
-
-          <label data-i18n="lblContact">Contact (téléphone / WhatsApp)</label>
-          <input type="tel" id="fContact" data-i18n-ph="phContact" placeholder="+229...">
+          <label data-i18n="lblChooseShop">Dans quelle boutique publier ?</label>
+          <select id="fBoutique"></select>
 
           <label data-i18n="lblLink">Lien du site à promouvoir (optionnel)</label>
           <input type="url" id="fLink" placeholder="https://...">
@@ -438,12 +474,15 @@
           </div>
           <p class="hint" data-i18n="priceHint">Le montant est enregistré dans la devise choisie ; chaque visiteur peut ensuite l'afficher dans la devise de son choix.</p>
 
-          <label data-i18n="lblLogo">Logo (jpg/png/webp)</label>
-          <div class="file-row">
-            <label class="file-btn" for="fLogo" data-i18n="chooseFile">Choisir un fichier</label>
-            <input type="file" id="fLogo" accept="image/jpeg,image/png,image/webp" style="display:none;">
-            <span class="file-name" id="fLogoName" data-i18n="noFile">Aucun fichier choisi</span>
-          </div>
+          <label data-i18n="lblPriceMode">Affichage du prix sur l'annonce</label>
+          <select id="fPriceMode">
+            <option value="nonbarre" data-i18n="priceModeNormal">Prix normal</option>
+            <option value="barre" data-i18n="priceModeBarre">Prix barré (promotion)</option>
+            <option value="masque" data-i18n="priceModeMasque">Ne pas afficher le prix</option>
+          </select>
+
+          <label data-i18n="lblAdContact">Contact affiché sur cette annonce (bouton vert)</label>
+          <input type="tel" id="fAdContact" data-i18n-ph="phContact" placeholder="+229...">
 
           <label data-i18n="lblImages">Images (jpg/png/webp, 2 Mo max chacune, 4 maximum)</label>
           <div class="file-row">
@@ -466,6 +505,7 @@
     </div>
 
     <!-- ================= VIEW: PRO / SETTINGS ================= -->
+
     <div id="viewPro" class="hidden">
       <section class="section" id="subStatus">
         <div class="section-head">
@@ -488,9 +528,9 @@
           <select id="displayCurrencySelectPro" style="flex:1;"></select>
         </div>
         <div class="plans" id="plansGrid"></div>
-        <p class="notice tip" data-i18n="currencyPaymentNotice">💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), pris en charge par FedaPay, uniquement en Mobile Money.</p>
+        <p class="notice tip" data-i18n="currencyPaymentNotice">💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), via Kkiapay (Mobile Money ou carte bancaire Visa/Mastercard).</p>
         <p class="disclaimer" data-i18n="disclaimerText">
-          Paiement unique via FedaPay (Mobile Money) — aucun prélèvement automatique, aucune carte ni numéro enregistré chez nous.
+          Paiement unique via Kkiapay (Mobile Money ou carte bancaire) — aucun prélèvement automatique, aucune information bancaire enregistrée chez nous.
           À la fin de la période, votre boutique disparaît automatiquement de la liste ; revenez payer le plan de votre choix pour continuer.
           C'est le seul moment où une connexion internet est nécessaire.
         </p>
@@ -498,11 +538,11 @@
 
       <section class="section" id="myShops">
         <div class="section-head">
-          <span class="tag" data-i18n="tagMyShops">Au niveau de la boutique</span>
+          <span class="tag" data-i18n="tagMyShops">Vos boutiques</span>
           <h2 data-i18n="myShopsTitle">Mes boutiques</h2>
-          <p data-i18n="boostText">3 000 F CFA, paiement unique, valable 31 jours puis renouvelable. Votre boutique apparaît tout en haut de la liste, avant les autres.</p>
+          <p data-i18n="myShopsHint">Gérez vos boutiques et les annonces publiées dans chacune : modifier, supprimer, partager, booster.</p>
         </div>
-        <div id="myListingsList"><p class="hint" data-i18n="boostNoListing">Créez d'abord votre boutique avant de la booster.</p></div>
+        <div id="myListingsList"><p class="hint" data-i18n="noShopYet">Vous n'avez pas encore créé de boutique.</p></div>
       </section>
 
       <section class="section" id="backup">
@@ -596,7 +636,7 @@
 
 /* ================== CONFIGURATION ================== */
 const CONFIG = {
-  FEDAPAY_PUBLIC_KEY: 'pk_live_9iYiCnrfVLTqtOQ6-aDRynRV',
+  KIKIAPAY_PUBLIC_KEY: '5a2223a51cff4ee0029821e143a207f473f6f7f4',
   APPS_SCRIPT_URL: 'VOTRE_URL_APPS_SCRIPT_/exec',
   // Le code d'accès pro n'est jamais stocké en clair : seul son empreinte SHA-256
   // figure ici. Voir GUIDE-INSTALLATION.md pour changer ce code vous-même.
@@ -618,13 +658,13 @@ const CONFIG = {
    ci-dessous (fr et en), enregistrez, puis republiez index.html sur GitHub.
 ======================================================= */
 const RIBBON_MESSAGES = {
-  fr: "👋 Bienvenue sur DONKO ADS — publiez votre boutique et soyez vu par toute la zone UEMOA !  •  📣 3 publications gratuites pour commencer  •  💳 Paiement 100% Mobile Money via FedaPay",
-  en: "👋 Welcome to DONKO ADS — publish your shop and get seen across the whole UEMOA zone!  •  📣 3 free listings to get started  •  💳 100% Mobile Money payment via FedaPay"
+  fr: "👋 Bienvenue sur DONKO ADS — publiez votre boutique et soyez vu par toute la zone UEMOA !  •  📣 3 publications gratuites pour commencer  •  💳 Paiement 100% Mobile Money via Kkiapay",
+  en: "👋 Welcome to DONKO ADS — publish your shop and get seen across the whole UEMOA zone!  •  📣 3 free listings to get started  •  💳 100% Mobile Money payment via Kkiapay"
 };
 
 /* ================== DEVISES D'AFFICHAGE ==================
    XOF (FCFA) est la devise de référence et la seule utilisée pour le
-   paiement réel (FedaPay / Mobile Money). Les autres devises ne servent
+   paiement réel (Kkiapay / Mobile Money). Les autres devises ne servent
    qu'à l'affichage. EUR est un taux fixe réel (parité XOF/EUR). USD et
    GBP sont des taux indicatifs approximatifs à mettre à jour si besoin.
 =========================================================== */
@@ -647,8 +687,9 @@ function convertToXOF(amount, fromId){
 console.log('%cSTOP', 'color:#C1440E;font-size:36px;font-weight:bold;');
 console.log('%cCet espace est reserve aux developpeurs. Coller du code ici peut compromettre votre boutique ou vos donnees.', 'font-size:14px;');
 
-// Pays éligibles = zone UEMOA (couverture revendiquée par FedaPay), avec indicatif,
-// exemple de numéro local, et principales villes pour chacun.
+// Pays éligibles = les 4 pays où Kkiapay accepte les marchands (Bénin, Togo,
+// Côte d'Ivoire, Sénégal), avec indicatif, exemple de numéro local, et
+// principales villes pour chacun.
 const COUNTRIES = [
   { id:'bj', fr:'Bénin', en:'Benin', dial:'+229', example:'+229 01 90 12 34 56',
     cities:['Cotonou','Abomey-Calavi','Porto-Novo','Parakou','Djougou','Bohicon','Kandi','Ouidah','Abomey','Natitingou','Lokossa','Pobè','Savalou','Allada','Banikoara','Tchaourou'] },
@@ -657,15 +698,7 @@ const COUNTRIES = [
   { id:'ci', fr:"Côte d'Ivoire", en:"Côte d'Ivoire", dial:'+225', example:'+225 07 12 34 56 78',
     cities:['Abidjan','Bouaké','Yamoussoukro','San-Pédro','Korhogo','Daloa','Man','Gagnoa','Abengourou','Divo'] },
   { id:'sn', fr:'Sénégal', en:'Senegal', dial:'+221', example:'+221 77 123 45 67',
-    cities:['Dakar','Thiès','Rufisque','Kaolack','Ziguinchor','Saint-Louis','Mbour','Touba','Diourbel','Louga'] },
-  { id:'ne', fr:'Niger', en:'Niger', dial:'+227', example:'+227 90 12 34 56',
-    cities:['Niamey','Zinder','Maradi','Agadez','Tahoua','Dosso','Tillabéri','Diffa'] },
-  { id:'ml', fr:'Mali', en:'Mali', dial:'+223', example:'+223 70 12 34 56',
-    cities:['Bamako','Sikasso','Mopti','Koutiala','Kayes','Ségou','Gao','Kati'] },
-  { id:'bf', fr:'Burkina Faso', en:'Burkina Faso', dial:'+226', example:'+226 70 12 34 56',
-    cities:['Ouagadougou','Bobo-Dioulasso','Koudougou','Ouahigouya','Banfora','Kaya','Tenkodogo'] },
-  { id:'gw', fr:'Guinée-Bissau', en:'Guinea-Bissau', dial:'+245', example:'+245 955 12 34',
-    cities:['Bissau','Bafatá','Gabú','Bissorã','Bolama','Cacheu'] }
+    cities:['Dakar','Thiès','Rufisque','Kaolack','Ziguinchor','Saint-Louis','Mbour','Touba','Diourbel','Louga'] }
 ];
 function countryLabel(id){ const c = COUNTRIES.find(c=>c.id===id); return c ? c[state.lang] : id; }
 
@@ -737,10 +770,24 @@ I18N.fr = {
   resultsCount:"annonce(s)",
   tagPricing:"Choisissez votre accès", pricingTitle:"Un plan pour chaque budget",
   pricingText:"3 publications gratuites pour commencer. Ensuite, un abonnement débloque des publications illimitées pendant toute sa durée.",
-  disclaimerText:"Paiement unique via FedaPay (Mobile Money) — aucun prélèvement automatique, aucune carte ni numéro enregistré chez nous. À la fin de la période, votre boutique disparaît automatiquement de la liste ; revenez payer le plan de votre choix pour continuer. C'est le seul moment où une connexion internet est nécessaire.",
+  disclaimerText:"Paiement unique via Kkiapay (Mobile Money ou carte bancaire Visa/Mastercard) — aucun prélèvement automatique, aucune information bancaire enregistrée chez nous. À la fin de la période, votre boutique disparaît automatiquement de la liste ; revenez payer le plan de votre choix pour continuer. C'est le seul moment où une connexion internet est nécessaire.",
   boostTitle:"🚀 Mettre ma boutique en vedette",
   boostText:"3 000 F CFA, paiement unique, valable 31 jours puis renouvelable. Votre boutique apparaît tout en haut de la liste, avant les autres.",
   boostBtn:"Booster — 3 000 F CFA",
+  tagShop:"Votre boutique", shopFormTitle:"Créer une boutique",
+  shopFormHint:"Une boutique reste privée (visible seulement dans « Mes boutiques ») tant qu'elle n'est pas boostée. Ce sont vos annonces publiées dedans qui apparaissent publiquement.",
+  lblShopDesc:"Description détaillée de la boutique", phShopDesc:"Présentez votre boutique, vos horaires, votre spécialité...",
+  lblCurrency:"Devise préférée de la boutique", lblLogo2:"Logo de l'entreprise / boutique (jpg/png/webp)",
+  btnCreateShop:"Créer la boutique", btnSaveEdit:"Enregistrer les modifications",
+  okShopSaved:"Boutique enregistrée ✅",
+  lblChooseShop:"Dans quelle boutique publier ?", errChooseShop:"Choisissez d'abord une boutique.",
+  lblPriceMode:"Affichage du prix sur l'annonce",
+  priceModeNormal:"Prix normal", priceModeBarre:"Prix barré (promotion)", priceModeMasque:"Ne pas afficher le prix",
+  lblAdContact:"Contact affiché sur cette annonce (bouton vert)", contactBtn:"📞 Contacter",
+  editBtn:"Modifier", noAdYet:"Aucune annonce dans cette boutique.",
+  confirmDeleteShop:"Supprimer définitivement cette boutique et toutes ses annonces ?",
+  myShopsHint:"Gérez vos boutiques et les annonces publiées dans chacune : modifier, supprimer, partager, booster.",
+  noShopYet:"Vous n'avez pas encore créé de boutique.",
   tagForm:"Votre boutique", formTitle:"Créer votre boutique / publicité",
   lblName:"Nom de l'entreprise / boutique", phName:"Ex : Boutique Awa",
   lblCategory:"Catégorie / activité", lblCity:"Ville",
@@ -751,7 +798,7 @@ I18N.fr = {
   lblPrice:"Prix (optionnel)", phPrice:"Ex : 5000",
   priceHint:"Le montant est enregistré dans la devise choisie ; chaque visiteur peut ensuite l'afficher dans la devise de son choix.",
   displayCurrencyLabel:"💱 Afficher les prix en :",
-  currencyPaymentNotice:"💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), pris en charge par FedaPay, uniquement en Mobile Money.",
+  currencyPaymentNotice:"💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), via Kkiapay (Mobile Money ou carte bancaire Visa/Mastercard).",
   lblLogo:"Logo (jpg/png/webp)",
   lblImages:"Images (jpg/png/webp, 2 Mo max chacune, 4 maximum)",
   lblVideo:"Lien vidéo YouTube/Vimeo (optionnel)",
@@ -785,7 +832,7 @@ I18N.fr = {
   errMaxPerShop:"Cette boutique a atteint sa limite de 100 publications. Supprimez d'anciennes annonces avant d'en ajouter de nouvelles.",
   errExpired:"Votre accès a expiré ou vous avez utilisé vos publications gratuites. Choisissez un abonnement.",
   errRate:"Merci de patienter un instant avant de publier à nouveau.",
-  okAdded:"Votre boutique a été publiée ✅ Partagez-la :",
+  okAdded:"Votre annonce a été publiée ✅ Partagez-la :",
   publishing:"Publication en cours…",
   connErr:"Une erreur est survenue. Vérifiez votre connexion et réessayez.",
   payConnErr:"Connexion internet requise pour payer. Vérifiez votre connexion et réessayez.",
@@ -833,10 +880,24 @@ I18N.en = {
   resultsCount:"listing(s)",
   tagPricing:"Choose your access", pricingTitle:"A plan for every budget",
   pricingText:"3 free listings to get started. After that, a subscription unlocks unlimited listings for its whole duration.",
-  disclaimerText:"One-time payment via FedaPay (Mobile Money) — no automatic debit, no card or number stored with us. When the period ends, your shop automatically disappears from the list; come back and pay the plan of your choice to continue. This is the only moment an internet connection is needed.",
+  disclaimerText:"One-time payment via Kkiapay (Mobile Money or Visa/Mastercard bank card) — no automatic debit, no banking information stored with us. When the period ends, your shop automatically disappears from the list; come back and pay the plan of your choice to continue. This is the only moment an internet connection is needed.",
   boostTitle:"🚀 Feature my shop",
   boostText:"3,000 F CFA, one-time payment, valid 31 days then renewable. Your shop appears at the very top of the list, ahead of others.",
   boostBtn:"Boost — 3,000 F CFA",
+  tagShop:"Your shop", shopFormTitle:"Create a shop",
+  shopFormHint:"A shop stays private (visible only in \"My shops\") until it's boosted. It's the listings published inside it that appear publicly.",
+  lblShopDesc:"Detailed shop description", phShopDesc:"Present your shop, opening hours, specialty...",
+  lblCurrency:"Shop's preferred currency", lblLogo2:"Business / shop logo (jpg/png/webp)",
+  btnCreateShop:"Create shop", btnSaveEdit:"Save changes",
+  okShopSaved:"Shop saved ✅",
+  lblChooseShop:"Which shop should this be published in?", errChooseShop:"Choose a shop first.",
+  lblPriceMode:"Price display on the listing",
+  priceModeNormal:"Normal price", priceModeBarre:"Struck-through price (promo)", priceModeMasque:"Don't show the price",
+  lblAdContact:"Contact shown on this listing (green button)", contactBtn:"📞 Contact",
+  editBtn:"Edit", noAdYet:"No listing in this shop yet.",
+  confirmDeleteShop:"Permanently delete this shop and all its listings?",
+  myShopsHint:"Manage your shops and the listings published in each: edit, delete, share, boost.",
+  noShopYet:"You haven't created a shop yet.",
   tagForm:"Your shop", formTitle:"Create your shop / listing",
   lblName:"Business / shop name", phName:"E.g.: Awa's Shop",
   lblCategory:"Category / activity", lblCity:"City",
@@ -847,7 +908,7 @@ I18N.en = {
   lblPrice:"Price (optional)", phPrice:"E.g.: 5000",
   priceHint:"The amount is stored in the chosen currency; each visitor can then display it in the currency of their choice.",
   displayCurrencyLabel:"💱 Show prices in:",
-  currencyPaymentNotice:"💳 Prices above are indicative. Subscription payment is always made in CFA Francs (FCFA), processed by FedaPay, Mobile Money only.",
+  currencyPaymentNotice:"💳 Prices above are indicative. Subscription payment is always made in CFA Francs (FCFA), via Kkiapay (Mobile Money or Visa/Mastercard bank card).",
   lblLogo:"Logo (jpg/png/webp)",
   lblImages:"Images (jpg/png/webp, 2 MB max each, 4 max)",
   lblVideo:"YouTube/Vimeo video link (optional)",
@@ -881,7 +942,7 @@ I18N.en = {
   errMaxPerShop:"This shop has reached its 100 listings limit. Delete older listings before adding new ones.",
   errExpired:"Your access has expired or you've used your free listings. Choose a subscription.",
   errRate:"Please wait a moment before publishing again.",
-  okAdded:"Your shop has been published ✅ Share it:",
+  okAdded:"Your listing has been published ✅ Share it:",
   publishing:"Publishing…",
   connErr:"An error occurred. Check your connection and try again.",
   payConnErr:"Internet connection required to pay. Check your connection and try again.",
@@ -914,7 +975,7 @@ const LEGAL = { fr:{}, en:{} };
 LEGAL.fr.guide = "<h2>Guide d'utilisation</h2>"
   + "<h3>Recherche & catégories</h3><p>Utilisez la barre de recherche, la ville ou les catégories pour trouver une boutique, un produit ou un service.</p>"
   + "<h3>Créer votre boutique</h3><p>Remplissez le formulaire « Créer votre boutique » : nom, catégorie, ville, adresse, contact, description, jusqu'à 4 images et un logo. 3 publications sont gratuites, valables 30 jours.</p>"
-  + "<h3>Abonnement</h3><p>Au-delà des 3 publications gratuites, un abonnement (Mensuel à À vie) débloque des publications illimitées pendant toute sa durée, payé une seule fois via FedaPay Mobile Money.</p>"
+  + "<h3>Abonnement</h3><p>Au-delà des 3 publications gratuites, un abonnement (Mensuel à À vie) débloque des publications illimitées pendant toute sa durée, payé une seule fois via Kkiapay (Mobile Money ou carte bancaire).</p>"
   + "<h3>Boost</h3><p>Pour 3 000 F CFA, votre boutique apparaît en tête de liste pendant 31 jours, renouvelable.</p>"
   + "<h3>Partager</h3><p>Chaque boutique peut être partagée en un tap vers WhatsApp, Facebook, Instagram, TikTok, Drive ou par email via le partage natif de votre téléphone.</p>"
   + "<h3>Sauvegarde</h3><p>Avant de changer de téléphone, téléchargez une sauvegarde depuis la section dédiée, puis restaurez-la sur le nouvel appareil.</p>";
@@ -926,12 +987,12 @@ LEGAL.fr.policy = "<h2>Politique d'utilisation</h2>"
   + "<h3>2. Ce que DONKO ADS ne fait jamais</h3><p>Aucun compte, aucun mot de passe ; aucun cookie de suivi publicitaire ; aucune revente de vos informations à un tiers.</p>"
   + "<h3>3. Expiration des publications</h3><p>Chaque boutique disparaît automatiquement de la liste à la date d'expiration de son plan (ou de sa publication gratuite).</p>"
   + "<h3>4. Le seul moment où une connexion est utilisée</h3><p>Une connexion est nécessaire pour : afficher/actualiser la liste des boutiques, publier une boutique, payer un abonnement ou un boost, et partager vers un réseau social.</p>"
-  + "<h3>5. FedaPay, service tiers indépendant</h3><p>Le paiement est assuré par FedaPay, qui applique sa propre politique de confidentialité, indépendante de DONKO ADS.</p>"
+  + "<h3>5. Kkiapay, service tiers indépendant</h3><p>Le paiement est assuré par Kkiapay, qui applique sa propre politique de confidentialité, indépendante de DONKO ADS.</p>"
   + "<h3>6. Usages interdits</h3><p>Il est interdit de publier un contenu frauduleux, de copier la boutique ou le contenu d'un autre utilisateur, d'usurper une identité, ou d'utiliser des robots/scripts pour publier ou extraire les données du site.</p>"
-  + "<h3>7. Zone couverte</h3><p>La publication est réservée aux entreprises et commerçants disposant d'un moyen de paiement Mobile Money pris en charge par FedaPay (zone UEMOA et pays partenaires). La consultation du site reste ouverte à tous.</p>";
+  + "<h3>7. Zone couverte</h3><p>La publication est réservée aux entreprises et commerçants disposant d'un moyen de paiement (Mobile Money ou carte bancaire) pris en charge par Kkiapay, actuellement le Bénin, le Togo, la Côte d'Ivoire et le Sénégal. La consultation du site reste ouverte à tous.</p>";
 
 LEGAL.fr.about = "<h2>À propos</h2>"
-  + "<p>DONKO ADS est un annuaire d'annonces et de publicités pensé pour les commerçants, artisans, indépendants et entreprises de la zone UEMOA (Bénin, Togo, Côte d'Ivoire, Sénégal, Niger, Mali, Burkina Faso) et des pays pris en charge par FedaPay.</p>"
+  + "<p>DONKO ADS est un annuaire d'annonces et de publicités pensé pour les commerçants, artisans, indépendants et entreprises du Bénin, du Togo, de la Côte d'Ivoire et du Sénégal — les pays pris en charge par Kkiapay.</p>"
   + "<h3>Pourquoi DONKO ADS existe</h3><p>Beaucoup de commerçants n'ont pas de site web ni de visibilité en ligne. DONKO ADS leur offre une vitrine simple, accessible depuis un simple navigateur, avec un paiement transparent et sans engagement.</p>"
   + "<h3>Qui est derrière DONKO ADS</h3><p>DONKO ADS est développé et édité par Empire Donko.</p>"
   + "<h3>Nous contacter</h3><p>WhatsApp : +229 01 96 80 91 06<br>Email : empiredonko@gmail.com</p>";
@@ -942,25 +1003,25 @@ LEGAL.fr.mentions = "<h2>Mentions légales</h2>"
   + "Identifiant fiscal : 0202112291540<br>Siège : Îlot 3291, Agla Figaro, Cotonou, Bénin</p>"
   + "<h3>Contact</h3><p>WhatsApp : +229 01 96 80 91 06 — Email : empiredonko@gmail.com</p>"
   + "<h3>Hébergement</h3><p>L'application est hébergée par GitHub, Inc. (GitHub Pages). Les données des boutiques publiées sont hébergées via Google Sheets / Google Apps Script (Google LLC).</p>"
-  + "<h3>Paiement</h3><p>Les paiements sont traités par FedaPay, prestataire tiers indépendant. Empire Donko ne stocke aucune information bancaire.</p>"
+  + "<h3>Paiement</h3><p>Les paiements sont traités par Kkiapay, prestataire tiers indépendant. Empire Donko ne stocke aucune information bancaire.</p>"
   + "<h3>Propriété intellectuelle</h3><p>Le nom « DONKO ADS », le contenu et le code de l'application sont la propriété d'Empire Donko. Toute reproduction non autorisée est interdite.</p>";
 
 LEGAL.fr.cgu = "<h2>Conditions Générales d'Utilisation</h2>"
   + "<h3>Article 1 — Objet</h3><p>Les présentes CGU régissent l'utilisation de DONKO ADS, annuaire d'annonces édité par Empire Donko.</p>"
-  + "<h3>Article 2 — Description du service</h3><p>DONKO ADS permet à des commerçants, artisans et entreprises de publier une fiche boutique visible publiquement, moyennant un plan gratuit limité ou un abonnement payant via FedaPay.</p>"
+  + "<h3>Article 2 — Description du service</h3><p>DONKO ADS permet à des commerçants, artisans et entreprises de publier une fiche boutique visible publiquement, moyennant un plan gratuit limité ou un abonnement payant via Kkiapay.</p>"
   + "<h3>Article 3 — Publications gratuites et abonnement</h3><p>Chaque appareil dispose de 3 publications gratuites valables 30 jours. Au-delà, un abonnement payant (Mensuel à À vie) débloque des publications illimitées pour sa durée. Chaque publication expire impérativement à la fin de la période correspondante.</p>"
   + "<h3>Article 4 — Boost</h3><p>Une mise en avant (boost) payante et optionnelle, valable 31 jours, place la boutique en tête de liste.</p>"
-  + "<h3>Article 5 — Zone d'accès au paiement</h3><p>La publication est réservée aux utilisateurs disposant d'un moyen de paiement Mobile Money pris en charge par FedaPay.</p>"
+  + "<h3>Article 5 — Zone d'accès au paiement</h3><p>La publication est réservée aux utilisateurs disposant d'un moyen de paiement (Mobile Money ou carte bancaire) pris en charge par Kkiapay.</p>"
   + "<h3>Article 6 — Obligations de l'utilisateur</h3><p>L'utilisateur s'engage à publier des informations exactes et licites, à ne pas copier le contenu d'un autre utilisateur, à ne pas usurper une identité, et à ne pas utiliser de robot, script ou outil automatisé pour publier ou extraire des données du site.</p>"
   + "<h3>Article 7 — Propriété intellectuelle</h3><p>Le nom, le design et le code de DONKO ADS sont protégés. Toute reproduction non autorisée est interdite.</p>"
-  + "<h3>Article 8 — Limitation de responsabilité</h3><p>DONKO ADS est fourni « en l'état ». Empire Donko n'est pas responsable du contenu publié par les utilisateurs, ni des dysfonctionnements liés à GitHub Pages, Google ou FedaPay.</p>"
+  + "<h3>Article 8 — Limitation de responsabilité</h3><p>DONKO ADS est fourni « en l'état ». Empire Donko n'est pas responsable du contenu publié par les utilisateurs, ni des dysfonctionnements liés à GitHub Pages, Google ou Kkiapay.</p>"
   + "<h3>Article 9 — Modification</h3><p>Ces CGU peuvent être modifiées à tout moment ; la version affichée dans l'application fait foi.</p>"
   + "<h3>Article 10 — Droit applicable</h3><p>Les présentes CGU sont soumises au droit béninois et aux dispositions communes de l'espace OHADA.</p>";
 
 LEGAL.en.guide = "<h2>User guide</h2>"
   + "<h3>Search & categories</h3><p>Use the search bar, the city or the categories to find a shop, product or service.</p>"
   + "<h3>Create your shop</h3><p>Fill in the \"Create your shop\" form: name, category, city, address, contact, description, up to 4 images and a logo. 3 listings are free, valid for 30 days.</p>"
-  + "<h3>Subscription</h3><p>Beyond the 3 free listings, a subscription (Monthly to Lifetime) unlocks unlimited listings for its whole duration, paid once via FedaPay Mobile Money.</p>"
+  + "<h3>Subscription</h3><p>Beyond the 3 free listings, a subscription (Monthly to Lifetime) unlocks unlimited listings for its whole duration, paid once via Kkiapay (Mobile Money or bank card).</p>"
   + "<h3>Boost</h3><p>For 3,000 F CFA, your shop appears at the top of the list for 31 days, renewable.</p>"
   + "<h3>Share</h3><p>Every shop can be shared with one tap to WhatsApp, Facebook, Instagram, TikTok, Drive or email via your phone's native share sheet.</p>"
   + "<h3>Backup</h3><p>Before switching phones, download a backup from the dedicated section, then restore it on the new device.</p>";
@@ -972,12 +1033,12 @@ LEGAL.en.policy = "<h2>Usage policy</h2>"
   + "<h3>2. What DONKO ADS never does</h3><p>No account, no password; no advertising tracking cookie; no reselling of your information to a third party.</p>"
   + "<h3>3. Listing expiration</h3><p>Each shop automatically disappears from the list on the expiration date of its plan (or free listing).</p>"
   + "<h3>4. The only time a connection is used</h3><p>A connection is needed to: display/refresh the shop list, publish a shop, pay for a subscription or boost, and share to a social network.</p>"
-  + "<h3>5. FedaPay, an independent third-party service</h3><p>Payment is handled by FedaPay, which applies its own privacy policy, independent of DONKO ADS.</p>"
+  + "<h3>5. Kkiapay, an independent third-party service</h3><p>Payment is handled by Kkiapay, which applies its own privacy policy, independent of DONKO ADS.</p>"
   + "<h3>6. Prohibited uses</h3><p>It is forbidden to publish fraudulent content, copy another user's shop or content, impersonate an identity, or use bots/scripts to publish or scrape data from the site.</p>"
-  + "<h3>7. Coverage area</h3><p>Publishing is reserved for businesses and merchants with a Mobile Money payment method supported by FedaPay (UEMOA zone and partner countries). Browsing the site remains open to everyone.</p>";
+  + "<h3>7. Coverage area</h3><p>Publishing is reserved for businesses and merchants with a payment method (Mobile Money or bank card) supported by Kkiapay — currently Benin, Togo, Côte d'Ivoire and Senegal. Browsing the site remains open to everyone.</p>";
 
 LEGAL.en.about = "<h2>About</h2>"
-  + "<p>DONKO ADS is a directory of listings and ads designed for merchants, craftspeople, freelancers and businesses in the UEMOA zone (Benin, Togo, Côte d'Ivoire, Senegal, Niger, Mali, Burkina Faso) and countries supported by FedaPay.</p>"
+  + "<p>DONKO ADS is a directory of listings and ads designed for merchants, craftspeople, freelancers and businesses in Benin, Togo, Côte d'Ivoire and Senegal — the countries supported by Kkiapay.</p>"
   + "<h3>Why DONKO ADS exists</h3><p>Many merchants have no website or online visibility. DONKO ADS gives them a simple showcase, accessible from a plain browser, with transparent, no-commitment payment.</p>"
   + "<h3>Who is behind DONKO ADS</h3><p>DONKO ADS is developed and published by Empire Donko.</p>"
   + "<h3>Contact us</h3><p>WhatsApp: +229 01 96 80 91 06<br>Email: empiredonko@gmail.com</p>";
@@ -988,18 +1049,18 @@ LEGAL.en.mentions = "<h2>Legal notice</h2>"
   + "Tax ID: 0202112291540<br>Headquarters: Îlot 3291, Agla Figaro, Cotonou, Benin</p>"
   + "<h3>Contact</h3><p>WhatsApp: +229 01 96 80 91 06 — Email: empiredonko@gmail.com</p>"
   + "<h3>Hosting</h3><p>The application is hosted by GitHub, Inc. (GitHub Pages). Published shop data is hosted via Google Sheets / Google Apps Script (Google LLC).</p>"
-  + "<h3>Payment</h3><p>Payments are processed by FedaPay, an independent third-party provider. Empire Donko stores no banking information.</p>"
+  + "<h3>Payment</h3><p>Payments are processed by Kkiapay, an independent third-party provider. Empire Donko stores no banking information.</p>"
   + "<h3>Intellectual property</h3><p>The name \"DONKO ADS\", the content and the application's code are the property of Empire Donko. Unauthorized reproduction is prohibited.</p>";
 
 LEGAL.en.cgu = "<h2>Terms of use</h2>"
   + "<h3>Article 1 — Purpose</h3><p>These Terms govern the use of DONKO ADS, a listings directory published by Empire Donko.</p>"
-  + "<h3>Article 2 — Service description</h3><p>DONKO ADS lets merchants, craftspeople and businesses publish a publicly visible shop listing, under a limited free plan or a paid subscription via FedaPay.</p>"
+  + "<h3>Article 2 — Service description</h3><p>DONKO ADS lets merchants, craftspeople and businesses publish a publicly visible shop listing, under a limited free plan or a paid subscription via Kkiapay.</p>"
   + "<h3>Article 3 — Free listings and subscription</h3><p>Each device has 3 free listings valid for 30 days. Beyond that, a paid subscription (Monthly to Lifetime) unlocks unlimited listings for its duration. Each listing expires strictly at the end of its corresponding period.</p>"
   + "<h3>Article 4 — Boost</h3><p>An optional paid feature (boost), valid 31 days, places the shop at the top of the list.</p>"
-  + "<h3>Article 5 — Payment coverage area</h3><p>Publishing is reserved for users with a Mobile Money payment method supported by FedaPay.</p>"
+  + "<h3>Article 5 — Payment coverage area</h3><p>Publishing is reserved for users with a payment method (Mobile Money or bank card) supported by Kkiapay.</p>"
   + "<h3>Article 6 — User obligations</h3><p>The user agrees to publish accurate and lawful information, not to copy another user's content, not to impersonate anyone, and not to use any bot, script or automated tool to publish or scrape data from the site.</p>"
   + "<h3>Article 7 — Intellectual property</h3><p>The name, design and code of DONKO ADS are protected. Unauthorized reproduction is prohibited.</p>"
-  + "<h3>Article 8 — Limitation of liability</h3><p>DONKO ADS is provided \"as is\". Empire Donko is not responsible for user-published content, nor for malfunctions related to GitHub Pages, Google or FedaPay.</p>"
+  + "<h3>Article 8 — Limitation of liability</h3><p>DONKO ADS is provided \"as is\". Empire Donko is not responsible for user-published content, nor for malfunctions related to GitHub Pages, Google or Kkiapay.</p>"
   + "<h3>Article 9 — Changes</h3><p>These Terms may be changed at any time; the version shown in the application prevails.</p>"
   + "<h3>Article 10 — Governing law</h3><p>These Terms are governed by Beninese law and the common provisions of the OHADA area.</p>";
 
@@ -1007,12 +1068,16 @@ LEGAL.en.cgu = "<h2>Terms of use</h2>"
 let state = {
   lang: localStorage.getItem('donko_lang') || 'fr',
   theme: localStorage.getItem('donko_theme') || 'light',
-  listings: [],
+  annonces: [],
+  boutiquesBoostees: [],
+  editingBoutiqueId: null,
+  editingAnnonceId: null,
   selectedPlan: PLANS[0],
   displayCurrency: localStorage.getItem('donko_currency') || 'XOF',
   selectedCountry: '',
   selectedCity: '',
   selectedCategory: '',
+  selectedBoutiqueFilter: '',
   sortMode: 'recent',
   lastSubmit: 0
 };
@@ -1033,6 +1098,9 @@ function applyI18n(){
   renderCategorySelects();
   renderFormCountrySelect();
   renderFormPriceCurrency();
+  renderShopCurrencySelect();
+  renderBoutiqueDropdown();
+  renderShopLimitState();
   renderCurrencySelects();
   renderCatChips();
   renderPlans();
@@ -1064,14 +1132,15 @@ document.getElementById('themeToggle').addEventListener('click', ()=>{
 
 /* ================== CATEGORY SELECT ================== */
 function renderCategorySelects(){
-  const formSel = document.getElementById('fCategory');
+  const formSel = document.getElementById('sCategory');
   const optionsHtml = CATEGORIES.map(c => `<option value="${c.id}">${c[state.lang]}</option>`).join('');
-  formSel.innerHTML = optionsHtml;
+  if(formSel) formSel.innerHTML = optionsHtml;
 }
 
-/* ================== FORM: COUNTRY -> CITY -> PHONE CASCADE ================== */
+/* ================== SHOP FORM: COUNTRY -> CITY -> PHONE CASCADE ================== */
 function renderFormCountrySelect(){
-  const sel = document.getElementById('fCountry');
+  const sel = document.getElementById('sCountry');
+  if(!sel) return;
   sel.innerHTML = COUNTRIES.map(c => `<option value="${c.id}">${c[state.lang]}</option>`).join('');
   if(!sel.dataset.bound){
     sel.addEventListener('change', updateFormCityAndPhone);
@@ -1080,11 +1149,11 @@ function renderFormCountrySelect(){
   updateFormCityAndPhone();
 }
 function updateFormCityAndPhone(){
-  const countryId = document.getElementById('fCountry').value || COUNTRIES[0].id;
+  const countryId = document.getElementById('sCountry').value || COUNTRIES[0].id;
   const country = COUNTRIES.find(c=>c.id===countryId) || COUNTRIES[0];
-  const citySel = document.getElementById('fCity');
+  const citySel = document.getElementById('sCity');
   citySel.innerHTML = country.cities.map(c => `<option value="${c}">${c}</option>`).join('');
-  const contactInput = document.getElementById('fContact');
+  const contactInput = document.getElementById('sContact');
   contactInput.placeholder = country.example;
   const trimmed = contactInput.value.trim();
   if(!trimmed || COUNTRIES.some(c => trimmed === c.dial)){
@@ -1096,6 +1165,23 @@ function renderFormPriceCurrency(){
   const sel = document.getElementById('fPriceCurrency');
   if(!sel) return;
   sel.innerHTML = CURRENCIES.map(c => `<option value="${c.id}">${c.id}</option>`).join('');
+}
+function renderShopCurrencySelect(){
+  const sel = document.getElementById('sCurrency');
+  if(!sel) return;
+  sel.innerHTML = CURRENCIES.map(c => `<option value="${c.id}">${c.id} (${c.symbol})</option>`).join('');
+}
+
+/* ================== AD FORM: choose which boutique to publish in ================== */
+function renderBoutiqueDropdown(){
+  const sel = document.getElementById('fBoutique');
+  if(!sel) return;
+  const mine = getMyBoutiques();
+  if(mine.length === 0){
+    sel.innerHTML = `<option value="">${t('noShopYet')}</option>`;
+  } else {
+    sel.innerHTML = mine.map(b => `<option value="${b.id}">${escapeHtml(b.name)}</option>`).join('');
+  }
 }
 
 function renderCatChips(){
@@ -1112,6 +1198,7 @@ function renderCatChips(){
 }
 document.getElementById('searchInput').addEventListener('input', renderGallery);
 document.getElementById('sortSelect').addEventListener('change', (e)=>{ state.sortMode = e.target.value; renderGallery(); });
+
 
 /* ================== LOCATION MODAL (Pays -> Ville) ================== */
 document.getElementById('openLocationBtn').addEventListener('click', ()=>{
@@ -1254,7 +1341,7 @@ function renderAccessState(){
   }
 }
 
-/* ================== FEDAPAY PAYMENT ================== */
+/* ================== KKIAPAY PAYMENT ================== */
 let paymentContext = 'subscription';
 
 document.getElementById('payBtn').addEventListener('click', ()=>{
@@ -1263,94 +1350,166 @@ document.getElementById('payBtn').addEventListener('click', ()=>{
 });
 
 function launchPayment(amount, description){
-  if(typeof FedaPay === 'undefined'){
+  if(typeof openKkiapayWidget === 'undefined'){
     alert(t('payConnErr'));
     return;
   }
-  FedaPay.init('#payBtn', {
-    public_key: CONFIG.FEDAPAY_PUBLIC_KEY,
-    transaction: { amount: amount, description: description },
-    currency: { iso: 'XOF' },
-    onComplete: function(resp){
-      const FP = window['FedaPay'];
-      if(resp.reason === FP.DIALOG_DISMISSED) return;
-      if(resp.transaction && resp.transaction.status === 'approved'){
-        if(paymentContext === 'subscription'){
-          setAccess(state.selectedPlan, resp.transaction.id);
-          addHistory({ type:'subscription', label: state.selectedPlan.label[state.lang], price: state.selectedPlan.priceNew, expiry: getAccess().expiry });
-          renderAccessState();
-          renderProAccessState();
-          renderHistory();
-          renewMyListings();
-          alert(t('payConfirmed'));
-          showView('publish');
-        } else if(paymentContext === 'boost'){
-          finalizeBoost(resp.transaction.id);
-        }
-      } else {
-        alert(t('payNotConfirmed'));
-      }
-    }
-  }).open();
+  openKkiapayWidget({
+    amount: amount,
+    key: CONFIG.KIKIAPAY_PUBLIC_KEY,
+    sandbox: false,
+    position: 'center',
+    data: description
+  });
 }
 
-/* ================== MY SHOPS / BOOST (au niveau de la boutique) ================== */
-function getMyListings(){
-  try{ return JSON.parse(localStorage.getItem('donko_my_listings')||'[]'); }catch(e){ return []; }
+// Les écouteurs Kkiapay sont globaux : on les enregistre UNE SEULE FOIS (pas à
+// chaque paiement), et on s'appuie sur "paymentContext" pour savoir quelle
+// action vient d'être confirmée (abonnement ou boost).
+if(typeof addSuccessListener !== 'undefined'){
+  addSuccessListener(function(response){
+    const txnId = response && response.transactionId;
+    if(paymentContext === 'subscription'){
+      setAccess(state.selectedPlan, txnId);
+      addHistory({ type:'subscription', label: state.selectedPlan.label[state.lang], price: state.selectedPlan.priceNew, expiry: getAccess().expiry });
+      renderAccessState();
+      renderProAccessState();
+      renderHistory();
+      renewMyListings();
+      alert(t('payConfirmed'));
+      showView('publish');
+    } else if(paymentContext === 'boost'){
+      finalizeBoost(txnId);
+    }
+  });
+  addFailedListener(function(){
+    alert(t('payNotConfirmed'));
+  });
 }
-function addMyListing(id, name){
-  const list = getMyListings();
+
+/* ================== MES BOUTIQUES / MES ANNONCES (stockage local) ================== */
+function getMyBoutiques(){
+  try{ return JSON.parse(localStorage.getItem('donko_my_boutiques')||'[]'); }catch(e){ return []; }
+}
+function addMyBoutique(id, name){
+  const list = getMyBoutiques();
   list.unshift({ id, name, date: new Date().toISOString() });
-  localStorage.setItem('donko_my_listings', JSON.stringify(list));
+  localStorage.setItem('donko_my_boutiques', JSON.stringify(list));
 }
-function removeMyListing(id){
-  const list = getMyListings().filter(m=>m.id!==id);
-  localStorage.setItem('donko_my_listings', JSON.stringify(list));
+function removeMyBoutique(id){
+  localStorage.setItem('donko_my_boutiques', JSON.stringify(getMyBoutiques().filter(b=>b.id!==id)));
+  localStorage.setItem('donko_my_annonces', JSON.stringify(getMyAnnonces().filter(a=>a.boutiqueId!==id)));
 }
+function getMyAnnonces(){
+  try{ return JSON.parse(localStorage.getItem('donko_my_annonces')||'[]'); }catch(e){ return []; }
+}
+function addMyAnnonce(id, boutiqueId, label){
+  const list = getMyAnnonces();
+  list.unshift({ id, boutiqueId, label, date: new Date().toISOString() });
+  localStorage.setItem('donko_my_annonces', JSON.stringify(list));
+}
+function removeMyAnnonce(id){
+  localStorage.setItem('donko_my_annonces', JSON.stringify(getMyAnnonces().filter(a=>a.id!==id)));
+}
+
+function renderShopLimitState(){
+  const el = document.getElementById('shopLimitState');
+  if(!el) return;
+  const mine = getMyBoutiques();
+  if(!isAdmin() && mine.length >= CONFIG.MAX_SHOPS){
+    el.innerHTML = `<div class="locked-banner">${t('errMaxShops')}</div>`;
+    document.getElementById('shopFormCard').style.display = 'none';
+  } else {
+    el.innerHTML = `<p class="hint">${mine.length}/${CONFIG.MAX_SHOPS} ${state.lang==='fr'?'boutiques créées':'shops created'}</p>`;
+    document.getElementById('shopFormCard').style.display = 'block';
+  }
+}
+
 function renderMyListingsList(){
   const el = document.getElementById('myListingsList');
   if(!el) return;
-  const mine = getMyListings();
-  if(mine.length === 0){
-    el.innerHTML = `<p class="hint">${t('boostNoListing')}</p>`;
+  const boutiques = getMyBoutiques();
+  const annonces = getMyAnnonces();
+  if(boutiques.length === 0){
+    el.innerHTML = `<p class="hint">${t('noShopYet')}</p>`;
     return;
   }
-  el.innerHTML = `<p class="hint">${mine.length}/${CONFIG.MAX_LISTINGS_TOTAL} ${t('resultsCount')}</p>` + mine.map(m => `
-    <div class="my-shop-card">
-      <div><div class="name">${escapeHtml(m.name)}</div><div class="date">${new Date(m.date).toLocaleDateString(state.lang==='fr'?'fr-FR':'en-US')}</div></div>
-      <div style="display:flex;gap:6px;">
-        <button class="btn btn-brick" data-id="${m.id}" data-name="${escapeHtml(m.name)}">🚀 ${t('boostBtn')}</button>
-        <button class="btn btn-outline" data-del="${m.id}" title="${t('deleteBtn')}">🗑️</button>
+  el.innerHTML = boutiques.map(b => {
+    const mine = annonces.filter(a=>a.boutiqueId===b.id);
+    return `
+    <div class="my-shop-card" style="flex-direction:column;align-items:stretch;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><div class="name">🏪 ${escapeHtml(b.name)}</div><div class="date">${new Date(b.date).toLocaleDateString(state.lang==='fr'?'fr-FR':'en-US')} — ${mine.length}/${CONFIG.MAX_LISTINGS_PER_SHOP} ${t('resultsCount')}</div></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-outline" data-editshop="${b.id}">✏️ ${t('editBtn')}</button>
+          <button class="btn btn-brick" data-boost="${b.id}" data-name="${escapeHtml(b.name)}">🚀 ${t('boostBtn')}</button>
+          <button class="btn btn-outline" data-delshop="${b.id}" title="${t('deleteBtn')}">🗑️</button>
+        </div>
       </div>
-    </div>`).join('');
-  el.querySelectorAll('button[data-id]').forEach(b=>{
+      <div style="margin-top:10px;padding-left:10px;border-left:2px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        ${mine.length===0 ? `<p class="hint">${t('noAdYet')}</p>` : mine.map(a=>`
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <span style="font-size:12.5px;">📢 ${escapeHtml(a.label)}</span>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-outline" style="padding:6px 9px;font-size:11.5px;" data-editad="${a.id}">✏️</button>
+              <button class="btn btn-outline" style="padding:6px 9px;font-size:11.5px;" data-delad="${a.id}">🗑️</button>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  el.querySelectorAll('button[data-boost]').forEach(b=>{
     b.addEventListener('click', ()=>{
       paymentContext = 'boost';
-      window._boostTargetId = b.dataset.id;
+      window._boostTargetId = b.dataset.boost;
       window._boostTargetName = b.dataset.name;
       launchPayment(CONFIG.BOOST_PRICE, 'DONKO ADS - Boost');
     });
   });
-  el.querySelectorAll('button[data-del]').forEach(b=>{
+  el.querySelectorAll('button[data-delshop]').forEach(b=>{
+    b.addEventListener('click', async ()=>{
+      if(!confirm(t('confirmDeleteShop'))) return;
+      try{
+        const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'deleteBoutique', id: b.dataset.delshop }) });
+        const j = await res.json();
+        if(!j.success) throw new Error(j.error||'delete failed');
+        removeMyBoutique(b.dataset.delshop);
+        renderMyListingsList(); renderBoutiqueDropdown(); renderShopLimitState();
+        loadGallery();
+      }catch(e){ alert(t('connErr')); }
+    });
+  });
+  el.querySelectorAll('button[data-delad]').forEach(b=>{
     b.addEventListener('click', async ()=>{
       if(!confirm(t('confirmDelete'))) return;
       try{
-        await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'delete', id: b.dataset.del }) });
-        removeMyListing(b.dataset.del);
+        const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'deleteAnnonce', id: b.dataset.delad }) });
+        const j = await res.json();
+        if(!j.success) throw new Error(j.error||'delete failed');
+        removeMyAnnonce(b.dataset.delad);
         renderMyListingsList();
         loadGallery();
       }catch(e){ alert(t('connErr')); }
     });
+  });
+  el.querySelectorAll('button[data-editshop]').forEach(b=>{
+    b.addEventListener('click', ()=> startEditShop(b.dataset.editshop));
+  });
+  el.querySelectorAll('button[data-editad]').forEach(b=>{
+    b.addEventListener('click', ()=> startEditAnnonce(b.dataset.editad));
   });
 }
 
 async function finalizeBoost(txnId){
   const boostExpiration = new Date(Date.now() + CONFIG.BOOST_DAYS*86400000).toISOString();
   try{
-    await fetch(CONFIG.APPS_SCRIPT_URL, {
+    const res = await fetch(CONFIG.APPS_SCRIPT_URL, {
       method:'POST',
-      body: JSON.stringify({ action:'boost', id: window._boostTargetId, boostExpiration })
+      body: JSON.stringify({ action:'boostBoutique', id: window._boostTargetId, boostExpiration })
     });
+    const j = await res.json();
+    if(!j.success) throw new Error(j.error || 'boost failed');
     addHistory({ type:'boost', label: window._boostTargetName || '', price: CONFIG.BOOST_PRICE, expiry: boostExpiration });
     alert(t('boostDone'));
     renderHistory();
@@ -1363,20 +1522,22 @@ async function finalizeBoost(txnId){
 // Dès qu'un abonnement est (re)payé, toutes les annonces déjà publiées depuis cet
 // appareil (mêmes expirées) sont automatiquement réactivées avec le nouveau plan,
 // sans que le vendeur ait besoin de tout republier. Il garde la possibilité de
-// republier une annonce (via le formulaire) s'il veut en modifier le contenu.
+// republier/modifier une annonce (via « Modifier ») s'il veut en changer le contenu.
 async function renewMyListings(){
-  const mine = getMyListings();
+  const mine = getMyAnnonces();
   if(mine.length === 0) return;
   const access = getAccess();
   if(!access) return;
   try{
-    await fetch(CONFIG.APPS_SCRIPT_URL, {
+    const res = await fetch(CONFIG.APPS_SCRIPT_URL, {
       method:'POST',
       body: JSON.stringify({ action:'renew', ids: mine.map(m=>m.id), plan: access.plan, planWeight: access.weight, expiry: access.expiry })
     });
-    loadGallery();
+    const j = await res.json();
+    if(j.success) loadGallery();
   }catch(e){ /* la prochaine ouverture de l'app réessaiera silencieusement via loadGallery */ }
 }
+
 
 /* ================== HISTORY (abonnements + boosts) ================== */
 function getHistory(){
@@ -1451,16 +1612,95 @@ function compressImage(file, maxDim, targetChars){
 }
 
 /* ================== FORM: file inputs display ================== */
-document.getElementById('fLogo').addEventListener('change', (e)=>{
+document.getElementById('sLogo').addEventListener('change', (e)=>{
   const f = e.target.files[0];
-  document.getElementById('fLogoName').textContent = f ? f.name : t('noFile');
+  document.getElementById('sLogoName').textContent = f ? f.name : t('noFile');
 });
 document.getElementById('fImages').addEventListener('change', (e)=>{
   const files = e.target.files;
   document.getElementById('fImagesName').textContent = files.length ? files.length + ' fichier(s)' : t('noFile');
 });
 
-/* ================== FORM SUBMIT ================== */
+/* ================== SHOP FORM SUBMIT (créer / modifier une boutique) ================== */
+document.getElementById('submitShop').addEventListener('click', async ()=>{
+  const btn = document.getElementById('submitShop');
+  const msg = document.getElementById('shopFormMsg');
+  msg.className = 'form-msg';
+  if(document.getElementById('sWebsite').value){ return; }
+
+  const name = document.getElementById('sName').value.trim();
+  const category = document.getElementById('sCategory').value;
+  const country = document.getElementById('sCountry').value;
+  const city = document.getElementById('sCity').value;
+  const address = document.getElementById('sAddress').value.trim();
+  const contact = document.getElementById('sContact').value.trim();
+  const desc = document.getElementById('sDesc').value.trim();
+  const currency = document.getElementById('sCurrency').value;
+  const logoFile = document.getElementById('sLogo').files[0];
+
+  if(!name || !category){ msg.textContent = t('errFields'); msg.className='form-msg err'; return; }
+  if(logoFile && logoFile.size > 2*1024*1024){ msg.textContent = t('errImgSize'); msg.className='form-msg err'; return; }
+
+  const admin = isAdmin();
+  const editing = state.editingBoutiqueId;
+  if(!editing && !admin && getMyBoutiques().length >= CONFIG.MAX_SHOPS){
+    msg.textContent = t('errMaxShops'); msg.className='form-msg err'; return;
+  }
+
+  btn.disabled = true; btn.textContent = t('publishing');
+  try{
+    const logoData = logoFile ? await compressImage(logoFile, 300, 30000) : '';
+    const payload = editing
+      ? { action:'updateBoutique', id: editing, name, category, country, city, address, contact, description: desc, currency, logo: logoData || undefined }
+      : { action:'addBoutique', name, category, country, city, address, contact, description: desc, currency, logo: logoData };
+
+    const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
+    const j = await res.json();
+    if(!j.success) throw new Error(j.error || 'shop save failed');
+
+    if(editing){
+      const list = getMyBoutiques();
+      const item = list.find(b=>b.id===editing);
+      if(item) item.name = name;
+      localStorage.setItem('donko_my_boutiques', JSON.stringify(list));
+      state.editingBoutiqueId = null;
+      btn.textContent = t('btnCreateShop');
+    } else {
+      addMyBoutique(j.id, name);
+    }
+
+    msg.textContent = t('okShopSaved'); msg.className='form-msg ok';
+    ['sName','sAddress','sDesc'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('sLogo').value=''; document.getElementById('sLogoName').textContent = t('noFile');
+
+    renderShopLimitState(); renderBoutiqueDropdown(); renderMyListingsList(); loadGallery();
+  }catch(err){
+    msg.textContent = t('connErr'); msg.className='form-msg err';
+  }finally{
+    btn.disabled = false;
+    if(!state.editingBoutiqueId) btn.textContent = t('btnCreateShop');
+  }
+});
+
+function startEditShop(id){
+  const b = (state.allBoutiques||[]).find(x=>x.ID===id);
+  if(!b){ alert(t('connErr')); return; }
+  state.editingBoutiqueId = id;
+  showView('publish');
+  document.getElementById('sName').value = b.Nom || '';
+  document.getElementById('sCategory').value = b.Categorie || '';
+  document.getElementById('sCountry').value = b.Pays || COUNTRIES[0].id;
+  updateFormCityAndPhone();
+  document.getElementById('sCity').value = b.Ville || '';
+  document.getElementById('sAddress').value = b.Adresse || '';
+  document.getElementById('sContact').value = b.Contact || '';
+  document.getElementById('sDesc').value = b.Description || '';
+  document.getElementById('sCurrency').value = b.Devise || 'XOF';
+  document.getElementById('submitShop').textContent = t('btnSaveEdit');
+  document.getElementById('createShop').scrollIntoView({behavior:'smooth'});
+}
+
+/* ================== AD FORM SUBMIT (publier / modifier une annonce) ================== */
 document.getElementById('submitAd').addEventListener('click', async ()=>{
   const btn = document.getElementById('submitAd');
   const msg = document.getElementById('formMsg');
@@ -1473,104 +1713,117 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
     msg.textContent = t('errRate'); msg.className = 'form-msg err'; return;
   }
 
-  const name = document.getElementById('fName').value.trim();
-  const category = document.getElementById('fCategory').value;
-  const country = document.getElementById('fCountry').value;
-  const city = document.getElementById('fCity').value;
-  const address = document.getElementById('fAddress').value.trim();
-  const contact = document.getElementById('fContact').value.trim();
+  const boutiqueId = document.getElementById('fBoutique').value;
   const link = document.getElementById('fLink').value.trim();
   const desc = document.getElementById('fDesc').value.trim();
   const video = document.getElementById('fVideo').value.trim();
   const priceRaw = document.getElementById('fPrice').value.trim();
   const priceCurrency = document.getElementById('fPriceCurrency').value;
-  const logoFile = document.getElementById('fLogo').files[0];
+  const priceMode = document.getElementById('fPriceMode').value;
+  const adContact = document.getElementById('fAdContact').value.trim();
   const imageFiles = Array.from(document.getElementById('fImages').files);
 
   const admin = isAdmin();
   const access = getAccess();
+  const editing = state.editingAnnonceId;
   const freeLeft = CONFIG.FREE_POSTS_LIMIT - getFreePostsUsed();
 
-  if(!admin && !access && freeLeft <= 0){ msg.textContent = t('errExpired'); msg.className='form-msg err'; return; }
-  if(!name || !category || !desc){ msg.textContent = t('errFields'); msg.className = 'form-msg err'; return; }
+  if(!editing && !boutiqueId){ msg.textContent = t('errChooseShop'); msg.className='form-msg err'; return; }
+  if(!editing && !admin && !access && freeLeft <= 0){ msg.textContent = t('errExpired'); msg.className='form-msg err'; return; }
+  if(!desc){ msg.textContent = t('errFields'); msg.className = 'form-msg err'; return; }
   if(link && !/^https?:\/\//i.test(link)){ msg.textContent = t('errLink'); msg.className = 'form-msg err'; return; }
   if(imageFiles.length > 4){ msg.textContent = t('errImgCount'); msg.className = 'form-msg err'; return; }
   for(const f of imageFiles){ if(f.size > 2*1024*1024){ msg.textContent = t('errImgSize'); msg.className = 'form-msg err'; return; } }
-  if(logoFile && logoFile.size > 2*1024*1024){ msg.textContent = t('errImgSize'); msg.className = 'form-msg err'; return; }
 
-  // Limites boutiques / annonces (contournées pour l'accès admin illimité)
-  if(!admin){
-    const mine = getMyListings();
-    if(mine.length >= CONFIG.MAX_LISTINGS_TOTAL){
-      msg.textContent = t('errMaxTotal'); msg.className='form-msg err'; return;
-    }
-    const distinctShops = [...new Set(mine.map(m=>m.name))];
-    const isNewShop = !distinctShops.includes(name);
-    if(isNewShop && distinctShops.length >= CONFIG.MAX_SHOPS){
-      msg.textContent = t('errMaxShops'); msg.className='form-msg err'; return;
-    }
-    const countForThisShop = mine.filter(m=>m.name===name).length;
-    if(countForThisShop >= CONFIG.MAX_LISTINGS_PER_SHOP){
-      msg.textContent = t('errMaxPerShop'); msg.className='form-msg err'; return;
-    }
+  if(!editing && !admin){
+    const mineAll = getMyAnnonces();
+    if(mineAll.length >= CONFIG.MAX_LISTINGS_TOTAL){ msg.textContent = t('errMaxTotal'); msg.className='form-msg err'; return; }
+    const mineForShop = mineAll.filter(a=>a.boutiqueId===boutiqueId);
+    if(mineForShop.length >= CONFIG.MAX_LISTINGS_PER_SHOP){ msg.textContent = t('errMaxPerShop'); msg.className='form-msg err'; return; }
   }
 
   btn.disabled = true;
   btn.textContent = t('publishing');
 
   try{
-    const logoData = logoFile ? await compressImage(logoFile, 300, 30000) : '';
     const imagesData = [];
     for(const f of imageFiles.slice(0,4)){
       imagesData.push(await compressImage(f, 700, 33000));
     }
-
-    let plan, planWeight, expiry, txnId = '';
-    if(admin){
-      plan = 'admin'; planWeight = 99;
-      const customDays = parseInt((document.getElementById('adminCustomDaysInput')||{}).value || '365', 10);
-      expiry = new Date(Date.now() + customDays*86400000).toISOString();
-    } else if(access){
-      plan = access.plan; planWeight = access.weight; expiry = access.expiry; txnId = access.txnId || '';
-    } else {
-      plan = 'gratuit'; planWeight = 0;
-      expiry = new Date(Date.now() + CONFIG.FREE_POST_VALIDITY_DAYS*86400000).toISOString();
-    }
-
     const priceXOF = priceRaw ? convertToXOF(parseFloat(priceRaw), priceCurrency) : '';
 
-    const payload = {
-      action:'add', name, category, country, city, description: desc, price: priceXOF, address, contact, link,
-      logo: logoData, image1: imagesData[0]||'', image2: imagesData[1]||'',
-      image3: imagesData[2]||'', image4: imagesData[3]||'', videoUrl: video,
-      plan, planWeight, expiry, txnId
-    };
+    let payload;
+    if(editing){
+      payload = { action:'updateAnnonce', id: editing, link, description: desc, price: priceXOF, priceMode, contact: adContact, videoUrl: video };
+      if(imagesData[0]) payload.image1 = imagesData[0];
+      if(imagesData[1]) payload.image2 = imagesData[1];
+      if(imagesData[2]) payload.image3 = imagesData[2];
+      if(imagesData[3]) payload.image4 = imagesData[3];
+    } else {
+      let plan, planWeight, expiry, txnId = '';
+      if(admin){
+        plan = 'admin'; planWeight = 99;
+        const customDays = parseInt((document.getElementById('adminCustomDaysInput')||{}).value || '365', 10);
+        expiry = new Date(Date.now() + customDays*86400000).toISOString();
+      } else if(access){
+        plan = access.plan; planWeight = access.weight; expiry = access.expiry; txnId = access.txnId || '';
+      } else {
+        plan = 'gratuit'; planWeight = 0;
+        expiry = new Date(Date.now() + CONFIG.FREE_POST_VALIDITY_DAYS*86400000).toISOString();
+      }
+      payload = {
+        action:'addAnnonce', boutiqueId, link, description: desc, price: priceXOF, priceMode, contact: adContact,
+        image1: imagesData[0]||'', image2: imagesData[1]||'', image3: imagesData[2]||'', image4: imagesData[3]||'',
+        videoUrl: video, plan, planWeight, expiry, txnId
+      };
+    }
 
     const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
-    let newId = null;
-    try{ const j = await res.json(); newId = j.id; }catch(e){}
+    const j = await res.json();
+    if(!j.success) throw new Error(j.error || 'add failed');
 
-    if(!admin && !access) incFreePostsUsed();
-    if(newId) addMyListing(newId, name);
+    if(editing){
+      state.editingAnnonceId = null;
+      btn.textContent = t('btnAdd');
+    } else {
+      if(!admin && !access) incFreePostsUsed();
+      const shopName = (getMyBoutiques().find(b=>b.id===boutiqueId)||{}).name || '';
+      addMyAnnonce(j.id, boutiqueId, desc.slice(0,40));
+    }
     state.lastSubmit = now;
 
     msg.textContent = t('okAdded');
     msg.className = 'form-msg ok';
-    ['fName','fAddress','fContact','fLink','fDesc','fVideo'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('fLogo').value=''; document.getElementById('fImages').value='';
-    document.getElementById('fLogoName').textContent = t('noFile');
+    ['fLink','fDesc','fVideo','fPrice','fAdContact'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('fImages').value='';
     document.getElementById('fImagesName').textContent = t('noFile');
 
-    showShareAfter(name, link);
+    showShareAfter(desc.slice(0,40), link);
     renderAccessState(); renderProAccessState(); renderMyListingsList(); loadGallery();
   }catch(err){
     msg.textContent = t('connErr');
     msg.className = 'form-msg err';
   }finally{
     btn.disabled = false;
-    btn.textContent = t('btnAdd');
+    if(!state.editingAnnonceId) btn.textContent = t('btnAdd');
   }
 });
+
+function startEditAnnonce(id){
+  const a = state.annonces.find(x=>x.ID===id);
+  if(!a){ alert(t('connErr')); return; }
+  state.editingAnnonceId = id;
+  showView('publish');
+  document.getElementById('fLink').value = a.Lien || '';
+  document.getElementById('fDesc').value = a.Description || '';
+  document.getElementById('fPrice').value = a.Prix ? a.Prix : '';
+  document.getElementById('fPriceCurrency').value = 'XOF';
+  document.getElementById('fPriceMode').value = a.PrixMode || 'nonbarre';
+  document.getElementById('fAdContact').value = a.Contact || '';
+  document.getElementById('fVideo').value = a.VideoURL || '';
+  document.getElementById('submitAd').textContent = t('btnSaveEdit');
+  document.getElementById('postAd').scrollIntoView({behavior:'smooth'});
+}
 
 function showShareAfter(name, link){
   const box = document.getElementById('shareAfter');
@@ -1594,34 +1847,32 @@ function nativeShare(title, text, url){
 /* ================== GALLERY ================== */
 function filteredSortedListings(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  let items = state.listings.filter(item=>{
+  let items = state.annonces.filter(item=>{
     if(state.selectedCategory && item.Categorie !== state.selectedCategory) return false;
     if(state.selectedCountry && item.Pays !== state.selectedCountry) return false;
     if(state.selectedCity && item.Ville !== state.selectedCity) return false;
+    if(state.selectedBoutiqueFilter && item.BoutiqueID !== state.selectedBoutiqueFilter) return false;
     if(q){
-      const hay = (item.Nom+' '+item.Description+' '+catLabel(item.Categorie)).toLowerCase();
+      const hay = (item.BoutiqueNom+' '+item.Description+' '+catLabel(item.Categorie)).toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
   });
   items.sort((a,b)=>{
-    const boostA = a.Boost && a.BoostExpiration && new Date(a.BoostExpiration) > new Date();
-    const boostB = b.Boost && b.BoostExpiration && new Date(b.BoostExpiration) > new Date();
-    if(boostA !== boostB) return boostA ? -1 : 1;
-
-    if(state.sortMode === 'az') return String(a.Nom).localeCompare(String(b.Nom));
-    if(state.sortMode === 'za') return String(b.Nom).localeCompare(String(a.Nom));
-    if(state.sortMode === 'plan'){
-      const wA = Number(a.PlanWeight)||0, wB = Number(b.PlanWeight)||0;
-      if(wA !== wB) return wB - wA;
-      return new Date(b.Date) - new Date(a.Date);
-    }
-    // recent (default) still respects plan weight as a tie-breaker for fairness
-    const wA2 = Number(a.PlanWeight)||0, wB2 = Number(b.PlanWeight)||0;
-    if(wA2 !== wB2) return wB2 - wA2;
+    if(state.sortMode === 'az') return String(a.BoutiqueNom).localeCompare(String(b.BoutiqueNom));
+    if(state.sortMode === 'za') return String(b.BoutiqueNom).localeCompare(String(a.BoutiqueNom));
+    const wA = Number(a.PlanWeight)||0, wB = Number(b.PlanWeight)||0;
+    if(wA !== wB) return wB - wA;
     return new Date(b.Date) - new Date(a.Date);
   });
   return items;
+}
+
+function priceHtml(item){
+  if(!item.Prix || item.PrixMode === 'masque') return '';
+  const p = displayPrice(Number(item.Prix));
+  if(item.PrixMode === 'barre') return `<div class="price-tag mono"><span style="text-decoration:line-through;opacity:.6;">${p}</span></div>`;
+  return `<div class="price-tag mono">${p}</div>`;
 }
 
 function renderGallery(){
@@ -1630,10 +1881,17 @@ function renderGallery(){
   const featuredEl = document.getElementById('featuredRow');
   document.getElementById('countBadge').textContent = items.length + ' ' + t('resultsCount');
 
-  const boosted = items.filter(i => i.Boost && i.BoostExpiration && new Date(i.BoostExpiration) > new Date());
+  const boosted = state.boutiquesBoostees || [];
   featuredEl.innerHTML = boosted.length ? `<div class="featured-row">${boosted.map(b=>`
-    <div class="featured-card"><span class="flabel">⭐ ${t('featured')}</span><h3>${escapeHtml(b.Nom)}</h3><p>${escapeHtml(catLabel(b.Categorie))}</p></div>
+    <div class="featured-card" data-boutique="${b.ID}"><span class="flabel">⭐ ${t('featured')}</span><h3>${escapeHtml(b.Nom)}</h3><p>${escapeHtml(catLabel(b.Categorie))}</p></div>
   `).join('')}</div>` : '';
+  featuredEl.querySelectorAll('[data-boutique]').forEach(card=>{
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', ()=>{
+      state.selectedBoutiqueFilter = state.selectedBoutiqueFilter === card.dataset.boutique ? '' : card.dataset.boutique;
+      renderGallery();
+    });
+  });
 
   if(items.length === 0){
     el.innerHTML = `<p class="empty-state">${t('noResults')}</p>`;
@@ -1641,7 +1899,7 @@ function renderGallery(){
   }
 
   el.innerHTML = '<div class="gallery-grid">' + items.map(item=>{
-    const img = item.Image1 || item.Logo || '';
+    const img = item.Image1 || item.BoutiqueLogo || '';
     const isTop = (Number(item.PlanWeight)||0) >= 5;
     const isPro = (Number(item.PlanWeight)||0) >= 1;
     return `
@@ -1650,15 +1908,16 @@ function renderGallery(){
           ${isTop ? `<span class="badge-top">🔥 TOP</span>` : ''}
           ${isPro ? `<span class="badge-pro">⭐ PRO</span>` : ''}
         </div>
-        ${img ? `<img src="${img}" alt="${escapeHtml(item.Nom)}" loading="lazy">` : ''}
+        ${img ? `<img src="${img}" alt="${escapeHtml(item.BoutiqueNom)}" loading="lazy">` : ''}
         <div class="body">
-          <div class="cat">${escapeHtml(catLabel(item.Categorie))}${item.Ville ? ' · '+escapeHtml(item.Ville) : ''}${item.Pays ? ' ('+escapeHtml(countryLabel(item.Pays))+')' : ''}</div>
-          <h3>${escapeHtml(item.Nom)}</h3>
-          ${item.Prix ? `<div class="price-tag mono">${displayPrice(Number(item.Prix))}</div>` : ''}
+          <div class="cat">${escapeHtml(catLabel(item.Categorie))}${item.Ville ? ' · '+escapeHtml(item.Ville) : ''}</div>
+          <h3>${escapeHtml(item.BoutiqueNom)}</h3>
+          ${priceHtml(item)}
           <p>${escapeHtml(item.Description)}</p>
           <div class="row-actions">
             ${item.Lien ? `<a class="visit" href="${item.Lien}" target="_blank" rel="noopener">${t('visit')}</a>` : ''}
-            <button class="share-btn" data-name="${escapeHtml(item.Nom)}" data-link="${escapeHtml(item.Lien||'')}">${t('share')}</button>
+            ${item.Contact ? `<a class="visit" style="background:var(--jade);" href="https://wa.me/${item.Contact.replace(/[^0-9]/g,'')}" target="_blank" rel="noopener">${t('contactBtn')}</a>` : ''}
+            <button class="share-btn" data-name="${escapeHtml(item.BoutiqueNom)}" data-link="${escapeHtml(item.Lien||'')}">${t('share')}</button>
           </div>
         </div>
       </div>`;
@@ -1673,14 +1932,18 @@ async function loadGallery(){
   try{
     const res = await fetch(CONFIG.APPS_SCRIPT_URL);
     const data = await res.json();
-    if(data.success){
-      state.listings = data.listings;
-      localStorage.setItem('donko_cache', JSON.stringify(data.listings));
-      renderGallery();
-    }
+    if(!data.success) throw new Error(data.error || 'load failed');
+    state.annonces = data.annonces || [];
+    state.allBoutiques = data.boutiques || [];
+    state.boutiquesBoostees = data.boutiquesBoostees || [];
+    localStorage.setItem('donko_cache', JSON.stringify({ annonces: state.annonces, boutiquesBoostees: state.boutiquesBoostees }));
+    renderGallery();
+    renderAdminPanel();
   }catch(err){
     const cached = localStorage.getItem('donko_cache');
-    state.listings = cached ? JSON.parse(cached) : [];
+    const parsed = cached ? JSON.parse(cached) : { annonces: [], boutiquesBoostees: [] };
+    state.annonces = parsed.annonces || [];
+    state.boutiquesBoostees = parsed.boutiquesBoostees || [];
     renderGallery();
     if(cached){
       document.getElementById('featuredRow').insertAdjacentHTML('beforebegin', `<span class="offline-note">${t('offlineNote')}</span>`);
@@ -1723,7 +1986,7 @@ function renderAdminPanel(){
     <p class="hint">${t('adminInfo')}</p>
     <h3 style="margin-top:18px;">${t('adminGrantTitle')}</h3>
     <label>${t('adminGrantSearch')}</label>
-    <select id="adminGrantSelect"><option value="">${t('adminGrantChoose')}</option>${state.listings.map(l=>`<option value="${l.ID}">${escapeHtml(l.Nom)} — ${escapeHtml(catLabel(l.Categorie))}${l.Ville?' ('+escapeHtml(l.Ville)+')':''}</option>`).join('')}</select>
+    <select id="adminGrantSelect"><option value="">${t('adminGrantChoose')}</option>${state.annonces.map(l=>`<option value="${l.ID}">${escapeHtml(l.BoutiqueNom)} — ${escapeHtml(catLabel(l.Categorie))}${l.Ville?' ('+escapeHtml(l.Ville)+')':''}</option>`).join('')}</select>
     <label>${t('adminGrantDays')}</label>
     <input type="text" id="adminGrantDaysInput" value="365" class="mono">
     <button class="btn btn-brick" id="adminGrantBtn" style="width:100%;margin-top:10px;">${t('adminGrantApply')}</button>

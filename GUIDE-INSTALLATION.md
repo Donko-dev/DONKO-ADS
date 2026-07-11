@@ -1,6 +1,6 @@
 # DONKO ADS — Guide d'installation
 
-Tous les fichiers sont à plat (aucun dossier) : vous pouvez tout téléverser directement depuis votre téléphone sur GitHub. Un seul service à configurer (Google Sheets + Apps Script). Votre clé FedaPay est déjà intégrée dans le code.
+Tous les fichiers sont à plat (aucun dossier) : vous pouvez tout téléverser directement depuis votre téléphone sur GitHub. Un seul service à configurer (Google Sheets + Apps Script). Votre clé Kkiapay est déjà intégrée dans le code.
 
 ## 1. Le Google Sheet (votre base de données)
 
@@ -28,7 +28,7 @@ Ouvrez `index.html`, cherchez `CONFIG` tout en haut du `<script>` :
 
 ```js
 const CONFIG = {
-  FEDAPAY_PUBLIC_KEY: 'pk_live_9iYiCnrfVLTqtOQ6-aDRynRV',  // déjà rempli
+  KIKIAPAY_PUBLIC_KEY: '5a2223a51cff4ee0029821e143a207f473f6f7f4',  // déjà rempli
   APPS_SCRIPT_URL: 'VOTRE_URL_APPS_SCRIPT_/exec',           // ← à remplacer
   ADMIN_PASSCODE_HASH: '081c544d...72cc',                   // ← à remplacer (voir plus bas)
   ...
@@ -76,7 +76,7 @@ Remplacez simplement ces deux textes (français et anglais) chaque fois que vous
 - **index.html** — l'application complète, organisée en 3 vues (barre du bas) :
   - **Accueil** : ruban défilant, recherche, devise d'affichage (FCFA/EUR/USD/GBP), filtre catégorie, localisation (Pays → Ville en cascade, zone UEMOA), galerie 2 colonnes triée par mise en avant (Boost) puis par plan, prix affiché dans la devise choisie par le visiteur.
   - **Publier** (bouton + central) : nom, catégorie, Pays → Ville, adresse, téléphone pré-rempli selon le pays, prix + devise, logo, jusqu'à 4 images, vidéo. Limites : 3 boutiques (noms) maximum par appareil, 100 publications par boutique, 300 au total.
-  - **Pro** : abonnement en cours + historique, les 8 plans (-15 %, prix barré + réduit, convertibles dans la devise choisie — le paiement réel reste toujours en FCFA via FedaPay), **Mes boutiques** avec boutons Booster et Supprimer sur chacune, sauvegarde/restauration, code d'accès pro (admin).
+  - **Pro** : abonnement en cours + historique, les 8 plans (-15 %, prix barré + réduit, convertibles dans la devise choisie — le paiement réel reste toujours en FCFA via Kkiapay (Mobile Money ou carte bancaire)), **Mes boutiques** avec boutons Booster et Supprimer sur chacune, sauvegarde/restauration, code d'accès pro (admin).
   - Boutons flottants WhatsApp/Email (vraies icônes SVG, clignotantes) en bas à droite partout.
   - Bouton d'installation qui clignote/vibre tant que l'app n'est pas installée, disparaît automatiquement une fois installée (détection du mode standalone + événement `appinstalled`), et réapparaît si l'utilisateur désinstalle l'app ou revient dans le navigateur.
   - Texte d'accroche animé façon "machine à écrire" (boucle continue, cycle complet en 1 minute).
@@ -114,7 +114,7 @@ La stratégie qui fonctionne avec cette architecture, et que je vous recommande 
 
 ## Points d'honnêteté technique (ajustements par rapport aux demandes initiales)
 
-- **Blocage géographique par pays** : non implémenté par nationalité (un pays comme le Japon n'a rien de "dangereux") — la restriction réelle passe par FedaPay, qui ne prend en charge que certains pays pour le paiement. La consultation reste ouverte à tous.
+- **Blocage géographique par pays** : non implémenté par nationalité (un pays comme le Japon n'a rien de "dangereux") — la restriction réelle passe par Kkiapay, qui ne prend en charge que le Bénin, le Togo, la Côte d'Ivoire et le Sénégal pour le paiement. La consultation reste ouverte à tous.
 - **Vidéo compressée automatiquement** : passe par un lien YouTube/Vimeo (déjà compressé par ces plateformes) plutôt qu'un fichier téléversé.
 - **Envoi WhatsApp/Email "sans quitter l'app"** : le message est pré-rempli, prêt à envoyer en un tap — un vrai envoi silencieux nécessiterait un service payant tiers.
 - **3 boutiques / 100 par boutique** : comme l'app n'a pas de compte utilisateur ni de vraie hiérarchie boutique→produits, une "boutique" correspond au nom saisi dans le champ "Nom de l'entreprise" (plusieurs annonces partageant exactement le même nom comptent comme la même boutique).
