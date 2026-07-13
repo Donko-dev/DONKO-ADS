@@ -554,6 +554,7 @@
           <h2 data-i18n="myShopsTitle">Mes boutiques</h2>
           <p data-i18n="myShopsHint">Gérez vos boutiques et les annonces publiées dans chacune : modifier, supprimer, partager, booster.</p>
         </div>
+        <div id="pendingQueueState"></div>
         <div id="myListingsList"><p class="hint" data-i18n="noShopYet">Vous n'avez pas encore créé de boutique.</p></div>
       </section>
 
@@ -966,6 +967,8 @@ I18N.fr = {
   okAdded:"Votre annonce a été publiée ✅ Partagez-la :",
   publishing:"Publication en cours…",
   connErr:"Une erreur est survenue. Vérifiez votre connexion et réessayez.",
+  queuedOffline:"📤 Pas de connexion pour le moment : votre publication est enregistrée et sera envoyée automatiquement dès que vous serez de nouveau en ligne.",
+  pendingQueueLabel:"publication(s) en attente d'envoi (hors connexion)",
   payConnErr:"Connexion internet requise pour payer. Vérifiez votre connexion et réessayez.",
   payConfirmed:"Paiement confirmé ! Vous pouvez maintenant publier votre boutique.",
   payNotConfirmed:"Le paiement n'a pas été confirmé. Réessayez ou contactez votre opérateur Mobile Money.",
@@ -1077,6 +1080,8 @@ I18N.en = {
   okAdded:"Your listing has been published ✅ Share it:",
   publishing:"Publishing…",
   connErr:"An error occurred. Check your connection and try again.",
+  queuedOffline:"📤 No connection right now: your listing is saved and will be sent automatically once you're back online.",
+  pendingQueueLabel:"listing(s) waiting to be sent (offline)",
   payConnErr:"Internet connection required to pay. Check your connection and try again.",
   payConfirmed:"Payment confirmed! You can now publish your shop.",
   payNotConfirmed:"Payment was not confirmed. Try again or contact your Mobile Money operator.",
@@ -1731,6 +1736,71 @@ function compressImage(file, maxDim, targetChars){
   });
 }
 
+/* ================== RÉSEAU + FILE D'ATTENTE HORS CONNEXION ==================
+   postToBackend() distingue deux cas très différents :
+   - offline:true  → le réseau lui-même a échoué (fetch n'a pas pu partir).
+     C'est le seul cas où on met la publication de côté pour un envoi automatique
+     plus tard, dès que la connexion revient.
+   - error:"..."   → le serveur a répondu, mais a refusé la demande (donnée
+     manquante, boutique introuvable, etc.). Là, remettre en file ne servirait
+     à rien : la même erreur se reproduirait. On l'affiche telle quelle.
+================================================================================ */
+async function postToBackend(payload){
+  let res;
+  try{
+    res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
+  }catch(networkErr){
+    return { ok:false, offline:true };
+  }
+  let j;
+  try{
+    j = await res.json();
+  }catch(parseErr){
+    return { ok:false, offline:false, error:'invalid_response' };
+  }
+  if(!j.success) return { ok:false, offline:false, error: j.error || 'unknown' };
+  return { ok:true, data:j };
+}
+
+function getPendingQueue(){
+  try{ return JSON.parse(localStorage.getItem('donko_pending_submissions')||'[]'); }catch(e){ return []; }
+}
+function queueSubmission(payload){
+  const q = getPendingQueue();
+  q.push({ payload, queuedAt: new Date().toISOString() });
+  localStorage.setItem('donko_pending_submissions', JSON.stringify(q));
+  renderPendingQueueState();
+}
+function renderPendingQueueState(){
+  const el = document.getElementById('pendingQueueState');
+  if(!el) return;
+  const n = getPendingQueue().length;
+  el.innerHTML = n>0 ? `<p class="hint">📤 ${n} ${t('pendingQueueLabel')}</p>` : '';
+}
+async function flushPendingQueue(){
+  const q = getPendingQueue();
+  if(!q.length) return;
+  const remaining = [];
+  let sentAny = false;
+  for(const item of q){
+    const result = await postToBackend(item.payload);
+    if(result.ok){
+      sentAny = true;
+      if(item.payload.action === 'addBoutique') addMyBoutique(result.data.id, item.payload.name);
+      if(item.payload.action === 'addAnnonce') addMyAnnonce(result.data.id, item.payload.boutiqueId, (item.payload.description||'').slice(0,40));
+    } else if(result.offline){
+      remaining.push(item); // toujours hors connexion : on la garde pour la prochaine tentative
+    }
+    // en cas de vraie erreur serveur sur une donnée déjà en file, on l'abandonne
+    // silencieusement plutôt que de bloquer indéfiniment la file avec une donnée invalide.
+  }
+  localStorage.setItem('donko_pending_submissions', JSON.stringify(remaining));
+  renderPendingQueueState();
+  if(sentAny){ renderMyListingsList(); loadGallery(); }
+}
+window.addEventListener('online', flushPendingQueue);
+
+
 /* ================== FORM: file inputs display ================== */
 document.getElementById('sLogo').addEventListener('change', (e)=>{
   const f = e.target.files[0];
@@ -1774,9 +1844,18 @@ document.getElementById('submitShop').addEventListener('click', async ()=>{
       ? { action:'updateBoutique', id: editing, name, category, country, city, address, contact, description: desc, currency, logo: logoData || undefined }
       : { action:'addBoutique', name, category, country, city, address, contact, description: desc, currency, logo: logoData };
 
-    const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
-    const j = await res.json();
-    if(!j.success) throw new Error(j.error || 'shop save failed');
+    const result = await postToBackend(payload);
+
+    if(!result.ok && result.offline && !editing){
+      // Pas de connexion : on garde la publication de côté, envoi automatique dès le retour du réseau.
+      queueSubmission(payload);
+      msg.textContent = t('queuedOffline'); msg.className='form-msg ok';
+      ['sName','sAddress','sDesc'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('sLogo').value=''; document.getElementById('sLogoName').textContent = t('noFile');
+      return;
+    }
+    if(!result.ok) throw new Error(result.error || 'shop save failed');
+    const j = result.data;
 
     if(editing){
       const list = getMyBoutiques();
@@ -1898,9 +1977,19 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
       };
     }
 
-    const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
-    const j = await res.json();
-    if(!j.success) throw new Error(j.error || 'add failed');
+    const result = await postToBackend(payload);
+
+    if(!result.ok && result.offline && !editing){
+      queueSubmission(payload);
+      state.lastSubmit = now;
+      msg.textContent = t('queuedOffline'); msg.className='form-msg ok';
+      ['fLink','fDesc','fVideo','fPrice','fAdContact'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('fImages').value='';
+      document.getElementById('fImagesName').textContent = t('noFile');
+      return;
+    }
+    if(!result.ok) throw new Error(result.error || 'add failed');
+    const j = result.data;
 
     if(editing){
       state.editingAnnonceId = null;
@@ -2203,7 +2292,7 @@ function showView(name){
   if(navBtn) navBtn.classList.add('active');
   document.querySelector('.paybar').style.display = (name==='pro') ? 'flex' : 'none';
   window.scrollTo({top:0, behavior:'smooth'});
-  if(name==='pro'){ renderProAccessState(); renderMyListingsList(); renderHistory(); }
+  if(name==='pro'){ renderProAccessState(); renderMyListingsList(); renderHistory(); renderPendingQueueState(); }
 }
 
 /* ================== BOTTOM NAV ================== */
@@ -2341,6 +2430,7 @@ applyTheme();
 applyI18n();
 showView('home');
 loadGallery();
+flushPendingQueue();
 
 })();
 </script>

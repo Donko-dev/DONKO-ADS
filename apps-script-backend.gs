@@ -46,7 +46,10 @@ const HEADERS_BOUTIQUES = ['ID','Date','Nom','Categorie','Pays','Ville','Adresse
 const HEADERS_ANNONCES = ['ID','BoutiqueID','Date','Lien','Description','Prix','PrixMode','Contact',
   'Image1','Image2','Image3','Image4','VideoURL','Plan','PlanWeight','Expiration','TxnId'];
 
-function _ss(){ return SpreadsheetApp.getActiveSpreadsheet(); }
+// Forcé sur VOTRE classeur exact, peu importe comment ce script a été créé
+// (attaché ou non à un Sheet) — plus fiable que getActiveSpreadsheet().
+const SPREADSHEET_ID = '1QwCS0tW7rhh97UogLRyDI93XOQu0Bqh3rSIQh0AENi8';
+function _ss(){ return SpreadsheetApp.openById(SPREADSHEET_ID); }
 function _sheetBoutiques(){ return _ss().getSheetByName(SHEET_BOUTIQUES); }
 function _sheetAnnonces(){ return _ss().getSheetByName(SHEET_ANNONCES); }
 
