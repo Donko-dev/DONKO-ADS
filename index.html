@@ -163,25 +163,36 @@
     padding:3px 9px;border-radius:20px;margin-bottom:12px;}
   .load-more-btn{display:block;width:100%;margin-top:14px;}
 
-  /* PLAN TICKETS */
-  .plans{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-  @media(min-width:560px){.plans{grid-template-columns:repeat(4,1fr);}}
-  .plan{position:relative;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;
-    padding:16px 12px 14px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;}
-  .plan::before,.plan::after{content:"";position:absolute;top:50%;width:15px;height:15px;
-    background:var(--notch-bg);border-radius:50%;transform:translateY(-50%);border:1.5px solid var(--border);}
-  .plan::before{left:-8px;} .plan::after{right:-8px;}
-  .plan:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(19,27,51,0.08);}
-  .plan.selected{border-color:var(--brick);}
-  .plan.selected::before,.plan.selected::after{border-color:var(--brick);}
-  .plan .badge{position:absolute;top:-9px;right:8px;background:var(--gold);color:#241a04;
-    font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.04em;
-    text-transform:uppercase;padding:3px 7px;border-radius:20px;transform:rotate(3deg);}
-  .plan .label{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:14px;margin-bottom:6px;}
-  .plan .price-old{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#999;text-decoration:line-through;display:block;}
-  .plan .price-new{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--brick);display:block;margin-top:1px;}
-  .plan .divider{border-top:2px dashed var(--border);margin:9px 0;}
-  .plan .days{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);}
+  /* PLAN CARDS — rangée horizontale scrollable, style tableau de tarifs pro */
+  .plans-scroll{display:flex;gap:14px;overflow-x:auto;padding:6px 4px 16px;scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;}
+  .plan{position:relative;flex:0 0 178px;scroll-snap-align:start;background:var(--surface);
+    border:1px solid var(--border);border-radius:16px;padding:18px 16px;cursor:pointer;
+    box-shadow:0 1px 3px rgba(19,27,51,0.05);transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    display:flex;flex-direction:column;}
+  .plan:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(19,27,51,0.10);}
+  .plan.selected{border-color:var(--brick);box-shadow:0 0 0 2px var(--brick), 0 10px 22px rgba(193,68,14,0.15);}
+  .plan.highlight{background:linear-gradient(165deg,var(--navy),var(--navy-2));border-color:var(--navy);}
+  .plan.highlight .label,.plan.highlight .days,.plan.highlight .permonth{color:#F7F2E7;}
+  .plan.highlight .price-old{color:rgba(247,242,231,0.5);}
+  .plan.highlight.selected{box-shadow:0 0 0 2px var(--gold), 0 10px 22px rgba(19,27,51,0.25);}
+  .plan.exclusive{background:linear-gradient(165deg,#3a2a08,var(--gold) 340%);border-color:var(--gold);}
+  .plan.exclusive .label,.plan.exclusive .days,.plan.exclusive .permonth{color:#2a1d02;}
+  .plan.exclusive .price-old{color:rgba(42,29,2,0.55);}
+  .plan.exclusive .price-new{color:#2a1d02;}
+  .plan .badge{align-self:flex-start;background:var(--gold);color:#241a04;
+    font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.04em;
+    text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:10px;}
+  .plan.exclusive .badge{background:#241a04;color:var(--gold);}
+  .plan .label{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;margin-bottom:14px;}
+  .plan .price-old{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#999;text-decoration:line-through;display:block;}
+  .plan .price-new{font-family:'IBM Plex Mono',monospace;font-size:21px;font-weight:700;color:var(--brick);display:block;margin:2px 0 12px;line-height:1.15;}
+  .plan.highlight .price-new{color:var(--gold);}
+  .plan .days{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:12.5px;margin-top:auto;
+    padding-top:12px;border-top:1px solid var(--border);}
+  .plan.highlight .days,.plan.exclusive .days{border-top-color:rgba(255,255,255,0.15);}
+  .plan .permonth{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);display:block;margin-top:3px;}
+  .plans-hint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:-6px;margin-bottom:8px;}
 
   .boost-card{background:var(--surface);border:1.5px dashed var(--brick);border-radius:12px;padding:16px;margin-top:16px;}
   .boost-card h3{font-size:15px;margin-bottom:6px;}
@@ -276,7 +287,7 @@
   /* RUBAN DÉFILANT */
   .ribbon{background:var(--gold);color:#241a04;overflow:hidden;white-space:nowrap;
     padding:6px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;}
-  .ribbon-track{display:inline-block;padding-left:100%;animation:ribbonScroll 22s linear infinite;}
+  .ribbon-track{display:inline-block;padding-left:100%;animation:ribbonScroll 45s linear infinite;}
   @keyframes ribbonScroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
 
   .install-banner{background:var(--gold);color:#241a04;padding:10px 16px;font-size:13px;display:flex;
@@ -420,7 +431,7 @@
           <select id="sCountry"></select>
 
           <label data-i18n="lblCity">Ville</label>
-          <select id="sCity"></select>
+          <input type="text" id="sCity" data-i18n-ph="phCity" placeholder="Ex : Cotonou">
 
           <label data-i18n="lblAddress">Adresse / quartier</label>
           <input type="text" id="sAddress" data-i18n-ph="phAddress" placeholder="Quartier, repère...">
@@ -527,7 +538,8 @@
           <label style="margin:0;display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;white-space:nowrap;" data-i18n="displayCurrencyLabel">💱 Afficher les prix en :</label>
           <select id="displayCurrencySelectPro" style="flex:1;"></select>
         </div>
-        <div class="plans" id="plansGrid"></div>
+        <p class="plans-hint" data-i18n="plansSwipeHint">👉 Faites glisser pour voir tous les plans</p>
+        <div class="plans-scroll" id="plansGrid"></div>
         <p class="notice tip" data-i18n="currencyPaymentNotice">💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), via Kkiapay (Mobile Money ou carte bancaire Visa/Mastercard).</p>
         <p class="disclaimer" data-i18n="disclaimerText">
           Paiement unique via Kkiapay (Mobile Money ou carte bancaire) — aucun prélèvement automatique, aucune information bancaire enregistrée chez nous.
@@ -637,7 +649,11 @@
 /* ================== CONFIGURATION ================== */
 const CONFIG = {
   KIKIAPAY_PUBLIC_KEY: '5a2223a51cff4ee0029821e143a207f473f6f7f4',
-'https://script.google.com/macros/s/AKfycbw8uabJCUxVO0rwVZiX-1eF9FHpb7chqu-R9QOwSq19K5mIxfetUhUZ-OKEgWwXeNxz/exec',
+  // ⚠️ Remplacez UNIQUEMENT le texte entre les guillemets ci-dessous par votre URL
+  // Apps Script (copiée avec le bouton "Copier" — jamais retapée à la main).
+  // Ne touchez à rien d'autre sur cette ligne : gardez les guillemets ' ',
+  // la virgule à la fin, et ne mettez pas de retour à la ligne au milieu de l'URL.
+  APPS_SCRIPT_URL: 'VOTRE_URL_APPS_SCRIPT_/exec',
   // Le code d'accès pro n'est jamais stocké en clair : seul son empreinte SHA-256
   // figure ici. Voir GUIDE-INSTALLATION.md pour changer ce code vous-même.
   ADMIN_PASSCODE_HASH: '081c544db69c4da35f6fe39ce13cf5b63c534f788add9937b46011bf426e72cc',
@@ -658,8 +674,8 @@ const CONFIG = {
    ci-dessous (fr et en), enregistrez, puis republiez index.html sur GitHub.
 ======================================================= */
 const RIBBON_MESSAGES = {
-  fr: "👋 Bienvenue sur DONKO ADS — publiez votre boutique et soyez vu par toute la zone UEMOA !  •  📣 3 publications gratuites pour commencer  •  💳 Paiement 100% Mobile Money via Kkiapay",
-  en: "👋 Welcome to DONKO ADS — publish your shop and get seen across the whole UEMOA zone!  •  📣 3 free listings to get started  •  💳 100% Mobile Money payment via Kkiapay"
+  fr: "👋 Bienvenue sur DONKO ADS — publiez votre boutique et soyez vu partout dans le monde !  •  📣 3 publications gratuites pour commencer  •  💳 Paiement en Mobile Money ou carte bancaire via Kkiapay  •  🚀 Boostez votre boutique pour passer en vedette  •  🔒 Vos données restent sur votre appareil",
+  en: "👋 Welcome to DONKO ADS — publish your shop and get seen anywhere in the world!  •  📣 3 free listings to get started  •  💳 Pay by Mobile Money or bank card via Kkiapay  •  🚀 Boost your shop to get featured  •  🔒 Your data stays on your device"
 };
 
 /* ================== DEVISES D'AFFICHAGE ==================
@@ -687,18 +703,132 @@ function convertToXOF(amount, fromId){
 console.log('%cSTOP', 'color:#C1440E;font-size:36px;font-weight:bold;');
 console.log('%cCet espace est reserve aux developpeurs. Coller du code ici peut compromettre votre boutique ou vos donnees.', 'font-size:14px;');
 
-// Pays éligibles = les 4 pays où Kkiapay accepte les marchands (Bénin, Togo,
-// Côte d'Ivoire, Sénégal), avec indicatif, exemple de numéro local, et
-// principales villes pour chacun.
+// Kkiapay accepte les cartes bancaires (Visa/Mastercard, valables partout) et le
+// Mobile Money selon les opérateurs pris en charge par pays. On ne restreint donc
+// plus la liste : l'utilisateur choisit son pays, et au moment de payer, le widget
+// Kkiapay lui-même indique si Mobile Money est disponible pour son pays ou
+// propose directement le paiement par carte.
 const COUNTRIES = [
-  { id:'bj', fr:'Bénin', en:'Benin', dial:'+229', example:'+229 01 90 12 34 56',
-    cities:['Cotonou','Abomey-Calavi','Porto-Novo','Parakou','Djougou','Bohicon','Kandi','Ouidah','Abomey','Natitingou','Lokossa','Pobè','Savalou','Allada','Banikoara','Tchaourou'] },
-  { id:'tg', fr:'Togo', en:'Togo', dial:'+228', example:'+228 90 12 34 56',
-    cities:['Lomé','Sokodé','Kara','Kpalimé','Atakpamé','Dapaong','Tsévié','Aného','Mango','Bassar'] },
-  { id:'ci', fr:"Côte d'Ivoire", en:"Côte d'Ivoire", dial:'+225', example:'+225 07 12 34 56 78',
-    cities:['Abidjan','Bouaké','Yamoussoukro','San-Pédro','Korhogo','Daloa','Man','Gagnoa','Abengourou','Divo'] },
-  { id:'sn', fr:'Sénégal', en:'Senegal', dial:'+221', example:'+221 77 123 45 67',
-    cities:['Dakar','Thiès','Rufisque','Kaolack','Ziguinchor','Saint-Louis','Mbour','Touba','Diourbel','Louga'] }
+  { id:"bj", fr:"Bénin", en:"Benin", dial:"+229", example:"+229 01 90 12 34 56" },
+  { id:"tg", fr:"Togo", en:"Togo", dial:"+228", example:"+228 90 12 34 56" },
+  { id:"ci", fr:"Côte d'Ivoire", en:"Côte d'Ivoire", dial:"+225", example:"+225 07 12 34 56 78" },
+  { id:"sn", fr:"Sénégal", en:"Senegal", dial:"+221", example:"+221 77 123 45 67" },
+  { id:"ne", fr:"Niger", en:"Niger", dial:"+227", example:"+227 90 12 34 56" },
+  { id:"ml", fr:"Mali", en:"Mali", dial:"+223", example:"+223 70 12 34 56" },
+  { id:"bf", fr:"Burkina Faso", en:"Burkina Faso", dial:"+226", example:"+226 70 12 34 56" },
+  { id:"gw", fr:"Guinée-Bissau", en:"Guinea-Bissau", dial:"+245", example:"+245 955 12 34" },
+  { id:"gn", fr:"Guinée", en:"Guinea", dial:"+224", example:"+224 XX XXX XXXX" },
+  { id:"gh", fr:"Ghana", en:"Ghana", dial:"+233", example:"+233 24 123 4567" },
+  { id:"ng", fr:"Nigéria", en:"Nigeria", dial:"+234", example:"+234 803 123 4567" },
+  { id:"cm", fr:"Cameroun", en:"Cameroon", dial:"+237", example:"+237 6 71 23 45 67" },
+  { id:"ga", fr:"Gabon", en:"Gabon", dial:"+241", example:"+241 XX XXX XXXX" },
+  { id:"cg", fr:"Congo-Brazzaville", en:"Congo-Brazzaville", dial:"+242", example:"+242 XX XXX XXXX" },
+  { id:"cd", fr:"RD Congo", en:"DR Congo", dial:"+243", example:"+243 81 234 5678" },
+  { id:"td", fr:"Tchad", en:"Chad", dial:"+235", example:"+235 XX XXX XXXX" },
+  { id:"cf", fr:"Centrafrique", en:"Central African Republic", dial:"+236", example:"+236 XX XXX XXXX" },
+  { id:"ma", fr:"Maroc", en:"Morocco", dial:"+212", example:"+212 6 12 34 56 78" },
+  { id:"dz", fr:"Algérie", en:"Algeria", dial:"+213", example:"+213 XX XXX XXXX" },
+  { id:"tn", fr:"Tunisie", en:"Tunisia", dial:"+216", example:"+216 XX XXX XXX" },
+  { id:"ly", fr:"Libye", en:"Libya", dial:"+218", example:"+218 XX XXX XXXX" },
+  { id:"eg", fr:"Égypte", en:"Egypt", dial:"+20", example:"+20 XX XXX XXXX" },
+  { id:"mr", fr:"Mauritanie", en:"Mauritania", dial:"+222", example:"+222 XX XXX XXXX" },
+  { id:"sl", fr:"Sierra Leone", en:"Sierra Leone", dial:"+232", example:"+232 XX XXX XXXX" },
+  { id:"lr", fr:"Liberia", en:"Liberia", dial:"+231", example:"+231 XX XXX XXXX" },
+  { id:"gm", fr:"Gambie", en:"Gambia", dial:"+220", example:"+220 XX XXX XXXX" },
+  { id:"cv", fr:"Cap-Vert", en:"Cabo Verde", dial:"+238", example:"+238 XX XXX XXXX" },
+  { id:"st", fr:"Sao Tomé-et-Principe", en:"Sao Tome and Principe", dial:"+239", example:"+239 XX XXX XXXX" },
+  { id:"gq", fr:"Guinée équatoriale", en:"Equatorial Guinea", dial:"+240", example:"+240 XX XXX XXXX" },
+  { id:"ke", fr:"Kenya", en:"Kenya", dial:"+254", example:"+254 XX XXX XXXX" },
+  { id:"tz", fr:"Tanzanie", en:"Tanzania", dial:"+255", example:"+255 XX XXX XXXX" },
+  { id:"ug", fr:"Ouganda", en:"Uganda", dial:"+256", example:"+256 XX XXX XXXX" },
+  { id:"rw", fr:"Rwanda", en:"Rwanda", dial:"+250", example:"+250 XX XXX XXXX" },
+  { id:"bi", fr:"Burundi", en:"Burundi", dial:"+257", example:"+257 XX XXX XXXX" },
+  { id:"et", fr:"Éthiopie", en:"Ethiopia", dial:"+251", example:"+251 XX XXX XXXX" },
+  { id:"so", fr:"Somalie", en:"Somalia", dial:"+252", example:"+252 XX XXX XXXX" },
+  { id:"dj", fr:"Djibouti", en:"Djibouti", dial:"+253", example:"+253 XX XXX XXXX" },
+  { id:"er", fr:"Érythrée", en:"Eritrea", dial:"+291", example:"+291 XX XXX XXXX" },
+  { id:"ss", fr:"Soudan du Sud", en:"South Sudan", dial:"+211", example:"+211 XX XXX XXXX" },
+  { id:"sd", fr:"Soudan", en:"Sudan", dial:"+249", example:"+249 XX XXX XXXX" },
+  { id:"za", fr:"Afrique du Sud", en:"South Africa", dial:"+27", example:"+27 XX XXX XXXX" },
+  { id:"zw", fr:"Zimbabwe", en:"Zimbabwe", dial:"+263", example:"+263 XX XXX XXXX" },
+  { id:"zm", fr:"Zambie", en:"Zambia", dial:"+260", example:"+260 XX XXX XXXX" },
+  { id:"mz", fr:"Mozambique", en:"Mozambique", dial:"+258", example:"+258 XX XXX XXXX" },
+  { id:"mw", fr:"Malawi", en:"Malawi", dial:"+265", example:"+265 XX XXX XXXX" },
+  { id:"ao", fr:"Angola", en:"Angola", dial:"+244", example:"+244 XX XXX XXXX" },
+  { id:"na", fr:"Namibie", en:"Namibia", dial:"+264", example:"+264 XX XXX XXXX" },
+  { id:"bw", fr:"Botswana", en:"Botswana", dial:"+267", example:"+267 XX XXX XXX" },
+  { id:"ls", fr:"Lesotho", en:"Lesotho", dial:"+266", example:"+266 XX XXX XXX" },
+  { id:"sz", fr:"Eswatini", en:"Eswatini", dial:"+268", example:"+268 XX XXX XXX" },
+  { id:"mg", fr:"Madagascar", en:"Madagascar", dial:"+261", example:"+261 XX XXX XXXX" },
+  { id:"mu", fr:"Maurice", en:"Mauritius", dial:"+230", example:"+230 XXXX XXXX" },
+  { id:"sc", fr:"Seychelles", en:"Seychelles", dial:"+248", example:"+248 X XX XX XX" },
+  { id:"km", fr:"Comores", en:"Comoros", dial:"+269", example:"+269 XX XXXX" },
+  { id:"fr", fr:"France", en:"France", dial:"+33", example:"+33 6 12 34 56 78" },
+  { id:"be", fr:"Belgique", en:"Belgium", dial:"+32", example:"+32 470 12 34 56" },
+  { id:"ch", fr:"Suisse", en:"Switzerland", dial:"+41", example:"+41 79 123 45 67" },
+  { id:"lu", fr:"Luxembourg", en:"Luxembourg", dial:"+352", example:"+352 XXX XXX" },
+  { id:"de", fr:"Allemagne", en:"Germany", dial:"+49", example:"+49 151 12345678" },
+  { id:"es", fr:"Espagne", en:"Spain", dial:"+34", example:"+34 6XX XXX XXX" },
+  { id:"pt", fr:"Portugal", en:"Portugal", dial:"+351", example:"+351 9XX XXX XXX" },
+  { id:"it", fr:"Italie", en:"Italy", dial:"+39", example:"+39 3XX XXX XXXX" },
+  { id:"gb", fr:"Royaume-Uni", en:"United Kingdom", dial:"+44", example:"+44 7700 900123" },
+  { id:"ie", fr:"Irlande", en:"Ireland", dial:"+353", example:"+353 8X XXX XXXX" },
+  { id:"nl", fr:"Pays-Bas", en:"Netherlands", dial:"+31", example:"+31 6 XXXXXXXX" },
+  { id:"at", fr:"Autriche", en:"Austria", dial:"+43", example:"+43 6XX XXXXXXX" },
+  { id:"se", fr:"Suède", en:"Sweden", dial:"+46", example:"+46 7X XXX XX XX" },
+  { id:"no", fr:"Norvège", en:"Norway", dial:"+47", example:"+47 XXX XX XXX" },
+  { id:"dk", fr:"Danemark", en:"Denmark", dial:"+45", example:"+45 XX XX XX XX" },
+  { id:"fi", fr:"Finlande", en:"Finland", dial:"+358", example:"+358 4X XXX XXXX" },
+  { id:"pl", fr:"Pologne", en:"Poland", dial:"+48", example:"+48 XXX XXX XXX" },
+  { id:"gr", fr:"Grèce", en:"Greece", dial:"+30", example:"+30 69X XXX XXXX" },
+  { id:"ro", fr:"Roumanie", en:"Romania", dial:"+40", example:"+40 7XX XXX XXX" },
+  { id:"cz", fr:"République tchèque", en:"Czech Republic", dial:"+420", example:"+420 6XX XXX XXX" },
+  { id:"hu", fr:"Hongrie", en:"Hungary", dial:"+36", example:"+36 2X XXX XXXX" },
+  { id:"hr", fr:"Croatie", en:"Croatia", dial:"+385", example:"+385 9X XXX XXXX" },
+  { id:"ua", fr:"Ukraine", en:"Ukraine", dial:"+380", example:"+380 XX XXX XXXX" },
+  { id:"tr", fr:"Turquie", en:"Turkey", dial:"+90", example:"+90 5XX XXX XXXX" },
+  { id:"us", fr:"États-Unis", en:"United States", dial:"+1", example:"+1 202 555 0123" },
+  { id:"ca", fr:"Canada", en:"Canada", dial:"+1", example:"+1 416 555 0123" },
+  { id:"mx", fr:"Mexique", en:"Mexico", dial:"+52", example:"+52 1 55 1234 5678" },
+  { id:"br", fr:"Brésil", en:"Brazil", dial:"+55", example:"+55 11 91234 5678" },
+  { id:"ar", fr:"Argentine", en:"Argentina", dial:"+54", example:"+54 9 11 1234 5678" },
+  { id:"cl", fr:"Chili", en:"Chile", dial:"+56", example:"+56 9 1234 5678" },
+  { id:"co", fr:"Colombie", en:"Colombia", dial:"+57", example:"+57 3XX XXX XXXX" },
+  { id:"pe", fr:"Pérou", en:"Peru", dial:"+51", example:"+51 9XX XXX XXX" },
+  { id:"ve", fr:"Venezuela", en:"Venezuela", dial:"+58", example:"+58 4XX XXX XXXX" },
+  { id:"ec", fr:"Équateur", en:"Ecuador", dial:"+593", example:"+593 9X XXX XXXX" },
+  { id:"bo", fr:"Bolivie", en:"Bolivia", dial:"+591", example:"+591 X XXX XXXX" },
+  { id:"py", fr:"Paraguay", en:"Paraguay", dial:"+595", example:"+595 9XX XXX XXX" },
+  { id:"uy", fr:"Uruguay", en:"Uruguay", dial:"+598", example:"+598 9X XXX XXX" },
+  { id:"ht", fr:"Haïti", en:"Haiti", dial:"+509", example:"+509 XX XX XXXX" },
+  { id:"do", fr:"République dominicaine", en:"Dominican Republic", dial:"+1", example:"+1 809 555 0123" },
+  { id:"cu", fr:"Cuba", en:"Cuba", dial:"+53", example:"+53 5 XXX XXXX" },
+  { id:"jm", fr:"Jamaïque", en:"Jamaica", dial:"+1", example:"+1 876 555 0123" },
+  { id:"cn", fr:"Chine", en:"China", dial:"+86", example:"+86 138 0013 8000" },
+  { id:"jp", fr:"Japon", en:"Japan", dial:"+81", example:"+81 90 1234 5678" },
+  { id:"kr", fr:"Corée du Sud", en:"South Korea", dial:"+82", example:"+82 10 1234 5678" },
+  { id:"in", fr:"Inde", en:"India", dial:"+91", example:"+91 98765 43210" },
+  { id:"pk", fr:"Pakistan", en:"Pakistan", dial:"+92", example:"+92 3XX XXXXXXX" },
+  { id:"bd", fr:"Bangladesh", en:"Bangladesh", dial:"+880", example:"+880 1XXX XXXXXX" },
+  { id:"id", fr:"Indonésie", en:"Indonesia", dial:"+62", example:"+62 8XX XXXX XXXX" },
+  { id:"my", fr:"Malaisie", en:"Malaysia", dial:"+60", example:"+60 1X XXX XXXX" },
+  { id:"sg", fr:"Singapour", en:"Singapore", dial:"+65", example:"+65 8XXX XXXX" },
+  { id:"th", fr:"Thaïlande", en:"Thailand", dial:"+66", example:"+66 8X XXX XXXX" },
+  { id:"vn", fr:"Vietnam", en:"Vietnam", dial:"+84", example:"+84 9X XXX XXXX" },
+  { id:"ph", fr:"Philippines", en:"Philippines", dial:"+63", example:"+63 9XX XXX XXXX" },
+  { id:"sa", fr:"Arabie saoudite", en:"Saudi Arabia", dial:"+966", example:"+966 50 123 4567" },
+  { id:"ae", fr:"Émirats arabes unis", en:"United Arab Emirates", dial:"+971", example:"+971 50 123 4567" },
+  { id:"qa", fr:"Qatar", en:"Qatar", dial:"+974", example:"+974 XXXX XXXX" },
+  { id:"kw", fr:"Koweït", en:"Kuwait", dial:"+965", example:"+965 XXXX XXXX" },
+  { id:"lb", fr:"Liban", en:"Lebanon", dial:"+961", example:"+961 XX XXX XXX" },
+  { id:"jo", fr:"Jordanie", en:"Jordan", dial:"+962", example:"+962 7X XXX XXXX" },
+  { id:"il", fr:"Israël", en:"Israel", dial:"+972", example:"+972 5X XXX XXXX" },
+  { id:"iq", fr:"Irak", en:"Iraq", dial:"+964", example:"+964 7XX XXX XXXX" },
+  { id:"om", fr:"Oman", en:"Oman", dial:"+968", example:"+968 9XXX XXXX" },
+  { id:"bh", fr:"Bahreïn", en:"Bahrain", dial:"+973", example:"+973 3XXX XXXX" },
+  { id:"au", fr:"Australie", en:"Australia", dial:"+61", example:"+61 4XX XXX XXX" },
+  { id:"nz", fr:"Nouvelle-Zélande", en:"New Zealand", dial:"+64", example:"+64 2X XXX XXXX" },
+  { id:"autre", fr:"Autre pays", en:"Other country", dial:"", example:"" }
 ];
 function countryLabel(id){ const c = COUNTRIES.find(c=>c.id===id); return c ? c[state.lang] : id; }
 
@@ -731,14 +861,14 @@ const CATEGORIES = [
 ];
 
 const BASE_PLANS = [
-  { id:'mensuel',     label:{fr:'Mensuel',en:'Monthly'},         days:30,   old:5000,   base:2000  },
-  { id:'bimestriel',  label:{fr:'Bimestriel',en:'Bimonthly'},     days:60,   old:9000,   base:3600  },
-  { id:'trimestriel', label:{fr:'Trimestriel',en:'Quarterly'},    days:90,   old:12000,  base:5000  },
-  { id:'semestriel',  label:{fr:'Semestriel',en:'Half-yearly'},   days:180,  old:20000,  base:9000  },
-  { id:'annuel',      label:{fr:'Annuel',en:'Yearly'},            days:365,  old:35000,  base:15000, badge:{fr:'Meilleure offre',en:'Best deal'}, blink:true },
-  { id:'2ans',        label:{fr:'2 ans',en:'2 years'},            days:730,  old:55000,  base:25000 },
-  { id:'3ans',        label:{fr:'3 ans',en:'3 years'},            days:1095, old:70000,  base:33000 },
-  { id:'avie',        label:{fr:'À vie',en:'Lifetime'},           days:36500,old:150000, base:75000, badge:{fr:'Offre exclusive',en:'Exclusive offer'}, blink:true }
+  { id:'mensuel',     label:{fr:'Mensuel',en:'Monthly'},         days:30,   old:12750,  base:12750 },
+  { id:'bimestriel',  label:{fr:'Bimestriel',en:'Bimonthly'},     days:60,   old:22900,  base:22900 },
+  { id:'trimestriel', label:{fr:'Trimestriel',en:'Quarterly'},    days:90,   old:31900,  base:31900 },
+  { id:'semestriel',  label:{fr:'Semestriel',en:'Half-yearly'},   days:180,  old:57500,  base:57500 },
+  { id:'annuel',      label:{fr:'Annuel',en:'Yearly'},            days:365,  old:95000,  base:95000, badge:{fr:'Meilleure offre',en:'Best deal'}, blink:true },
+  { id:'2ans',        label:{fr:'2 ans',en:'2 years'},            days:730,  old:159000, base:159000 },
+  { id:'3ans',        label:{fr:'3 ans',en:'3 years'},            days:1095, old:209000, base:209000 },
+  { id:'avie',        label:{fr:'À vie',en:'Lifetime'},           days:36500,old:475000, base:475000, badge:{fr:'Offre exclusive',en:'Exclusive offer'}, blink:true }
 ];
 
 const PLANS = BASE_PLANS.map((p, i) => ({
@@ -759,7 +889,7 @@ I18N.fr = {
   noticeIndex:"💡 Plus votre plan d'abonnement est grand, mieux votre boutique est indexée et mise en avant dans la liste.",
   searchPh:"Rechercher un produit, un service, une boutique...",
   allCities:"Tout le Bénin", allCountries:"Toute la zone", chooseCity:"Choisir la localisation",
-  choosePays:"Choisir un pays", chooseCity2:"Choisir une ville", confirm:"Confirmer", allCitiesOf:"Toutes les villes",
+  choosePays:"Choisir un pays", chooseCity2:"Choisir une ville", confirm:"Confirmer", allCitiesOf:"Toutes les villes", phCity:"Ex : Cotonou",
   lblCountry:"Pays", chooseCountryFirst:"Choisissez d'abord un pays",
   tagAccount:"Mon compte", accountTitle:"Mon abonnement", historyTitle:"Historique",
   noHistory:"Aucune opération pour le moment.", tagMyShops:"Au niveau de la boutique", myShopsTitle:"Mes boutiques",
@@ -770,6 +900,7 @@ I18N.fr = {
   resultsCount:"annonce(s)",
   tagPricing:"Choisissez votre accès", pricingTitle:"Un plan pour chaque budget",
   pricingText:"3 publications gratuites pour commencer. Ensuite, un abonnement débloque des publications illimitées pendant toute sa durée.",
+  plansSwipeHint:"👉 Faites glisser pour voir tous les plans",
   disclaimerText:"Paiement unique via Kkiapay (Mobile Money ou carte bancaire Visa/Mastercard) — aucun prélèvement automatique, aucune information bancaire enregistrée chez nous. À la fin de la période, votre boutique disparaît automatiquement de la liste ; revenez payer le plan de votre choix pour continuer. C'est le seul moment où une connexion internet est nécessaire.",
   boostTitle:"🚀 Mettre ma boutique en vedette",
   boostText:"3 000 F CFA, paiement unique, valable 31 jours puis renouvelable. Votre boutique apparaît tout en haut de la liste, avant les autres.",
@@ -869,7 +1000,7 @@ I18N.en = {
   noticeIndex:"💡 The bigger your subscription plan, the better your shop is ranked and featured in the list.",
   searchPh:"Search for a product, service, or shop...",
   allCities:"All Benin", allCountries:"Whole zone", chooseCity:"Choose location",
-  choosePays:"Choose a country", chooseCity2:"Choose a city", confirm:"Confirm", allCitiesOf:"All cities",
+  choosePays:"Choose a country", chooseCity2:"Choose a city", confirm:"Confirm", allCitiesOf:"All cities", phCity:"E.g.: Cotonou",
   lblCountry:"Country", chooseCountryFirst:"Choose a country first",
   tagAccount:"My account", accountTitle:"My subscription", historyTitle:"History",
   noHistory:"No operation yet.", tagMyShops:"At the shop level", myShopsTitle:"My shops",
@@ -880,6 +1011,7 @@ I18N.en = {
   resultsCount:"listing(s)",
   tagPricing:"Choose your access", pricingTitle:"A plan for every budget",
   pricingText:"3 free listings to get started. After that, a subscription unlocks unlimited listings for its whole duration.",
+  plansSwipeHint:"👉 Swipe to see all plans",
   disclaimerText:"One-time payment via Kkiapay (Mobile Money or Visa/Mastercard bank card) — no automatic debit, no banking information stored with us. When the period ends, your shop automatically disappears from the list; come back and pay the plan of your choice to continue. This is the only moment an internet connection is needed.",
   boostTitle:"🚀 Feature my shop",
   boostText:"3,000 F CFA, one-time payment, valid 31 days then renewable. Your shop appears at the very top of the list, ahead of others.",
@@ -1151,13 +1283,13 @@ function renderFormCountrySelect(){
 function updateFormCityAndPhone(){
   const countryId = document.getElementById('sCountry').value || COUNTRIES[0].id;
   const country = COUNTRIES.find(c=>c.id===countryId) || COUNTRIES[0];
-  const citySel = document.getElementById('sCity');
-  citySel.innerHTML = country.cities.map(c => `<option value="${c}">${c}</option>`).join('');
   const contactInput = document.getElementById('sContact');
-  contactInput.placeholder = country.example;
-  const trimmed = contactInput.value.trim();
-  if(!trimmed || COUNTRIES.some(c => trimmed === c.dial)){
-    contactInput.value = country.dial + ' ';
+  if(country.example){
+    contactInput.placeholder = country.example;
+    const trimmed = contactInput.value.trim();
+    if(!trimmed || COUNTRIES.some(c => trimmed === c.dial)){
+      contactInput.value = country.dial ? country.dial + ' ' : '';
+    }
   }
 }
 
@@ -1213,32 +1345,16 @@ document.getElementById('openLocationBtn').addEventListener('click', ()=>{
           ${COUNTRIES.map(c=>`<option value="${c.id}" ${state.selectedCountry===c.id?'selected':''}>${c[state.lang]}</option>`).join('')}
         </select>
         <label>${t('lblCity')}</label>
-        <select id="modalCitySelect"><option value="">${t('allCitiesOf')}</option></select>
+        <input type="text" id="modalCityInput" data-i18n-ph="phCity" placeholder="Ex : Cotonou" value="${escapeHtml(state.selectedCity)}">
         <button class="btn btn-brick" id="modalConfirmBtn" style="width:100%;margin-top:14px;">${t('confirm')}</button>
       </div>
     </div>`;
-
-  function refreshModalCities(){
-    const cId = document.getElementById('modalCountrySelect').value;
-    const citySel = document.getElementById('modalCitySelect');
-    if(!cId){
-      citySel.innerHTML = `<option value="">${t('allCitiesOf')}</option>`;
-      citySel.disabled = true;
-      return;
-    }
-    citySel.disabled = false;
-    const country = COUNTRIES.find(c=>c.id===cId);
-    citySel.innerHTML = `<option value="">${t('allCitiesOf')}</option>` +
-      country.cities.map(c=>`<option value="${c}" ${state.selectedCity===c?'selected':''}>${c}</option>`).join('');
-  }
-  refreshModalCities();
-  document.getElementById('modalCountrySelect').addEventListener('change', refreshModalCities);
 
   document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
   document.getElementById('modalOverlay').addEventListener('click', (e)=>{ if(e.target.id==='modalOverlay') closeModal(); });
   document.getElementById('modalConfirmBtn').addEventListener('click', ()=>{
     state.selectedCountry = document.getElementById('modalCountrySelect').value;
-    state.selectedCity = document.getElementById('modalCitySelect').value;
+    state.selectedCity = document.getElementById('modalCityInput').value.trim();
     const label = state.selectedCity || (state.selectedCountry ? countryLabel(state.selectedCountry) : t('allCountries'));
     document.getElementById('currentCityLabel').textContent = label;
     closeModal();
@@ -1251,16 +1367,20 @@ function displayPrice(xofAmount){ return convertFromXOF(xofAmount, state.display
 
 function renderPlans(){
   const grid = document.getElementById('plansGrid');
-  grid.innerHTML = PLANS.map(p => `
-    <div class="plan ${p.id===state.selectedPlan.id?'selected':''}" data-id="${p.id}">
+  grid.innerHTML = PLANS.map(p => {
+    const monthsEq = p.days>=36500 ? null : Math.max(1, Math.round(p.days/30));
+    const perMonth = monthsEq ? displayPrice(Math.round(p.priceNew/monthsEq)) + (state.lang==='fr'?'/mois':'/mo') : '';
+    const styleClass = p.id==='avie' ? 'exclusive' : (p.id==='annuel' ? 'highlight' : '');
+    return `
+    <div class="plan ${styleClass} ${p.id===state.selectedPlan.id?'selected':''}" data-id="${p.id}">
       ${p.badge ? `<span class="badge ${p.blink?'blink':''}">${p.badge[state.lang]}</span>` : ''}
       <div class="label">${p.label[state.lang]}</div>
       <span class="price-old">${displayPrice(p.old)}</span>
       <span class="price-new">${displayPrice(p.priceNew)}</span>
-      <div class="divider"></div>
-      <div class="days">${p.days>=36500 ? (state.lang==='fr'?'Accès illimité':'Unlimited access') : p.days+(state.lang==='fr'?' jours':' days')}</div>
-    </div>
-  `).join('');
+      <div class="days">${p.days>=36500 ? (state.lang==='fr'?'Accès illimité':'Unlimited access') : p.days+(state.lang==='fr'?' jours':' days')}
+      ${perMonth ? `<span class="permonth">≈ ${perMonth}</span>` : ''}</div>
+    </div>`;
+  }).join('');
   grid.querySelectorAll('.plan').forEach(el=>{
     el.addEventListener('click', ()=>{
       state.selectedPlan = PLANS.find(p=>p.id===el.dataset.id);
@@ -1850,7 +1970,7 @@ function filteredSortedListings(){
   let items = state.annonces.filter(item=>{
     if(state.selectedCategory && item.Categorie !== state.selectedCategory) return false;
     if(state.selectedCountry && item.Pays !== state.selectedCountry) return false;
-    if(state.selectedCity && item.Ville !== state.selectedCity) return false;
+    if(state.selectedCity && !(String(item.Ville||'').toLowerCase().includes(state.selectedCity.toLowerCase()))) return false;
     if(state.selectedBoutiqueFilter && item.BoutiqueID !== state.selectedBoutiqueFilter) return false;
     if(q){
       const hay = (item.BoutiqueNom+' '+item.Description+' '+catLabel(item.Categorie)).toLowerCase();

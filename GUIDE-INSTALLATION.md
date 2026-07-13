@@ -114,7 +114,7 @@ La stratégie qui fonctionne avec cette architecture, et que je vous recommande 
 
 ## Points d'honnêteté technique (ajustements par rapport aux demandes initiales)
 
-- **Blocage géographique par pays** : non implémenté par nationalité (un pays comme le Japon n'a rien de "dangereux") — la restriction réelle passe par Kkiapay, qui ne prend en charge que le Bénin, le Togo, la Côte d'Ivoire et le Sénégal pour le paiement. La consultation reste ouverte à tous.
+- **Blocage géographique par pays** : non implémenté par nationalité (un pays comme le Japon n'a rien de "dangereux") — la restriction réelle passe par Kkiapay pour le paiement (Mobile Money selon le pays, carte bancaire Visa/Mastercard partout) — plus aucune restriction de pays pour créer une boutique. La consultation reste ouverte à tous.
 - **Vidéo compressée automatiquement** : passe par un lien YouTube/Vimeo (déjà compressé par ces plateformes) plutôt qu'un fichier téléversé.
 - **Envoi WhatsApp/Email "sans quitter l'app"** : le message est pré-rempli, prêt à envoyer en un tap — un vrai envoi silencieux nécessiterait un service payant tiers.
 - **3 boutiques / 100 par boutique** : comme l'app n'a pas de compte utilisateur ni de vraie hiérarchie boutique→produits, une "boutique" correspond au nom saisi dans le champ "Nom de l'entreprise" (plusieurs annonces partageant exactement le même nom comptent comme la même boutique).
