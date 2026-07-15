@@ -97,7 +97,10 @@ function doGet(e) {
 /* ================== doPost : écriture ================== */
 function doPost(e) {
   try {
-    const data = JSON.parse(e.postData.contents);
+    // e.parameter (formulaire) est nettement plus fiable que JSON.parse(e.postData.contents)
+    // pour les charges utiles volumineuses (logo/images en Base64) — c'est le contournement
+    // recommandé et documenté pour les Web Apps Apps Script.
+    const data = e.parameter;
     switch (data.action) {
       case 'addBoutique':    return _addBoutique(data);
       case 'updateBoutique': return _updateBoutique(data);
@@ -210,7 +213,7 @@ function _addAnnonce(data){
       case 'Image4': return data.image4 || '';
       case 'VideoURL': return data.videoUrl || '';
       case 'Plan': return data.plan || '';
-      case 'PlanWeight': return data.planWeight || 0;
+      case 'PlanWeight': return Number(data.planWeight) || 0;
       case 'Expiration': return data.expiry || '';
       case 'TxnId': return data.txnId || '';
       default: return '';
@@ -250,17 +253,19 @@ function _deleteAnnonce(data){
 // Réactive automatiquement une ou plusieurs annonces (même expirées) avec le
 // nouveau plan payé, sans que le vendeur ait à tout republier.
 function _renewAnnonces(data){
-  if(!data.ids || !data.ids.length) throw new Error('Aucune annonce à renouveler.');
+  if(!data.ids) throw new Error('Aucune annonce à renouveler.');
+  const idList = String(data.ids).split(',').filter(x=>x);
+  if(!idList.length) throw new Error('Aucune annonce à renouveler.');
   const sheet = _sheetAnnonces();
   const values = sheet.getDataRange().getValues();
   const headers = values[0];
   const planCol = headers.indexOf('Plan'), weightCol = headers.indexOf('PlanWeight'), expCol = headers.indexOf('Expiration');
   let renewed = 0;
-  data.ids.forEach(id=>{
+  idList.forEach(id=>{
     const r = _findRowIndexById(values, id);
     if(r !== -1){
       sheet.getRange(r+1, planCol+1).setValue(data.plan || '');
-      sheet.getRange(r+1, weightCol+1).setValue(data.planWeight || 0);
+      sheet.getRange(r+1, weightCol+1).setValue(Number(data.planWeight) || 0);
       sheet.getRange(r+1, expCol+1).setValue(data.expiry || '');
       renewed++;
     }
@@ -278,6 +283,6 @@ function _adminGrant(data){
   const headers = values[0];
   if(data.expiry) sheet.getRange(r+1, headers.indexOf('Expiration')+1).setValue(data.expiry);
   if(data.plan) sheet.getRange(r+1, headers.indexOf('Plan')+1).setValue(data.plan);
-  if(typeof data.planWeight !== 'undefined') sheet.getRange(r+1, headers.indexOf('PlanWeight')+1).setValue(data.planWeight);
+  if(typeof data.planWeight !== 'undefined' && data.planWeight !== '') sheet.getRange(r+1, headers.indexOf('PlanWeight')+1).setValue(Number(data.planWeight));
   return _json({ success:true });
 }

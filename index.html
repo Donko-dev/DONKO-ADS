@@ -1595,27 +1595,21 @@ function renderMyListingsList(){
   el.querySelectorAll('button[data-delshop]').forEach(b=>{
     b.addEventListener('click', async ()=>{
       if(!confirm(t('confirmDeleteShop'))) return;
-      try{
-        const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'deleteBoutique', id: b.dataset.delshop }) });
-        const j = await res.json();
-        if(!j.success) throw new Error(j.error||'delete failed');
-        removeMyBoutique(b.dataset.delshop);
-        renderMyListingsList(); renderBoutiqueDropdown(); renderShopLimitState();
-        loadGallery();
-      }catch(e){ alert(t('connErr')); }
+      const result = await postToBackend({ action:'deleteBoutique', id: b.dataset.delshop });
+      if(!result.ok){ alert(t('connErr')); return; }
+      removeMyBoutique(b.dataset.delshop);
+      renderMyListingsList(); renderBoutiqueDropdown(); renderShopLimitState();
+      loadGallery();
     });
   });
   el.querySelectorAll('button[data-delad]').forEach(b=>{
     b.addEventListener('click', async ()=>{
       if(!confirm(t('confirmDelete'))) return;
-      try{
-        const res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'deleteAnnonce', id: b.dataset.delad }) });
-        const j = await res.json();
-        if(!j.success) throw new Error(j.error||'delete failed');
-        removeMyAnnonce(b.dataset.delad);
-        renderMyListingsList();
-        loadGallery();
-      }catch(e){ alert(t('connErr')); }
+      const result = await postToBackend({ action:'deleteAnnonce', id: b.dataset.delad });
+      if(!result.ok){ alert(t('connErr')); return; }
+      removeMyAnnonce(b.dataset.delad);
+      renderMyListingsList();
+      loadGallery();
     });
   });
   el.querySelectorAll('button[data-editshop]').forEach(b=>{
@@ -1628,20 +1622,12 @@ function renderMyListingsList(){
 
 async function finalizeBoost(txnId){
   const boostExpiration = new Date(Date.now() + CONFIG.BOOST_DAYS*86400000).toISOString();
-  try{
-    const res = await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method:'POST',
-      body: JSON.stringify({ action:'boostBoutique', id: window._boostTargetId, boostExpiration })
-    });
-    const j = await res.json();
-    if(!j.success) throw new Error(j.error || 'boost failed');
-    addHistory({ type:'boost', label: window._boostTargetName || '', price: CONFIG.BOOST_PRICE, expiry: boostExpiration });
-    alert(t('boostDone'));
-    renderHistory();
-    loadGallery();
-  }catch(e){
-    alert(t('connErr'));
-  }
+  const result = await postToBackend({ action:'boostBoutique', id: window._boostTargetId, boostExpiration });
+  if(!result.ok){ alert(t('connErr')); return; }
+  addHistory({ type:'boost', label: window._boostTargetName || '', price: CONFIG.BOOST_PRICE, expiry: boostExpiration });
+  alert(t('boostDone'));
+  renderHistory();
+  loadGallery();
 }
 
 // Dès qu'un abonnement est (re)payé, toutes les annonces déjà publiées depuis cet
@@ -1653,14 +1639,9 @@ async function renewMyListings(){
   if(mine.length === 0) return;
   const access = getAccess();
   if(!access) return;
-  try{
-    const res = await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method:'POST',
-      body: JSON.stringify({ action:'renew', ids: mine.map(m=>m.id), plan: access.plan, planWeight: access.weight, expiry: access.expiry })
-    });
-    const j = await res.json();
-    if(j.success) loadGallery();
-  }catch(e){ /* la prochaine ouverture de l'app réessaiera silencieusement via loadGallery */ }
+  const result = await postToBackend({ action:'renew', ids: mine.map(m=>m.id).join(','), plan: access.plan, planWeight: access.weight, expiry: access.expiry });
+  if(result.ok) loadGallery();
+  // en cas d'échec, la prochaine ouverture de l'app (ou le prochain abonnement) réessaiera
 }
 
 
@@ -1745,10 +1726,24 @@ function compressImage(file, maxDim, targetChars){
      manquante, boutique introuvable, etc.). Là, remettre en file ne servirait
      à rien : la même erreur se reproduirait. On l'affiche telle quelle.
 ================================================================================ */
+function toFormBody(payload){
+  const params = new URLSearchParams();
+  Object.keys(payload).forEach(k=>{
+    const v = payload[k];
+    if(typeof v === 'undefined' || v === null) return;
+    params.append(k, String(v));
+  });
+  return params;
+}
+
 async function postToBackend(payload){
   let res;
   try{
-    res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
+    // Envoyé en application/x-www-form-urlencoded (via URLSearchParams) : c'est le
+    // format que Apps Script gère de façon fiable même pour de grosses charges utiles
+    // (logo/images en Base64) — contrairement à un corps JSON brut, source de plantages
+    // documentés côté Apps Script au-delà de quelques milliers de caractères.
+    res = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', body: toFormBody(payload) });
   }catch(networkErr){
     return { ok:false, offline:true };
   }
@@ -2207,14 +2202,13 @@ function renderAdminPanel(){
     const msg = document.getElementById('adminGrantMsg');
     if(!id || !days){ msg.textContent = t('adminGrantChoose'); msg.className='form-msg err'; return; }
     const expiry = new Date(Date.now() + days*86400000).toISOString();
-    try{
-      await fetch(CONFIG.APPS_SCRIPT_URL, {
-        method:'POST',
-        body: JSON.stringify({ action:'adminGrant', id, expiry, plan:'admin', planWeight: 99 })
-      });
+    const result = await postToBackend({ action:'adminGrant', id, expiry, plan:'admin', planWeight: 99 });
+    if(result.ok){
       msg.textContent = t('adminGrantDone'); msg.className='form-msg ok';
       loadGallery();
-    }catch(e){ msg.textContent = t('connErr'); msg.className='form-msg err'; }
+    } else {
+      msg.textContent = t('connErr'); msg.className='form-msg err';
+    }
   });
 }
 
