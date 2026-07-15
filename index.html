@@ -654,7 +654,7 @@ const CONFIG = {
   // Apps Script (copiée avec le bouton "Copier" — jamais retapée à la main).
   // Ne touchez à rien d'autre sur cette ligne : gardez les guillemets ' ',
   // la virgule à la fin, et ne mettez pas de retour à la ligne au milieu de l'URL.
-  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxEjbVko8cxXVLsfqwK1JzgZxDIIpzmjFPAR0piwIw3hVthmz9I0rQSRqNPIW36uQx2/exec',
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbym5b-OU2061a_lqpRduCgQjHOF1f6fZXqtqY_L4KbdWCocOY5K_fAQNexDsMdQZtlf/exec',
   // Le code d'accès pro n'est jamais stocké en clair : seul son empreinte SHA-256
   // figure ici. Voir GUIDE-INSTALLATION.md pour changer ce code vous-même.
   ADMIN_PASSCODE_HASH: '081c544db69c4da35f6fe39ce13cf5b63c534f788add9937b46011bf426e72cc',
@@ -1227,28 +1227,34 @@ function escapeHtml(str){
 }
 
 /* ================== I18N APPLY ================== */
+function _safe(fn){ try{ fn(); }catch(e){ console.error('Erreur de rendu (ignorée) :', e); } }
+
 function applyI18n(){
   document.documentElement.lang = state.lang;
   document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML = t(el.getAttribute('data-i18n')); });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = t(el.getAttribute('data-i18n-ph')); });
   document.getElementById('langToggle').textContent = state.lang === 'fr' ? 'EN' : 'FR';
-  renderCategorySelects();
-  renderFormCountrySelect();
-  renderFormPriceCurrency();
-  renderShopCurrencySelect();
-  renderBoutiqueDropdown();
-  renderShopLimitState();
-  renderCurrencySelects();
-  renderCatChips();
-  renderPlans();
-  updatePayBar();
-  renderAccessState();
-  renderProAccessState();
-  renderMyListingsList();
-  renderHistory();
-  renderGallery();
-  renderRibbon();
-  startTypewriter();
+
+  // Ruban et texte animé en tout premier : même si un rendu plus bas plante à
+  // cause d'une donnée inattendue, ces deux-là auront déjà changé de langue.
+  _safe(renderRibbon);
+  _safe(startTypewriter);
+
+  _safe(renderCategorySelects);
+  _safe(renderFormCountrySelect);
+  _safe(renderFormPriceCurrency);
+  _safe(renderShopCurrencySelect);
+  _safe(renderBoutiqueDropdown);
+  _safe(renderShopLimitState);
+  _safe(renderCurrencySelects);
+  _safe(renderCatChips);
+  _safe(renderPlans);
+  _safe(updatePayBar);
+  _safe(renderAccessState);
+  _safe(renderProAccessState);
+  _safe(renderMyListingsList);
+  _safe(renderHistory);
+  _safe(renderGallery);
 }
 document.getElementById('langToggle').addEventListener('click', ()=>{
   state.lang = state.lang === 'fr' ? 'en' : 'fr';
@@ -2169,7 +2175,7 @@ document.getElementById('adminToggleLink').addEventListener('click', async ()=>{
   }
   const code = prompt(t('adminPromptTitle'));
   if(code === null) return;
-  const hash = await sha256Hex(code);
+  const hash = await sha256Hex(code.trim());
   if(hash === CONFIG.ADMIN_PASSCODE_HASH){
     localStorage.setItem('donko_admin', 'true');
     alert(t('adminUnlocked'));
