@@ -2109,28 +2109,33 @@ function renderGallery(){
   }
 
   el.innerHTML = '<div class="gallery-grid">' + items.map(item=>{
-    const img = item.Image1 || item.BoutiqueLogo || '';
-    const isTop = (Number(item.PlanWeight)||0) >= 5;
-    const isPro = (Number(item.PlanWeight)||0) >= 1;
-    return `
-      <div class="ad-card">
-        <div class="badges">
-          ${isTop ? `<span class="badge-top">🔥 TOP</span>` : ''}
-          ${isPro ? `<span class="badge-pro">⭐ PRO</span>` : ''}
-        </div>
-        ${img ? `<img src="${img}" alt="${escapeHtml(item.BoutiqueNom)}" loading="lazy">` : ''}
-        <div class="body">
-          <div class="cat">${escapeHtml(catLabel(item.Categorie))}${item.Ville ? ' · '+escapeHtml(item.Ville) : ''}</div>
-          <h3>${escapeHtml(item.BoutiqueNom)}</h3>
-          ${priceHtml(item)}
-          <p>${escapeHtml(item.Description)}</p>
-          <div class="row-actions">
-            ${item.Lien ? `<a class="visit" href="${item.Lien}" target="_blank" rel="noopener">${t('visit')}</a>` : ''}
-            ${item.Contact ? `<a class="visit" style="background:var(--jade);" href="https://wa.me/${item.Contact.replace(/[^0-9]/g,'')}" target="_blank" rel="noopener">${t('contactBtn')}</a>` : ''}
-            <button class="share-btn" data-name="${escapeHtml(item.BoutiqueNom)}" data-link="${escapeHtml(item.Lien||'')}">${t('share')}</button>
+    try{
+      const img = item.Image1 || item.BoutiqueLogo || '';
+      const isTop = (Number(item.PlanWeight)||0) >= 5;
+      const isPro = (Number(item.PlanWeight)||0) >= 1;
+      return `
+        <div class="ad-card">
+          <div class="badges">
+            ${isTop ? `<span class="badge-top">🔥 TOP</span>` : ''}
+            ${isPro ? `<span class="badge-pro">⭐ PRO</span>` : ''}
           </div>
-        </div>
-      </div>`;
+          ${img ? `<img src="${img}" alt="${escapeHtml(item.BoutiqueNom)}" loading="lazy">` : ''}
+          <div class="body">
+            <div class="cat">${escapeHtml(catLabel(item.Categorie))}${item.Ville ? ' · '+escapeHtml(String(item.Ville)) : ''}</div>
+            <h3>${escapeHtml(item.BoutiqueNom)}</h3>
+            ${priceHtml(item)}
+            <p>${escapeHtml(item.Description)}</p>
+            <div class="row-actions">
+              ${item.Lien ? `<a class="visit" href="${item.Lien}" target="_blank" rel="noopener">${t('visit')}</a>` : ''}
+              ${item.Contact ? `<a class="visit" style="background:var(--jade);" href="https://wa.me/${String(item.Contact).replace(/[^0-9]/g,'')}" target="_blank" rel="noopener">${t('contactBtn')}</a>` : ''}
+              <button class="share-btn" data-name="${escapeHtml(item.BoutiqueNom)}" data-link="${escapeHtml(item.Lien||'')}">${t('share')}</button>
+            </div>
+          </div>
+        </div>`;
+    }catch(cardErr){
+      console.error('Carte annonce ignorée (erreur de rendu) :', cardErr, item);
+      return '';
+    }
   }).join('') + '</div>';
 
   el.querySelectorAll('.share-btn').forEach(b=>{
