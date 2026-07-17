@@ -1875,7 +1875,8 @@ document.getElementById('submitShop').addEventListener('click', async ()=>{
 
     renderShopLimitState(); renderBoutiqueDropdown(); renderMyListingsList(); loadGallery();
   }catch(err){
-    msg.textContent = t('connErr'); msg.className='form-msg err';
+    msg.textContent = t('connErr') + (err && err.message ? ' — ' + err.message : '');
+    msg.className='form-msg err';
   }finally{
     btn.disabled = false;
     if(!state.editingBoutiqueId) btn.textContent = t('btnCreateShop');
@@ -2011,7 +2012,7 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
     showShareAfter(desc.slice(0,40), link);
     renderAccessState(); renderProAccessState(); renderMyListingsList(); loadGallery();
   }catch(err){
-    msg.textContent = t('connErr');
+    msg.textContent = t('connErr') + (err && err.message ? ' — ' + err.message : '');
     msg.className = 'form-msg err';
   }finally{
     btn.disabled = false;
