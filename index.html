@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>DONKO ADS — Annonces &amp; publicités locales</title>
-<meta name="description" content="DONKO ADS : petites annonces et publicités gratuites au Bénin, Togo, Côte d'Ivoire, Sénégal, Niger, Mali et Burkina Faso. Publiez votre boutique, trouvez des produits et services près de chez vous, payez en Mobile Money.">
-<meta name="keywords" content="annonces Bénin, petites annonces UEMOA, publicité boutique, vendre en ligne Bénin, acheter Cotonou, annonces Togo, annonces Côte d'Ivoire, annonces Sénégal, marketplace Afrique de l'Ouest, mobile money, Kkiapay, commerce local Bénin">
+<meta name="description" content="DONKO ADS : petites annonces et publicités gratuites accessibles dans le monde entier. Publiez votre boutique, trouvez des produits et services près de chez vous, payez en Mobile Money ou par carte bancaire.">
+<meta name="keywords" content="annonces Bénin, petites annonces internationales, publicité boutique, vendre en ligne, acheter Cotonou, annonces Togo, annonces Côte d'Ivoire, annonces Sénégal, marketplace international, mobile money, Kkiapay, commerce local">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://donko-dev.github.io/donko-ads/">
 <meta name="theme-color" content="#131B33">
 
 <!-- Open Graph / réseaux sociaux -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="DONKO ADS — Annonces & publicités locales, zone UEMOA">
-<meta property="og:description" content="Publiez la vitrine de votre boutique et soyez vu par toute la zone UEMOA. Recherchez produits et services près de chez vous. Paiement Mobile Money via Kkiapay.">
+<meta property="og:title" content="DONKO ADS — Annonces & publicités locales, internationales">
+<meta property="og:description" content="Publiez la vitrine de votre boutique et soyez vu partout dans le monde. Recherchez produits et services près de chez vous. Paiement Mobile Money ou carte bancaire via Kkiapay.">
 <meta property="og:image" content="icon-512.png">
 <meta property="og:url" content="https://donko-dev.github.io/donko-ads/">
 <meta property="og:locale" content="fr_BJ">
@@ -21,7 +21,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DONKO ADS — Annonces & publicités locales">
-<meta name="twitter:description" content="Publiez votre boutique, trouvez des produits et services près de chez vous, zone UEMOA.">
+<meta name="twitter:description" content="Publiez votre boutique, trouvez des produits et services près de chez vous, partout dans le monde.">
 <meta name="twitter:image" content="icon-512.png">
 
 <!-- Données structurées (schema.org) : décrivent le SITE, pas chaque annonce individuelle -->
@@ -31,7 +31,7 @@
   "@type": "WebSite",
   "name": "DONKO ADS",
   "url": "https://donko-dev.github.io/donko-ads/",
-  "description": "Annonces et publicités locales pour commerçants et entreprises de la zone UEMOA.",
+  "description": "Annonces et publicités locales pour commerçants et entreprises du monde entier.",
   "publisher": { "@type": "Organization", "name": "Empire Donko" },
   "potentialAction": {
     "@type": "SearchAction",
@@ -359,7 +359,7 @@
   </nav>
 
   <header class="hero">
-    <span class="eyebrow" data-i18n="eyebrow">Annonces &amp; publicités locales — zone UEMOA</span>
+    <span class="eyebrow" data-i18n="eyebrow">Annonces &amp; publicités locales — internationales</span>
     <h1 data-i18n="heroTitle">Votre commerce, vu par tout le monde.</h1>
     <p id="heroTypeText">Créez la vitrine de votre boutique, trouvez ce dont vous avez besoin près de chez vous, et publiez en Mobile Money — sans connexion permanente.<span class="type-cursor">|</span></p>
     <div class="hero-actions">
@@ -541,6 +541,7 @@
         <p class="plans-hint" data-i18n="plansSwipeHint">👉 Faites glisser pour voir tous les plans</p>
         <div class="plans-scroll" id="plansGrid"></div>
         <p class="notice tip" data-i18n="currencyPaymentNotice">💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), via Kkiapay (Mobile Money ou carte bancaire Visa/Mastercard).</p>
+        <p class="notice warn" data-i18n="stayOnPageNotice">⚠️ Important : après avoir payé, restez sur cette page jusqu'au message « Paiement confirmé ! ». Si vous fermez l'application avant ce message, votre accès risque de ne pas s'activer même si le paiement a été débité.</p>
         <p class="disclaimer" data-i18n="disclaimerText">
           Paiement unique via Kkiapay (Mobile Money ou carte bancaire) — aucun prélèvement automatique, aucune information bancaire enregistrée chez nous.
           À la fin de la période, votre boutique disparaît automatiquement de la liste ; revenez payer le plan de votre choix pour continuer.
@@ -602,7 +603,7 @@
       <button data-modal="cgu" data-i18n="navCgu">CGU</button>
     </div>
 
-    <a class="store-btn" href="https://majesticfordonko.mychariow.shop" target="_blank" rel="noopener" data-i18n="storeBtn">🛒 EMPIRE DONKO TOOLS STORE</a>
+    <a class="store-btn" href="https://empirecode.mychariow.co" target="_blank" rel="noopener" data-i18n="storeBtn">🛒 EMPIRE CODE</a>
 
     <div class="footer-contact">
       <a class="blink-jade" href="https://wa.me/2290196809106" target="_blank" rel="noopener">
@@ -657,7 +658,7 @@ const CONFIG = {
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbym5b-OU2061a_lqpRduCgQjHOF1f6fZXqtqY_L4KbdWCocOY5K_fAQNexDsMdQZtlf/exec',
   // Le code d'accès pro n'est jamais stocké en clair : seul son empreinte SHA-256
   // figure ici. Voir GUIDE-INSTALLATION.md pour changer ce code vous-même.
-  ADMIN_PASSCODE_HASH: '081c544db69c4da35f6fe39ce13cf5b63c534f788add9937b46011bf426e72cc',
+  ADMIN_PASSCODE_HASH: '391a9dc924d6b2a6fde451b85559d328ad52c8f4013f02d94d48e64d7a460e1a',
   FREE_POSTS_LIMIT: 3,
   FREE_POST_VALIDITY_DAYS: 30,
   BOOST_PRICE: 3000,
@@ -831,7 +832,11 @@ const COUNTRIES = [
   { id:"nz", fr:"Nouvelle-Zélande", en:"New Zealand", dial:"+64", example:"+64 2X XXX XXXX" },
   { id:"autre", fr:"Autre pays", en:"Other country", dial:"", example:"" }
 ];
-function countryLabel(id){ const c = COUNTRIES.find(c=>c.id===id); return c ? c[state.lang] : id; }
+function countryLabel(id){
+  const norm = normStr(id);
+  const c = COUNTRIES.find(c => c.id===id || normStr(c.fr)===norm || normStr(c.en)===norm);
+  return c ? c[state.lang] : id;
+}
 
 const CATEGORIES = [
   {id:'commerce', fr:'Commerce & Vente', en:'Retail & Trade'},
@@ -882,7 +887,7 @@ const PLANS = BASE_PLANS.map((p, i) => ({
 const I18N = { fr:{}, en:{} };
 
 I18N.fr = {
-  eyebrow:"Annonces & publicités locales — zone UEMOA",
+  eyebrow:"Annonces & publicités locales — internationales",
   heroTitle:"Votre commerce, vu par tout le monde.",
   heroText:"Créez la vitrine de votre boutique, trouvez ce dont vous avez besoin près de chez vous, et publiez en Mobile Money — sans connexion permanente.",
   btnAdd2:"📣 Publier ma boutique", exploreBtn:"Explorer les annonces",
@@ -920,7 +925,7 @@ I18N.fr = {
   confirmDeleteShop:"Supprimer définitivement cette boutique et toutes ses annonces ?",
   myShopsHint:"Gérez vos boutiques et les annonces publiées dans chacune : modifier, supprimer, partager, booster.",
   noShopYet:"Vous n'avez pas encore créé de boutique.",
-  tagForm:"Votre boutique", formTitle:"Créer votre boutique / publicité",
+  tagForm:"Votre annonce", formTitle:"Publier une annonce ou un produit",
   lblName:"Nom de l'entreprise / boutique", phName:"Ex : Boutique Awa",
   lblCategory:"Catégorie / activité", lblCity:"Ville",
   lblAddress:"Adresse / quartier", phAddress:"Quartier, repère...",
@@ -931,6 +936,7 @@ I18N.fr = {
   priceHint:"Le montant est enregistré dans la devise choisie ; chaque visiteur peut ensuite l'afficher dans la devise de son choix.",
   displayCurrencyLabel:"💱 Afficher les prix en :",
   currencyPaymentNotice:"💳 Les prix ci-dessus sont indicatifs. Le paiement de l'abonnement se fait toujours en Francs CFA (FCFA), via Kkiapay (Mobile Money ou carte bancaire Visa/Mastercard).",
+  stayOnPageNotice:"⚠️ Important : après avoir payé, restez sur cette page jusqu'au message « Paiement confirmé ! ». Si vous fermez l'application avant ce message, votre accès risque de ne pas s'activer même si le paiement a été débité.",
   lblLogo:"Logo (jpg/png/webp)",
   lblImages:"Images (jpg/png/webp, 2 Mo max chacune, 4 maximum)",
   lblVideo:"Lien vidéo YouTube/Vimeo (optionnel)",
@@ -944,7 +950,7 @@ I18N.fr = {
   tagFeedback:"Votre avis", feedbackTitle:"Une suggestion, un souci ?", fbPh:"Écrivez-nous vos suggestions pour nous aider à améliorer le fonctionnement de DONKO ADS.", fbSend:"Envoyer",
   navGuide:"Guide d'utilisation", navPolicy:"Politique d'utilisation", navAbout:"À propos",
   navMentions:"Mentions légales", navCgu:"CGU",
-  storeBtn:"🛒 EMPIRE DONKO TOOLS STORE",
+  storeBtn:"🛒 EMPIRE CODE",
   partnershipText:"Une idée d'outil sur mesure, fonctionnant hors connexion, hors serveur, hors base de données, pour votre activité et votre confidentialité ? Écrivez-nous.",
   footerTag:"votre commerce, vu par tout le monde.", poweredBy:"Powered by EMPIRE DONKO",
   payBtn:"Payer", installMsg:"Installez DONKO ADS sur votre écran d'accueil.", installBtn:"Installer",
@@ -995,7 +1001,7 @@ I18N.fr = {
 };
 
 I18N.en = {
-  eyebrow:"Local ads & business listings — UEMOA zone",
+  eyebrow:"Local ads & business listings — international",
   heroTitle:"Your business, seen by everyone.",
   heroText:"Create your shop's showcase, find what you need nearby, and publish via Mobile Money — no permanent connection needed.",
   btnAdd2:"📣 Publish my shop", exploreBtn:"Explore listings",
@@ -1033,7 +1039,7 @@ I18N.en = {
   confirmDeleteShop:"Permanently delete this shop and all its listings?",
   myShopsHint:"Manage your shops and the listings published in each: edit, delete, share, boost.",
   noShopYet:"You haven't created a shop yet.",
-  tagForm:"Your shop", formTitle:"Create your shop / listing",
+  tagForm:"Your listing", formTitle:"Publish a listing or product",
   lblName:"Business / shop name", phName:"E.g.: Awa's Shop",
   lblCategory:"Category / activity", lblCity:"City",
   lblAddress:"Address / neighborhood", phAddress:"Neighborhood, landmark...",
@@ -1044,6 +1050,7 @@ I18N.en = {
   priceHint:"The amount is stored in the chosen currency; each visitor can then display it in the currency of their choice.",
   displayCurrencyLabel:"💱 Show prices in:",
   currencyPaymentNotice:"💳 Prices above are indicative. Subscription payment is always made in CFA Francs (FCFA), via Kkiapay (Mobile Money or Visa/Mastercard bank card).",
+  stayOnPageNotice:"⚠️ Important: after paying, stay on this page until you see the \"Payment confirmed!\" message. If you close the app before that message appears, your access may not activate even though the payment went through.",
   lblLogo:"Logo (jpg/png/webp)",
   lblImages:"Images (jpg/png/webp, 2 MB max each, 4 max)",
   lblVideo:"YouTube/Vimeo video link (optional)",
@@ -1057,7 +1064,7 @@ I18N.en = {
   tagFeedback:"Your feedback", feedbackTitle:"A suggestion, an issue?", fbPh:"Send us your suggestions to help us improve how DONKO ADS works.", fbSend:"Send",
   navGuide:"User guide", navPolicy:"Usage policy", navAbout:"About",
   navMentions:"Legal notice", navCgu:"Terms of use",
-  storeBtn:"🛒 EMPIRE DONKO TOOLS STORE",
+  storeBtn:"🛒 EMPIRE CODE",
   partnershipText:"An idea for a custom tool working offline, without server, without database, for your business and your privacy? Write to us.",
   footerTag:"your business, seen by everyone.", poweredBy:"Powered by EMPIRE DONKO",
   payBtn:"Pay", installMsg:"Install DONKO ADS on your home screen.", installBtn:"Install",
@@ -1126,10 +1133,10 @@ LEGAL.fr.policy = "<h2>Politique d'utilisation</h2>"
   + "<h3>4. Le seul moment où une connexion est utilisée</h3><p>Une connexion est nécessaire pour : afficher/actualiser la liste des boutiques, publier une boutique, payer un abonnement ou un boost, et partager vers un réseau social.</p>"
   + "<h3>5. Kkiapay, service tiers indépendant</h3><p>Le paiement est assuré par Kkiapay, qui applique sa propre politique de confidentialité, indépendante de DONKO ADS.</p>"
   + "<h3>6. Usages interdits</h3><p>Il est interdit de publier un contenu frauduleux, de copier la boutique ou le contenu d'un autre utilisateur, d'usurper une identité, ou d'utiliser des robots/scripts pour publier ou extraire les données du site.</p>"
-  + "<h3>7. Zone couverte</h3><p>La publication est réservée aux entreprises et commerçants disposant d'un moyen de paiement (Mobile Money ou carte bancaire) pris en charge par Kkiapay, actuellement le Bénin, le Togo, la Côte d'Ivoire et le Sénégal. La consultation du site reste ouverte à tous.</p>";
+  + "<h3>7. Zone couverte</h3><p>DONKO ADS est ouvert aux commerçants, artisans et entreprises du monde entier. Le paiement de l'abonnement se fait via Kkiapay, en Mobile Money (selon les opérateurs pris en charge par pays) ou par carte bancaire Visa/Mastercard, disponible pour la quasi-totalité des pays. La consultation du site reste ouverte à tous, sans aucune restriction géographique.</p>";
 
 LEGAL.fr.about = "<h2>À propos</h2>"
-  + "<p>DONKO ADS est un annuaire d'annonces et de publicités pensé pour les commerçants, artisans, indépendants et entreprises du Bénin, du Togo, de la Côte d'Ivoire et du Sénégal — les pays pris en charge par Kkiapay.</p>"
+  + "<p>DONKO ADS est un annuaire d'annonces et de publicités pensé pour les commerçants, artisans, indépendants et entreprises du monde entier, avec paiement de l'abonnement via Kkiapay (Mobile Money ou carte bancaire).</p>"
   + "<h3>Pourquoi DONKO ADS existe</h3><p>Beaucoup de commerçants n'ont pas de site web ni de visibilité en ligne. DONKO ADS leur offre une vitrine simple, accessible depuis un simple navigateur, avec un paiement transparent et sans engagement.</p>"
   + "<h3>Qui est derrière DONKO ADS</h3><p>DONKO ADS est développé et édité par Empire Donko.</p>"
   + "<h3>Nous contacter</h3><p>WhatsApp : +229 01 96 80 91 06<br>Email : empiredonko@gmail.com</p>";
@@ -1148,7 +1155,7 @@ LEGAL.fr.cgu = "<h2>Conditions Générales d'Utilisation</h2>"
   + "<h3>Article 2 — Description du service</h3><p>DONKO ADS permet à des commerçants, artisans et entreprises de publier une fiche boutique visible publiquement, moyennant un plan gratuit limité ou un abonnement payant via Kkiapay.</p>"
   + "<h3>Article 3 — Publications gratuites et abonnement</h3><p>Chaque appareil dispose de 3 publications gratuites valables 30 jours. Au-delà, un abonnement payant (Mensuel à À vie) débloque des publications illimitées pour sa durée. Chaque publication expire impérativement à la fin de la période correspondante.</p>"
   + "<h3>Article 4 — Boost</h3><p>Une mise en avant (boost) payante et optionnelle, valable 31 jours, place la boutique en tête de liste.</p>"
-  + "<h3>Article 5 — Zone d'accès au paiement</h3><p>La publication est réservée aux utilisateurs disposant d'un moyen de paiement (Mobile Money ou carte bancaire) pris en charge par Kkiapay.</p>"
+  + "<h3>Article 5 — Zone d'accès au paiement</h3><p>La publication est ouverte aux utilisateurs de tous pays disposant d'un moyen de paiement (Mobile Money selon leur pays, ou carte bancaire Visa/Mastercard) pris en charge par Kkiapay.</p>"
   + "<h3>Article 6 — Obligations de l'utilisateur</h3><p>L'utilisateur s'engage à publier des informations exactes et licites, à ne pas copier le contenu d'un autre utilisateur, à ne pas usurper une identité, et à ne pas utiliser de robot, script ou outil automatisé pour publier ou extraire des données du site.</p>"
   + "<h3>Article 7 — Propriété intellectuelle</h3><p>Le nom, le design et le code de DONKO ADS sont protégés. Toute reproduction non autorisée est interdite.</p>"
   + "<h3>Article 8 — Limitation de responsabilité</h3><p>DONKO ADS est fourni « en l'état ». Empire Donko n'est pas responsable du contenu publié par les utilisateurs, ni des dysfonctionnements liés à GitHub Pages, Google ou Kkiapay.</p>"
@@ -1172,7 +1179,7 @@ LEGAL.en.policy = "<h2>Usage policy</h2>"
   + "<h3>4. The only time a connection is used</h3><p>A connection is needed to: display/refresh the shop list, publish a shop, pay for a subscription or boost, and share to a social network.</p>"
   + "<h3>5. Kkiapay, an independent third-party service</h3><p>Payment is handled by Kkiapay, which applies its own privacy policy, independent of DONKO ADS.</p>"
   + "<h3>6. Prohibited uses</h3><p>It is forbidden to publish fraudulent content, copy another user's shop or content, impersonate an identity, or use bots/scripts to publish or scrape data from the site.</p>"
-  + "<h3>7. Coverage area</h3><p>Publishing is reserved for businesses and merchants with a payment method (Mobile Money or bank card) supported by Kkiapay — currently Benin, Togo, Côte d'Ivoire and Senegal. Browsing the site remains open to everyone.</p>";
+  + "<h3>7. Coverage area</h3><p>DONKO ADS is open to merchants, craftspeople and businesses worldwide. Subscription payment is handled via Kkiapay, using Mobile Money (depending on operators supported per country) or a Visa/Mastercard bank card, available in nearly every country. Browsing the site remains open to everyone, with no geographic restriction.</p>";
 
 LEGAL.en.about = "<h2>About</h2>"
   + "<p>DONKO ADS is a directory of listings and ads designed for merchants, craftspeople, freelancers and businesses in Benin, Togo, Côte d'Ivoire and Senegal — the countries supported by Kkiapay.</p>"
@@ -1194,7 +1201,7 @@ LEGAL.en.cgu = "<h2>Terms of use</h2>"
   + "<h3>Article 2 — Service description</h3><p>DONKO ADS lets merchants, craftspeople and businesses publish a publicly visible shop listing, under a limited free plan or a paid subscription via Kkiapay.</p>"
   + "<h3>Article 3 — Free listings and subscription</h3><p>Each device has 3 free listings valid for 30 days. Beyond that, a paid subscription (Monthly to Lifetime) unlocks unlimited listings for its duration. Each listing expires strictly at the end of its corresponding period.</p>"
   + "<h3>Article 4 — Boost</h3><p>An optional paid feature (boost), valid 31 days, places the shop at the top of the list.</p>"
-  + "<h3>Article 5 — Payment coverage area</h3><p>Publishing is reserved for users with a payment method (Mobile Money or bank card) supported by Kkiapay.</p>"
+  + "<h3>Article 5 — Payment coverage area</h3><p>Publishing is open to users in any country who have a payment method (Mobile Money depending on their country, or a Visa/Mastercard bank card) supported by Kkiapay.</p>"
   + "<h3>Article 6 — User obligations</h3><p>The user agrees to publish accurate and lawful information, not to copy another user's content, not to impersonate anyone, and not to use any bot, script or automated tool to publish or scrape data from the site.</p>"
   + "<h3>Article 7 — Intellectual property</h3><p>The name, design and code of DONKO ADS are protected. Unauthorized reproduction is prohibited.</p>"
   + "<h3>Article 8 — Limitation of liability</h3><p>DONKO ADS is provided \"as is\". Empire Donko is not responsible for user-published content, nor for malfunctions related to GitHub Pages, Google or Kkiapay.</p>"
@@ -1221,7 +1228,11 @@ let state = {
 
 function t(key){ return (I18N[state.lang] && I18N[state.lang][key]) || I18N.fr[key] || key; }
 function fcfa(n){ return n.toLocaleString('fr-FR') + ' F CFA'; }
-function catLabel(id){ const c = CATEGORIES.find(c=>c.id===id); return c ? c[state.lang] : id; }
+function catLabel(id){
+  const norm = normStr(id);
+  const c = CATEGORIES.find(c => c.id===id || normStr(c.fr)===norm || normStr(c.en)===norm);
+  return c ? c[state.lang] : id;
+}
 function escapeHtml(str){
   return String(str||'').replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 }
@@ -2056,11 +2067,35 @@ function nativeShare(title, text, url){
 }
 
 /* ================== GALLERY ================== */
+function normStr(s){ return String(s||'').trim().toLowerCase(); }
+
+// Compare une valeur venant du Google Sheet à un ID choisi dans un filtre,
+// en tolérant : espaces superflus, différence de casse, et le cas où la
+// cellule contient le libellé humain (FR ou EN) plutôt que l'identifiant
+// technique (ce qui arrive si la cellule a été modifiée à la main dans
+// Google Sheets, ou collée avec un espace invisible).
+function categoryMatches(itemValue, selectedId){
+  if(!selectedId) return true;
+  const a = normStr(itemValue);
+  if(a === normStr(selectedId)) return true;
+  const def = CATEGORIES.find(c=>c.id===selectedId);
+  if(def && (a === normStr(def.fr) || a === normStr(def.en))) return true;
+  return false;
+}
+function countryMatches(itemValue, selectedId){
+  if(!selectedId) return true;
+  const a = normStr(itemValue);
+  if(a === normStr(selectedId)) return true;
+  const def = COUNTRIES.find(c=>c.id===selectedId);
+  if(def && (a === normStr(def.fr) || a === normStr(def.en))) return true;
+  return false;
+}
+
 function filteredSortedListings(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   let items = state.annonces.filter(item=>{
-    if(state.selectedCategory && item.Categorie !== state.selectedCategory) return false;
-    if(state.selectedCountry && item.Pays !== state.selectedCountry) return false;
+    if(state.selectedCategory && !categoryMatches(item.Categorie, state.selectedCategory)) return false;
+    if(state.selectedCountry && !countryMatches(item.Pays, state.selectedCountry)) return false;
     if(state.selectedCity && !(String(item.Ville||'').toLowerCase().includes(state.selectedCity.toLowerCase()))) return false;
     if(state.selectedBoutiqueFilter && item.BoutiqueID !== state.selectedBoutiqueFilter) return false;
     if(q){
@@ -2115,7 +2150,7 @@ function renderGallery(){
       const isTop = (Number(item.PlanWeight)||0) >= 5;
       const isPro = (Number(item.PlanWeight)||0) >= 1;
       return `
-        <div class="ad-card">
+        <div class="ad-card" data-detail-id="${escapeHtml(item.ID)}">
           <div class="badges">
             ${isTop ? `<span class="badge-top">🔥 TOP</span>` : ''}
             ${isPro ? `<span class="badge-pro">⭐ PRO</span>` : ''}
@@ -2127,9 +2162,9 @@ function renderGallery(){
             ${priceHtml(item)}
             <p>${escapeHtml(item.Description)}</p>
             <div class="row-actions">
-              ${item.Lien ? `<a class="visit" href="${item.Lien}" target="_blank" rel="noopener">${t('visit')}</a>` : ''}
-              ${item.Contact ? `<a class="visit" style="background:var(--jade);" href="https://wa.me/${String(item.Contact).replace(/[^0-9]/g,'')}" target="_blank" rel="noopener">${t('contactBtn')}</a>` : ''}
-              <button class="share-btn" data-name="${escapeHtml(item.BoutiqueNom)}" data-link="${escapeHtml(item.Lien||'')}">${t('share')}</button>
+              ${item.Lien ? `<a class="visit" data-stop href="${item.Lien}" target="_blank" rel="noopener">${t('visit')}</a>` : ''}
+              ${item.Contact ? `<a class="visit" data-stop style="background:var(--jade);" href="https://wa.me/${String(item.Contact).replace(/[^0-9]/g,'')}" target="_blank" rel="noopener">${t('contactBtn')}</a>` : ''}
+              <button class="share-btn" data-stop data-name="${escapeHtml(item.BoutiqueNom)}" data-link="${escapeHtml(item.Lien||'')}">${t('share')}</button>
             </div>
           </div>
         </div>`;
@@ -2140,29 +2175,110 @@ function renderGallery(){
   }).join('') + '</div>';
 
   el.querySelectorAll('.share-btn').forEach(b=>{
-    b.addEventListener('click', ()=> nativeShare(b.dataset.name, b.dataset.name, b.dataset.link || location.href));
+    b.addEventListener('click', (e)=>{ e.stopPropagation(); nativeShare(b.dataset.name, b.dataset.name, b.dataset.link || location.href); });
+  });
+  // Les liens "Visiter"/"Contacter" ouvrent déjà leur propre onglet (target=_blank) ;
+  // on empêche juste la propagation pour ne pas ouvrir la fiche détail en même temps.
+  el.querySelectorAll('[data-stop]').forEach(a=>{
+    a.addEventListener('click', (e)=> e.stopPropagation());
+  });
+  // Clic n'importe où sur la carte (hors boutons) → ouvre la fiche détail complète.
+  el.querySelectorAll('.ad-card[data-detail-id]').forEach(card=>{
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', ()=>{
+      const item = state.annonces.find(a=>a.ID===card.dataset.detailId);
+      if(item) openListingDetail(item);
+    });
   });
 }
 
-async function loadGallery(){
+/* ================== FICHE DÉTAIL D'UNE ANNONCE ================== */
+function openListingDetail(item){
+  const images = [item.Image1, item.Image2, item.Image3, item.Image4].filter(Boolean);
+  const mainImg = images[0] || item.BoutiqueLogo || '';
+  const thumbsHtml = images.length > 1 ? `
+    <div style="display:flex;gap:8px;margin-top:8px;overflow-x:auto;">
+      ${images.map((src,i)=>`<img src="${src}" data-thumb="${i}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--brick)':'transparent'};" />`).join('')}
+    </div>` : '';
+
+  document.getElementById('modalRoot').innerHTML = `
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-box" style="padding:0;overflow:hidden;">
+        <div style="position:relative;">
+          <button class="modal-close" id="modalCloseBtn" style="position:absolute;top:12px;right:12px;z-index:2;background:rgba(20,23,31,0.55);color:#fff;">✕</button>
+          ${mainImg ? `<img id="detailMainImg" src="${mainImg}" alt="${escapeHtml(item.BoutiqueNom)}" style="width:100%;max-height:280px;object-fit:cover;display:block;">` : ''}
+        </div>
+        <div style="padding:18px 20px 22px;">
+          ${thumbsHtml}
+          <div class="cat" style="margin-top:${images.length>1?'10px':'2px'};">${escapeHtml(catLabel(item.Categorie))}${item.Ville ? ' · '+escapeHtml(String(item.Ville)) : ''}${item.Pays ? ' · '+escapeHtml(countryLabel(item.Pays)) : ''}</div>
+          <h2 style="margin-top:6px;">${escapeHtml(item.BoutiqueNom)}</h2>
+          ${priceHtml(item)}
+          <p style="white-space:pre-wrap;-webkit-line-clamp:unset;display:block;overflow:visible;">${escapeHtml(item.Description)}</p>
+          ${item.VideoURL ? `<p style="margin-top:8px;"><a href="${escapeHtml(item.VideoURL)}" target="_blank" rel="noopener" style="color:var(--brick);font-weight:600;">▶ ${state.lang==='fr'?'Voir la vidéo':'Watch video'}</a></p>` : ''}
+          <div class="row-actions" style="margin-top:16px;gap:8px;">
+            ${item.Lien ? `<a class="visit" href="${item.Lien}" target="_blank" rel="noopener" style="padding:10px 16px;font-size:13px;">${t('visit')}</a>` : ''}
+            ${item.Contact ? `<a class="visit" style="background:var(--jade);padding:10px 16px;font-size:13px;" href="https://wa.me/${String(item.Contact).replace(/[^0-9]/g,'')}" target="_blank" rel="noopener">${t('contactBtn')}</a>` : ''}
+            <button class="share-btn" id="detailShareBtn" style="padding:10px 16px;font-size:13px;">${t('share')}</button>
+          </div>
+          <button class="btn btn-outline" id="detailBackBtn" style="width:100%;margin-top:14px;">${state.lang==='fr'?'← Retour aux annonces':'← Back to listings'}</button>
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+  document.getElementById('detailBackBtn').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', (e)=>{ if(e.target.id==='modalOverlay') closeModal(); });
+  document.getElementById('detailShareBtn').addEventListener('click', ()=> nativeShare(item.BoutiqueNom, item.BoutiqueNom, item.Lien || location.href));
+  document.querySelectorAll('[data-thumb]').forEach(th=>{
+    th.addEventListener('click', ()=>{
+      document.getElementById('detailMainImg').src = images[Number(th.dataset.thumb)];
+      document.querySelectorAll('[data-thumb]').forEach(x=>x.style.borderColor='transparent');
+      th.style.borderColor = 'var(--brick)';
+    });
+  });
+}
+
+function paintFromCache(){
   try{
-    const res = await fetch(CONFIG.APPS_SCRIPT_URL);
+    const cached = localStorage.getItem('donko_cache');
+    if(!cached) return false;
+    const parsed = JSON.parse(cached);
+    state.annonces = parsed.annonces || [];
+    state.allBoutiques = parsed.allBoutiques || [];
+    state.boutiquesBoostees = parsed.boutiquesBoostees || [];
+    renderGallery();
+    return true;
+  }catch(e){ return false; }
+}
+
+async function loadGallery(){
+  // 1) Affichage INSTANTANÉ : on peint d'abord ce qu'on a déjà en cache local
+  //    (dernière liste connue), sans attendre le réseau. L'utilisateur voit
+  //    immédiatement quelque chose dès l'ouverture du site/app.
+  const hadCache = paintFromCache();
+
+  // 2) En parallèle (silencieusement), on va chercher la version la plus
+  //    récente sur le serveur et on met à jour l'affichage dès qu'elle arrive.
+  try{
+    const res = await fetch(CONFIG.APPS_SCRIPT_URL, { cache:'no-store' });
     const data = await res.json();
     if(!data.success) throw new Error(data.error || 'load failed');
     state.annonces = data.annonces || [];
     state.allBoutiques = data.boutiques || [];
     state.boutiquesBoostees = data.boutiquesBoostees || [];
-    localStorage.setItem('donko_cache', JSON.stringify({ annonces: state.annonces, boutiquesBoostees: state.boutiquesBoostees }));
+    localStorage.setItem('donko_cache', JSON.stringify({ annonces: state.annonces, allBoutiques: state.allBoutiques, boutiquesBoostees: state.boutiquesBoostees }));
     renderGallery();
     renderAdminPanel();
   }catch(err){
-    const cached = localStorage.getItem('donko_cache');
-    const parsed = cached ? JSON.parse(cached) : { annonces: [], boutiquesBoostees: [] };
-    state.annonces = parsed.annonces || [];
-    state.boutiquesBoostees = parsed.boutiquesBoostees || [];
-    renderGallery();
-    if(cached){
-      document.getElementById('featuredRow').insertAdjacentHTML('beforebegin', `<span class="offline-note">${t('offlineNote')}</span>`);
+    // Pas de connexion / échec réseau : on reste simplement sur ce qui est
+    // déjà affiché depuis le cache (étape 1). On ne casse rien.
+    if(hadCache){
+      const existingNote = document.querySelector('.offline-note');
+      if(!existingNote){
+        document.getElementById('featuredRow').insertAdjacentHTML('beforebegin', `<span class="offline-note">${t('offlineNote')}</span>`);
+      }
+    } else {
+      renderGallery();
     }
   }
 }
