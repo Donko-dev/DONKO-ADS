@@ -411,6 +411,14 @@
     <!-- ================= VIEW: PUBLISH ================= -->
     <div id="viewPublish" class="hidden">
 
+      <div class="section" style="padding-bottom:6px;">
+        <div class="search-bar" id="publishActionsRow" style="flex-wrap:wrap;">
+          <button class="btn btn-brick" id="actionShopBtn" style="flex:1;min-width:150px;"></button>
+          <button class="btn btn-navy" id="actionAdBtn" style="flex:1;min-width:150px;"></button>
+          <button class="btn btn-outline" id="actionExploreBtn2" style="flex:1;min-width:150px;" data-i18n="exploreBtn">Explorer les annonces</button>
+        </div>
+      </div>
+
       <!-- ---- Créer une boutique ---- -->
       <section class="section" id="createShop">
         <div class="section-head">
@@ -916,6 +924,9 @@ I18N.fr = {
   lblShopDesc:"Description détaillée de la boutique", phShopDesc:"Présentez votre boutique, vos horaires, votre spécialité...",
   lblCurrency:"Devise préférée de la boutique", lblLogo2:"Logo de l'entreprise / boutique (jpg/png/webp)",
   btnCreateShop:"Créer la boutique", btnSaveEdit:"Enregistrer les modifications",
+  navCreateShop:"Créer une boutique", navEditShop:"Modifier une boutique",
+  navPublishAd:"Publier une annonce", navManageAds:"Modifier ou supprimer une annonce",
+  chooseShopToEdit:"Choisissez la boutique à modifier", chooseShopToManageAds:"Choisissez la boutique dont vous voulez gérer les annonces",
   okShopSaved:"Boutique enregistrée ✅",
   lblChooseShop:"Dans quelle boutique publier ?", errChooseShop:"Choisissez d'abord une boutique.",
   lblPriceMode:"Affichage du prix sur l'annonce",
@@ -1030,6 +1041,9 @@ I18N.en = {
   lblShopDesc:"Detailed shop description", phShopDesc:"Present your shop, opening hours, specialty...",
   lblCurrency:"Shop's preferred currency", lblLogo2:"Business / shop logo (jpg/png/webp)",
   btnCreateShop:"Create shop", btnSaveEdit:"Save changes",
+  navCreateShop:"Create a shop", navEditShop:"Edit a shop",
+  navPublishAd:"Publish a listing", navManageAds:"Edit or delete a listing",
+  chooseShopToEdit:"Choose the shop to edit", chooseShopToManageAds:"Choose the shop whose listings you want to manage",
   okShopSaved:"Shop saved ✅",
   lblChooseShop:"Which shop should this be published in?", errChooseShop:"Choose a shop first.",
   lblPriceMode:"Price display on the listing",
@@ -1464,6 +1478,14 @@ function renderAccessState(){
   const formCard = document.getElementById('formCard');
   const freeLeft = Math.max(0, CONFIG.FREE_POSTS_LIMIT - getFreePostsUsed());
 
+  // La modification d'une annonce déjà publiée est toujours gratuite et illimitée,
+  // même si le vendeur a épuisé ses publications gratuites ou son abonnement.
+  if(state.editingAnnonceId){
+    stateEl.innerHTML = `<div class="access-banner"><strong>✏️ ${state.lang==='fr'?'Modification en cours':'Editing in progress'}</strong></div>`;
+    formCard.style.display = 'block';
+    return;
+  }
+
   if(isAdmin()){
     stateEl.innerHTML = `<div class="access-banner"><strong>⭐ ${t('adminLink')}</strong></div>`;
     formCard.style.display = 'block';
@@ -1558,18 +1580,90 @@ function renderShopLimitState(){
   const el = document.getElementById('shopLimitState');
   if(!el) return;
   const mine = getMyBoutiques();
-  if(!isAdmin() && mine.length >= CONFIG.MAX_SHOPS){
+  if(state.editingBoutiqueId){
+    el.innerHTML = `<p class="hint">✏️ ${state.lang==='fr'?'Modification en cours':'Editing in progress'}</p>`;
+    document.getElementById('shopFormCard').style.display = 'block';
+  } else if(!isAdmin() && mine.length >= CONFIG.MAX_SHOPS){
     el.innerHTML = `<div class="locked-banner">${t('errMaxShops')}</div>`;
     document.getElementById('shopFormCard').style.display = 'none';
   } else {
     el.innerHTML = `<p class="hint">${mine.length}/${CONFIG.MAX_SHOPS} ${state.lang==='fr'?'boutiques créées':'shops created'}</p>`;
     document.getElementById('shopFormCard').style.display = 'block';
   }
+  renderPublishActionsRow();
+}
+
+/* ================== RANGÉE D'ACTIONS (Créer/Modifier boutique · Publier/Gérer annonce · Explorer) ================== */
+function renderPublishActionsRow(){
+  const shopBtn = document.getElementById('actionShopBtn');
+  const adBtn = document.getElementById('actionAdBtn');
+  if(!shopBtn || !adBtn) return;
+
+  const mine = getMyBoutiques();
+  const shopsFull = !isAdmin() && mine.length >= CONFIG.MAX_SHOPS;
+  const adsFull = !isAdmin() && getMyAnnonces().length >= CONFIG.MAX_LISTINGS_TOTAL;
+
+  shopBtn.textContent = shopsFull ? '🏪 '+t('navEditShop') : '🏪 '+t('navCreateShop');
+  adBtn.textContent = adsFull ? '📢 '+t('navManageAds') : '📢 '+t('navPublishAd');
+
+  shopBtn.onclick = () => {
+    if(shopsFull){
+      openShopChooserModal('editShop');
+    } else {
+      document.getElementById('createShop').scrollIntoView({behavior:'smooth'});
+    }
+  };
+  adBtn.onclick = () => {
+    if(adsFull){
+      openShopChooserModal('manageAds');
+    } else {
+      document.getElementById('postAd').scrollIntoView({behavior:'smooth'});
+    }
+  };
+}
+document.getElementById('actionExploreBtn2').addEventListener('click', ()=>{
+  showView('home');
+  setTimeout(()=>document.getElementById('gallery').scrollIntoView({behavior:'smooth'}), 200);
+});
+
+// Petit sélecteur : liste les boutiques du vendeur pour choisir laquelle
+// modifier (mode 'editShop'), ou laquelle gérer/gérer ses annonces (mode 'manageAds').
+function openShopChooserModal(mode){
+  const mine = getMyBoutiques();
+  const title = mode === 'editShop' ? t('chooseShopToEdit') : t('chooseShopToManageAds');
+  document.getElementById('modalRoot').innerHTML = `
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-box sheet">
+        <button class="modal-close" id="modalCloseBtn">✕</button>
+        <h2>${title}</h2>
+        <div class="city-list">
+          ${mine.map(b=>`<button data-shop="${b.id}">🏪 ${escapeHtml(b.name)}</button>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', (e)=>{ if(e.target.id==='modalOverlay') closeModal(); });
+  document.querySelectorAll('[data-shop]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.shop;
+      closeModal();
+      if(mode === 'editShop'){
+        startEditShop(id);
+      } else {
+        showView('pro');
+        setTimeout(()=>{
+          const card = document.getElementById('shopcard-'+id);
+          if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+        }, 200);
+      }
+    });
+  });
 }
 
 function renderMyListingsList(){
   const el = document.getElementById('myListingsList');
   if(!el) return;
+  renderPublishActionsRow();
   const boutiques = getMyBoutiques();
   const annonces = getMyAnnonces();
   if(boutiques.length === 0){
@@ -1579,7 +1673,7 @@ function renderMyListingsList(){
   el.innerHTML = boutiques.map(b => {
     const mine = annonces.filter(a=>a.boutiqueId===b.id);
     return `
-    <div class="my-shop-card" style="flex-direction:column;align-items:stretch;">
+    <div class="my-shop-card" id="shopcard-${b.id}" style="flex-direction:column;align-items:stretch;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div><div class="name">🏪 ${escapeHtml(b.name)}</div><div class="date">${new Date(b.date).toLocaleDateString(state.lang==='fr'?'fr-FR':'en-US')} — ${mine.length}/${CONFIG.MAX_LISTINGS_PER_SHOP} ${t('resultsCount')}</div></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -1899,6 +1993,7 @@ function startEditShop(id){
   if(!b){ alert(t('connErr')); return; }
   state.editingBoutiqueId = id;
   showView('publish');
+  renderShopLimitState();
   document.getElementById('sName').value = b.Nom || '';
   document.getElementById('sCategory').value = b.Categorie || '';
   document.getElementById('sCountry').value = b.Pays || COUNTRIES[0].id;
@@ -2036,6 +2131,7 @@ function startEditAnnonce(id){
   if(!a){ alert(t('connErr')); return; }
   state.editingAnnonceId = id;
   showView('publish');
+  renderAccessState();
   document.getElementById('fLink').value = a.Lien || '';
   document.getElementById('fDesc').value = a.Description || '';
   document.getElementById('fPrice').value = a.Prix ? a.Prix : '';
