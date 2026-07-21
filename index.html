@@ -1000,7 +1000,7 @@ I18N.fr = {
   adminCustomDays:"Durée personnalisée (jours)",
   adminInfo:"Pour offrir un accès gratuit ou une réduction à un client précis, vous pouvez aussi modifier directement la colonne « Expiration » de sa ligne dans votre Google Sheet.",
   adminGrantTitle:"Donner un accès à n'importe quel utilisateur",
-  adminGrantSearch:"Choisir la boutique/annonce concernée",
+  adminGrantSearch:"Choisir l'annonce concernée (📢 = une annonce précise, pas la boutique entière)",
   adminGrantChoose:"Choisissez une annonce",
   adminGrantDays:"Nombre de jours à accorder",
   adminGrantApply:"Appliquer cet accès",
@@ -1117,7 +1117,7 @@ I18N.en = {
   adminCustomDays:"Custom duration (days)",
   adminInfo:"To grant free access or a discount to a specific customer, you can also directly edit the \"Expiration\" column of their row in your Google Sheet.",
   adminGrantTitle:"Grant access to any user",
-  adminGrantSearch:"Choose the shop/listing concerned",
+  adminGrantSearch:"Choose the listing concerned (📢 = one specific listing, not the whole shop)",
   adminGrantChoose:"Choose a listing",
   adminGrantDays:"Number of days to grant",
   adminGrantApply:"Apply this access",
@@ -2414,7 +2414,11 @@ function renderAdminPanel(){
     <p class="hint">${t('adminInfo')}</p>
     <h3 style="margin-top:18px;">${t('adminGrantTitle')}</h3>
     <label>${t('adminGrantSearch')}</label>
-    <select id="adminGrantSelect"><option value="">${t('adminGrantChoose')}</option>${state.annonces.map(l=>`<option value="${l.ID}">${escapeHtml(l.BoutiqueNom)} — ${escapeHtml(catLabel(l.Categorie))}${l.Ville?' ('+escapeHtml(l.Ville)+')':''}</option>`).join('')}</select>
+    <select id="adminGrantSelect"><option value="">${t('adminGrantChoose')}</option>${state.annonces.map(l=>{
+      const shortDesc = String(l.Description||'').replace(/\s+/g,' ').trim().slice(0,45);
+      const dateStr = l.Date ? new Date(l.Date).toLocaleDateString(state.lang==='fr'?'fr-FR':'en-US') : '';
+      return `<option value="${l.ID}">📢 ${escapeHtml(l.BoutiqueNom)} — ${escapeHtml(shortDesc)}${shortDesc.length>=45?'…':''} · ${escapeHtml(catLabel(l.Categorie))}${l.Ville?', '+escapeHtml(l.Ville):''} · ${dateStr}</option>`;
+    }).join('')}</select>
     <label>${t('adminGrantDays')}</label>
     <input type="text" id="adminGrantDaysInput" value="365" class="mono">
     <button class="btn btn-brick" id="adminGrantBtn" style="width:100%;margin-top:10px;">${t('adminGrantApply')}</button>
