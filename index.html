@@ -1472,6 +1472,19 @@ function getFreePostsUsed(){ return parseInt(localStorage.getItem('donko_free_po
 function incFreePostsUsed(){ localStorage.setItem('donko_free_posts', String(getFreePostsUsed()+1)); }
 function isAdmin(){ return localStorage.getItem('donko_admin') === 'true'; }
 
+// Jeton secret propre à cet appareil, généré une seule fois puis conservé.
+// Envoyé avec chaque création/modification/suppression : le serveur l'enregistre
+// sur la boutique/annonce à la création, et exige qu'il corresponde pour tout
+// modifier ou supprimer plus tard. Personne d'autre que ce navigateur ne le connaît.
+function getOwnerToken(){
+  let tok = localStorage.getItem('donko_owner_token');
+  if(!tok){
+    tok = (crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)));
+    localStorage.setItem('donko_owner_token', tok);
+  }
+  return tok;
+}
+
 function renderAccessState(){
   const access = getAccess();
   const stateEl = document.getElementById('accessState');
@@ -1706,7 +1719,7 @@ function renderMyListingsList(){
   el.querySelectorAll('button[data-delshop]').forEach(b=>{
     b.addEventListener('click', async ()=>{
       if(!confirm(t('confirmDeleteShop'))) return;
-      const result = await postToBackend({ action:'deleteBoutique', id: b.dataset.delshop });
+      const result = await postToBackend({ action:'deleteBoutique', id: b.dataset.delshop, ownerToken: getOwnerToken() });
       if(!result.ok){ alert(t('connErr')); return; }
       removeMyBoutique(b.dataset.delshop);
       renderMyListingsList(); renderBoutiqueDropdown(); renderShopLimitState();
@@ -1716,7 +1729,7 @@ function renderMyListingsList(){
   el.querySelectorAll('button[data-delad]').forEach(b=>{
     b.addEventListener('click', async ()=>{
       if(!confirm(t('confirmDelete'))) return;
-      const result = await postToBackend({ action:'deleteAnnonce', id: b.dataset.delad });
+      const result = await postToBackend({ action:'deleteAnnonce', id: b.dataset.delad, ownerToken: getOwnerToken() });
       if(!result.ok){ alert(t('connErr')); return; }
       removeMyAnnonce(b.dataset.delad);
       renderMyListingsList();
@@ -1733,7 +1746,7 @@ function renderMyListingsList(){
 
 async function finalizeBoost(txnId){
   const boostExpiration = new Date(Date.now() + CONFIG.BOOST_DAYS*86400000).toISOString();
-  const result = await postToBackend({ action:'boostBoutique', id: window._boostTargetId, boostExpiration });
+  const result = await postToBackend({ action:'boostBoutique', id: window._boostTargetId, boostExpiration, ownerToken: getOwnerToken() });
   if(!result.ok){ alert(t('connErr')); return; }
   addHistory({ type:'boost', label: window._boostTargetName || '', price: CONFIG.BOOST_PRICE, expiry: boostExpiration });
   alert(t('boostDone'));
@@ -1750,7 +1763,7 @@ async function renewMyListings(){
   if(mine.length === 0) return;
   const access = getAccess();
   if(!access) return;
-  const result = await postToBackend({ action:'renew', ids: mine.map(m=>m.id).join(','), plan: access.plan, planWeight: access.weight, expiry: access.expiry });
+  const result = await postToBackend({ action:'renew', ids: mine.map(m=>m.id).join(','), plan: access.plan, planWeight: access.weight, expiry: access.expiry, ownerToken: getOwnerToken() });
   if(result.ok) loadGallery();
   // en cas d'échec, la prochaine ouverture de l'app (ou le prochain abonnement) réessaiera
 }
@@ -1947,8 +1960,8 @@ document.getElementById('submitShop').addEventListener('click', async ()=>{
   try{
     const logoData = logoFile ? await compressImage(logoFile, 300, 30000) : '';
     const payload = editing
-      ? { action:'updateBoutique', id: editing, name, category, country, city, address, contact, description: desc, currency, logo: logoData || undefined }
-      : { action:'addBoutique', name, category, country, city, address, contact, description: desc, currency, logo: logoData };
+      ? { action:'updateBoutique', id: editing, name, category, country, city, address, contact, description: desc, currency, logo: logoData || undefined, ownerToken: getOwnerToken() }
+      : { action:'addBoutique', name, category, country, city, address, contact, description: desc, currency, logo: logoData, ownerToken: getOwnerToken() };
 
     const result = await postToBackend(payload);
 
@@ -2061,7 +2074,7 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
 
     let payload;
     if(editing){
-      payload = { action:'updateAnnonce', id: editing, link, description: desc, price: priceXOF, priceMode, contact: adContact, videoUrl: video };
+      payload = { action:'updateAnnonce', id: editing, link, description: desc, price: priceXOF, priceMode, contact: adContact, videoUrl: video, ownerToken: getOwnerToken() };
       if(imagesData[0]) payload.image1 = imagesData[0];
       if(imagesData[1]) payload.image2 = imagesData[1];
       if(imagesData[2]) payload.image3 = imagesData[2];
@@ -2081,7 +2094,7 @@ document.getElementById('submitAd').addEventListener('click', async ()=>{
       payload = {
         action:'addAnnonce', boutiqueId, link, description: desc, price: priceXOF, priceMode, contact: adContact,
         image1: imagesData[0]||'', image2: imagesData[1]||'', image3: imagesData[2]||'', image4: imagesData[3]||'',
-        videoUrl: video, plan, planWeight, expiry, txnId
+        videoUrl: video, plan, planWeight, expiry, txnId, ownerToken: getOwnerToken()
       };
     }
 
@@ -2396,6 +2409,7 @@ document.getElementById('adminToggleLink').addEventListener('click', async ()=>{
   const hash = await sha256Hex(code.trim());
   if(hash === CONFIG.ADMIN_PASSCODE_HASH){
     localStorage.setItem('donko_admin', 'true');
+    state.adminPlainCode = code.trim(); // gardé en mémoire (jamais sauvegardé) pour signer les actions pro
     alert(t('adminUnlocked'));
     renderAccessState();
     panel.classList.remove('hidden');
@@ -2404,6 +2418,19 @@ document.getElementById('adminToggleLink').addEventListener('click', async ()=>{
     alert(t('adminWrongCode'));
   }
 });
+
+// Le serveur exige désormais le code en clair (vérifié via son empreinte) pour
+// toute action pro sensible. S'il a été tapé plus tôt dans cette session, on le
+// réutilise ; sinon (page rechargée), on le redemande une seule fois.
+async function getAdminSecretOrPrompt(){
+  if(state.adminPlainCode) return state.adminPlainCode;
+  const code = prompt(t('adminPromptTitle'));
+  if(code === null) return null;
+  const hash = await sha256Hex(code.trim());
+  if(hash !== CONFIG.ADMIN_PASSCODE_HASH){ alert(t('adminWrongCode')); return null; }
+  state.adminPlainCode = code.trim();
+  return state.adminPlainCode;
+}
 function renderAdminPanel(){
   const panel = document.getElementById('adminPanel');
   if(!isAdmin()) return;
@@ -2429,8 +2456,10 @@ function renderAdminPanel(){
     const days = parseInt(document.getElementById('adminGrantDaysInput').value || '0', 10);
     const msg = document.getElementById('adminGrantMsg');
     if(!id || !days){ msg.textContent = t('adminGrantChoose'); msg.className='form-msg err'; return; }
+    const adminSecret = await getAdminSecretOrPrompt();
+    if(!adminSecret) return;
     const expiry = new Date(Date.now() + days*86400000).toISOString();
-    const result = await postToBackend({ action:'adminGrant', id, expiry, plan:'admin', planWeight: 99 });
+    const result = await postToBackend({ action:'adminGrant', id, expiry, plan:'admin', planWeight: 99, adminSecret });
     if(result.ok){
       msg.textContent = t('adminGrantDone'); msg.className='form-msg ok';
       loadGallery();
@@ -2447,7 +2476,11 @@ document.getElementById('downloadBackup').addEventListener('click', ()=>{
     access: localStorage.getItem('donko_access'),
     freePosts: localStorage.getItem('donko_free_posts'),
     admin: localStorage.getItem('donko_admin'),
-    myListings: localStorage.getItem('donko_my_listings'),
+    ownerToken: localStorage.getItem('donko_owner_token'),
+    myBoutiques: localStorage.getItem('donko_my_boutiques'),
+    myAnnonces: localStorage.getItem('donko_my_annonces'),
+    currency: localStorage.getItem('donko_currency'),
+    history: localStorage.getItem('donko_history'),
     exportedAt: new Date().toISOString()
   };
   const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
@@ -2472,7 +2505,11 @@ document.getElementById('restoreBtn').addEventListener('click', ()=>{
       if(data.access) localStorage.setItem('donko_access', data.access);
       if(data.freePosts) localStorage.setItem('donko_free_posts', data.freePosts);
       if(data.admin) localStorage.setItem('donko_admin', data.admin);
-      if(data.myListings) localStorage.setItem('donko_my_listings', data.myListings);
+      if(data.ownerToken) localStorage.setItem('donko_owner_token', data.ownerToken);
+      if(data.myBoutiques) localStorage.setItem('donko_my_boutiques', data.myBoutiques);
+      if(data.myAnnonces) localStorage.setItem('donko_my_annonces', data.myAnnonces);
+      if(data.currency) localStorage.setItem('donko_currency', data.currency);
+      if(data.history) localStorage.setItem('donko_history', data.history);
       alert(t('backupOk'));
       location.reload();
     }catch(e){ alert(t('backupErr')); }
