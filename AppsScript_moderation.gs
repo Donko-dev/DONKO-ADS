@@ -75,6 +75,17 @@ function _findRowIndexById(values, id){
   return -1;
 }
 
+// Force une cellule à rester du texte brut, quel que soit son contenu.
+// Sans ça, Google Sheets peut transformer un numéro commençant par "+" en
+// #ERROR! (il l'interprète comme le début d'une formule) — y compris quand
+// c'est ce script qui écrit la valeur, pas seulement en saisie manuelle.
+// En fixant le format en "@" (texte) AVANT d'écrire la valeur, ce risque est
+// éliminé définitivement, pour toujours, sans jamais dépendre d'un réglage
+// manuel sur la feuille.
+function _setTextValue(sheet, row, col, value){
+  sheet.getRange(row, col).setNumberFormat('@').setValue(value);
+}
+
 /* ================== SÉCURITÉ : jeton propriétaire + code pro ================== */
 
 // Calcule le SHA-256 d'une chaîne (même algorithme que côté navigateur en JS).
@@ -192,6 +203,7 @@ function _addBoutique(data){
     }
   });
   sheet.appendRow(row);
+  _setTextValue(sheet, sheet.getLastRow(), HEADERS_BOUTIQUES.indexOf('Contact')+1, data.contact || '');
   return _json({ success:true, id: id });
 }
 
@@ -209,7 +221,9 @@ function _updateBoutique(data){
     contact:'Contact', description:'Description', currency:'Devise', logo:'Logo' };
   Object.keys(fieldMap).forEach(key=>{
     if(typeof data[key] !== 'undefined'){
-      sheet.getRange(r+1, headers.indexOf(fieldMap[key])+1).setValue(data[key]);
+      const col = headers.indexOf(fieldMap[key])+1;
+      if(key === 'contact'){ _setTextValue(sheet, r+1, col, data[key]); }
+      else { sheet.getRange(r+1, col).setValue(data[key]); }
     }
   });
   return _json({ success:true });
@@ -286,6 +300,7 @@ function _addAnnonce(data){
     }
   });
   sheet.appendRow(row);
+  _setTextValue(sheet, sheet.getLastRow(), HEADERS_ANNONCES.indexOf('Contact')+1, data.contact || '');
   return _json({ success:true, id: id });
 }
 
@@ -303,7 +318,9 @@ function _updateAnnonce(data){
     contact:'Contact', image1:'Image1', image2:'Image2', image3:'Image3', image4:'Image4', videoUrl:'VideoURL' };
   Object.keys(fieldMap).forEach(key=>{
     if(typeof data[key] !== 'undefined'){
-      sheet.getRange(r+1, headers.indexOf(fieldMap[key])+1).setValue(data[key]);
+      const col = headers.indexOf(fieldMap[key])+1;
+      if(key === 'contact'){ _setTextValue(sheet, r+1, col, data[key]); }
+      else { sheet.getRange(r+1, col).setValue(data[key]); }
     }
   });
   return _json({ success:true });
