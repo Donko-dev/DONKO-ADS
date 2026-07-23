@@ -240,8 +240,9 @@
   .share-after{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
 
   /* ADMIN */
-  .admin-toggle-link{font-size:11.5px;color:var(--muted);background:none;border:none;cursor:pointer;
-    text-decoration:underline;padding:0;}
+  .admin-toggle-link{font-size:11.5px;color:transparent;background:none;border:none;cursor:default;
+    display:inline-block;width:64px;height:44px;padding:0;margin:0;opacity:0;
+    -webkit-tap-highlight-color:transparent;outline:none;}
   .admin-panel{background:var(--surface);border:1px solid var(--gold);border-radius:10px;padding:14px;margin-top:14px;}
   .admin-panel h3{font-size:14px;margin-bottom:8px;}
   .admin-panel label{margin-top:10px;}
@@ -1685,6 +1686,9 @@ function renderMyListingsList(){
   }
   el.innerHTML = boutiques.map(b => {
     const mine = annonces.filter(a=>a.boutiqueId===b.id);
+    const liveShop = (state.allBoutiques||[]).find(x=>x.ID===b.id);
+    const shopSuspended = !!(liveShop && liveShop.Suspendue);
+    const shopBanner = shopSuspended ? `<div class="notice warn" style="margin:8px 0;">🚫 ${state.lang==='fr'?"Cette boutique a été désactivée par notre équipe.":'This shop has been disabled by our team.'} ${escapeHtml(liveShop.RaisonSuspension||'')}</div>` : '';
     return `
     <div class="my-shop-card" id="shopcard-${b.id}" style="flex-direction:column;align-items:stretch;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -1695,15 +1699,23 @@ function renderMyListingsList(){
           <button class="btn btn-outline" data-delshop="${b.id}" title="${t('deleteBtn')}">🗑️</button>
         </div>
       </div>
+      ${shopBanner}
       <div style="margin-top:10px;padding-left:10px;border-left:2px solid var(--border);display:flex;flex-direction:column;gap:8px;">
-        ${mine.length===0 ? `<p class="hint">${t('noAdYet')}</p>` : mine.map(a=>`
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-            <span style="font-size:12.5px;">📢 ${escapeHtml(a.label)}</span>
-            <div style="display:flex;gap:6px;">
-              <button class="btn btn-outline" style="padding:6px 9px;font-size:11.5px;" data-editad="${a.id}">✏️</button>
-              <button class="btn btn-outline" style="padding:6px 9px;font-size:11.5px;" data-delad="${a.id}">🗑️</button>
+        ${mine.length===0 ? `<p class="hint">${t('noAdYet')}</p>` : mine.map(a=>{
+          const liveAd = state.annonces.find(x=>x.ID===a.id);
+          const adSuspended = !shopSuspended && !!(liveAd && liveAd.Suspendue);
+          return `
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span style="font-size:12.5px;">📢 ${escapeHtml(a.label)}</span>
+              <div style="display:flex;gap:6px;">
+                <button class="btn btn-outline" style="padding:6px 9px;font-size:11.5px;" data-editad="${a.id}">✏️</button>
+                <button class="btn btn-outline" style="padding:6px 9px;font-size:11.5px;" data-delad="${a.id}">🗑️</button>
+              </div>
             </div>
-          </div>`).join('')}
+            ${adSuspended ? `<div class="notice warn" style="margin:0;">🚫 ${state.lang==='fr'?'Annonce désactivée :':'Listing disabled:'} ${escapeHtml(liveAd.RaisonSuspension||'')}</div>` : ''}
+          </div>`;
+        }).join('')}
       </div>
     </div>`;
   }).join('');
@@ -2255,6 +2267,16 @@ function renderGallery(){
 
   el.innerHTML = '<div class="gallery-grid">' + items.map(item=>{
     try{
+      if(item.Suspendue){
+        return `
+        <div class="ad-card" data-detail-id="${escapeHtml(item.ID)}" style="border-color:var(--brick);">
+          <div class="body">
+            <div class="cat" style="color:var(--brick);">🚫 ${state.lang==='fr'?'Annonce désactivée':'Listing disabled'}</div>
+            <h3>${escapeHtml(item.BoutiqueNom)}</h3>
+            <p style="color:var(--brick);-webkit-line-clamp:4;">${escapeHtml(item.RaisonSuspension || (state.lang==='fr'?"Cette annonce ne respecte pas nos conditions d'utilisation.":"This listing does not comply with our terms of use."))}</p>
+          </div>
+        </div>`;
+      }
       const img = item.Image1 || item.BoutiqueLogo || '';
       const isTop = (Number(item.PlanWeight)||0) >= 5;
       const isPro = (Number(item.PlanWeight)||0) >= 1;
@@ -2303,6 +2325,22 @@ function renderGallery(){
 
 /* ================== FICHE DÉTAIL D'UNE ANNONCE ================== */
 function openListingDetail(item){
+  if(item.Suspendue){
+    document.getElementById('modalRoot').innerHTML = `
+      <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box sheet">
+          <button class="modal-close" id="modalCloseBtn">✕</button>
+          <h2>🚫 ${state.lang==='fr'?'Annonce désactivée':'Listing disabled'}</h2>
+          <p><strong>${escapeHtml(item.BoutiqueNom)}</strong></p>
+          <p>${escapeHtml(item.RaisonSuspension || (state.lang==='fr'?"Cette annonce ne respecte pas nos conditions d'utilisation.":"This listing does not comply with our terms of use."))}</p>
+          <button class="btn btn-outline" id="detailBackBtn" style="width:100%;margin-top:14px;">${state.lang==='fr'?'← Retour aux annonces':'← Back to listings'}</button>
+        </div>
+      </div>`;
+    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+    document.getElementById('detailBackBtn').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', (e)=>{ if(e.target.id==='modalOverlay') closeModal(); });
+    return;
+  }
   const images = [item.Image1, item.Image2, item.Image3, item.Image4].filter(Boolean);
   const mainImg = images[0] || item.BoutiqueLogo || '';
   const thumbsHtml = images.length > 1 ? `
@@ -2434,6 +2472,25 @@ async function getAdminSecretOrPrompt(){
 function renderAdminPanel(){
   const panel = document.getElementById('adminPanel');
   if(!isAdmin()) return;
+  const modLabel = state.lang==='fr' ? {
+    title:'🛑 Modération', shop:'Boutique à modérer', chooseShop:'Choisissez une boutique',
+    ad:'Annonce à modérer', chooseAd:'Choisissez une annonce',
+    reasonPh:'Raison (visible publiquement et par le vendeur)',
+    disable:'Désactiver', enable:'Réactiver', del:'Supprimer',
+    needShop:'Choisissez une boutique.', needAd:'Choisissez une annonce.', needReason:'Indiquez une raison.',
+    shopDisabled:'Boutique désactivée ✅', shopEnabled:'Boutique réactivée ✅', shopDeleted:'Boutique supprimée ✅',
+    adDisabled:'Annonce désactivée ✅', adEnabled:'Annonce réactivée ✅', adDeleted:'Annonce supprimée ✅',
+    confirmDelShop:'Supprimer définitivement cette boutique et toutes ses annonces ?'
+  } : {
+    title:'🛑 Moderation', shop:'Shop to moderate', chooseShop:'Choose a shop',
+    ad:'Listing to moderate', chooseAd:'Choose a listing',
+    reasonPh:'Reason (shown publicly and to the seller)',
+    disable:'Disable', enable:'Re-enable', del:'Delete',
+    needShop:'Choose a shop.', needAd:'Choose a listing.', needReason:'Enter a reason.',
+    shopDisabled:'Shop disabled ✅', shopEnabled:'Shop re-enabled ✅', shopDeleted:'Shop deleted ✅',
+    adDisabled:'Listing disabled ✅', adEnabled:'Listing re-enabled ✅', adDeleted:'Listing deleted ✅',
+    confirmDelShop:'Permanently delete this shop and all its listings?'
+  };
   panel.innerHTML = `
     <h3>⭐ ${t('adminLink')}</h3>
     <label>${t('adminCustomDays')}</label>
@@ -2450,6 +2507,32 @@ function renderAdminPanel(){
     <input type="text" id="adminGrantDaysInput" value="365" class="mono">
     <button class="btn btn-brick" id="adminGrantBtn" style="width:100%;margin-top:10px;">${t('adminGrantApply')}</button>
     <div class="form-msg" id="adminGrantMsg"></div>
+
+    <h3 style="margin-top:18px;">${modLabel.title}</h3>
+    <label>${modLabel.shop}</label>
+    <select id="modShopSelect"><option value="">${modLabel.chooseShop}</option>${(state.allBoutiques||[]).map(b=>
+      `<option value="${b.ID}">${b.Suspendue?'🚫 ':''}${escapeHtml(b.Nom)}${b.Ville?' ('+escapeHtml(b.Ville)+')':''}</option>`
+    ).join('')}</select>
+    <textarea id="modShopReason" placeholder="${modLabel.reasonPh}"></textarea>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+      <button class="btn btn-brick" id="modShopSuspendBtn" style="flex:1;">🚫 ${modLabel.disable}</button>
+      <button class="btn btn-outline" id="modShopUnsuspendBtn" style="flex:1;">✅ ${modLabel.enable}</button>
+      <button class="btn btn-outline" id="modShopDeleteBtn" style="flex:1;">🗑️ ${modLabel.del}</button>
+    </div>
+    <div class="form-msg" id="modShopMsg"></div>
+
+    <label style="margin-top:16px;">${modLabel.ad}</label>
+    <select id="modAdSelect"><option value="">${modLabel.chooseAd}</option>${state.annonces.map(l=>{
+      const shortDesc = String(l.Description||'').replace(/\s+/g,' ').trim().slice(0,40);
+      return `<option value="${l.ID}">${l.Suspendue?'🚫 ':'📢 '}${escapeHtml(l.BoutiqueNom)} — ${escapeHtml(shortDesc)}${shortDesc.length>=40?'…':''}</option>`;
+    }).join('')}</select>
+    <textarea id="modAdReason" placeholder="${modLabel.reasonPh}"></textarea>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+      <button class="btn btn-brick" id="modAdSuspendBtn" style="flex:1;">🚫 ${modLabel.disable}</button>
+      <button class="btn btn-outline" id="modAdUnsuspendBtn" style="flex:1;">✅ ${modLabel.enable}</button>
+      <button class="btn btn-outline" id="modAdDeleteBtn" style="flex:1;">🗑️ ${modLabel.del}</button>
+    </div>
+    <div class="form-msg" id="modAdMsg"></div>
   `;
   document.getElementById('adminGrantBtn').addEventListener('click', async ()=>{
     const id = document.getElementById('adminGrantSelect').value;
@@ -2466,6 +2549,74 @@ function renderAdminPanel(){
     } else {
       msg.textContent = t('connErr'); msg.className='form-msg err';
     }
+  });
+
+  document.getElementById('modShopSuspendBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('modShopSelect').value;
+    const reason = document.getElementById('modShopReason').value.trim();
+    const msg = document.getElementById('modShopMsg');
+    if(!id){ msg.textContent = modLabel.needShop; msg.className='form-msg err'; return; }
+    if(!reason){ msg.textContent = modLabel.needReason; msg.className='form-msg err'; return; }
+    const adminSecret = await getAdminSecretOrPrompt();
+    if(!adminSecret) return;
+    const result = await postToBackend({ action:'suspendBoutique', id, reason, adminSecret });
+    if(result.ok){ msg.textContent = modLabel.shopDisabled; msg.className='form-msg ok'; await loadGallery(); }
+    else { msg.textContent = t('connErr'); msg.className='form-msg err'; }
+  });
+  document.getElementById('modShopUnsuspendBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('modShopSelect').value;
+    const msg = document.getElementById('modShopMsg');
+    if(!id){ msg.textContent = modLabel.needShop; msg.className='form-msg err'; return; }
+    const adminSecret = await getAdminSecretOrPrompt();
+    if(!adminSecret) return;
+    const result = await postToBackend({ action:'unsuspendBoutique', id, adminSecret });
+    if(result.ok){ msg.textContent = modLabel.shopEnabled; msg.className='form-msg ok'; await loadGallery(); }
+    else { msg.textContent = t('connErr'); msg.className='form-msg err'; }
+  });
+  document.getElementById('modShopDeleteBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('modShopSelect').value;
+    const msg = document.getElementById('modShopMsg');
+    if(!id){ msg.textContent = modLabel.needShop; msg.className='form-msg err'; return; }
+    if(!confirm(modLabel.confirmDelShop)) return;
+    const adminSecret = await getAdminSecretOrPrompt();
+    if(!adminSecret) return;
+    const result = await postToBackend({ action:'deleteBoutique', id, adminSecret });
+    if(result.ok){ msg.textContent = modLabel.shopDeleted; msg.className='form-msg ok'; await loadGallery(); }
+    else { msg.textContent = t('connErr'); msg.className='form-msg err'; }
+  });
+
+  document.getElementById('modAdSuspendBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('modAdSelect').value;
+    const reason = document.getElementById('modAdReason').value.trim();
+    const msg = document.getElementById('modAdMsg');
+    if(!id){ msg.textContent = modLabel.needAd; msg.className='form-msg err'; return; }
+    if(!reason){ msg.textContent = modLabel.needReason; msg.className='form-msg err'; return; }
+    const adminSecret = await getAdminSecretOrPrompt();
+    if(!adminSecret) return;
+    const result = await postToBackend({ action:'suspendAnnonce', id, reason, adminSecret });
+    if(result.ok){ msg.textContent = modLabel.adDisabled; msg.className='form-msg ok'; await loadGallery(); }
+    else { msg.textContent = t('connErr'); msg.className='form-msg err'; }
+  });
+  document.getElementById('modAdUnsuspendBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('modAdSelect').value;
+    const msg = document.getElementById('modAdMsg');
+    if(!id){ msg.textContent = modLabel.needAd; msg.className='form-msg err'; return; }
+    const adminSecret = await getAdminSecretOrPrompt();
+    if(!adminSecret) return;
+    const result = await postToBackend({ action:'unsuspendAnnonce', id, adminSecret });
+    if(result.ok){ msg.textContent = modLabel.adEnabled; msg.className='form-msg ok'; await loadGallery(); }
+    else { msg.textContent = t('connErr'); msg.className='form-msg err'; }
+  });
+  document.getElementById('modAdDeleteBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('modAdSelect').value;
+    const msg = document.getElementById('modAdMsg');
+    if(!id){ msg.textContent = modLabel.needAd; msg.className='form-msg err'; return; }
+    if(!confirm(t('confirmDelete'))) return;
+    const adminSecret = await getAdminSecretOrPrompt();
+    if(!adminSecret) return;
+    const result = await postToBackend({ action:'deleteAnnonce', id, adminSecret });
+    if(result.ok){ msg.textContent = modLabel.adDeleted; msg.className='form-msg ok'; await loadGallery(); }
+    else { msg.textContent = t('connErr'); msg.className='form-msg err'; }
   });
 }
 
