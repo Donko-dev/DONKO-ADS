@@ -990,6 +990,7 @@ I18N.fr = {
   payConnErr:"Connexion internet requise pour payer. Vérifiez votre connexion et réessayez.",
   payConfirmed:"Paiement confirmé ! Vous pouvez maintenant publier votre boutique.",
   payNotConfirmed:"Le paiement n'a pas été confirmé. Réessayez ou contactez votre opérateur Mobile Money.",
+  payVerifyUnavailable:"⚠️ Votre paiement a peut-être bien été effectué, mais nous n'avons pas pu le confirmer automatiquement pour le moment. Contactez-nous sur WhatsApp avec une preuve de paiement, nous activerons votre accès manuellement rapidement.",
   boostNoListing:"Créez d'abord votre boutique avant de la booster.",
   boostSelectLabel:"Quelle boutique souhaitez-vous booster ?",
   boostDone:"Boost activé ✅ Votre boutique est maintenant en vedette pour 31 jours.",
@@ -1107,6 +1108,7 @@ I18N.en = {
   payConnErr:"Internet connection required to pay. Check your connection and try again.",
   payConfirmed:"Payment confirmed! You can now publish your shop.",
   payNotConfirmed:"Payment was not confirmed. Try again or contact your Mobile Money operator.",
+  payVerifyUnavailable:"⚠️ Your payment may have gone through, but we couldn't automatically confirm it right now. Contact us on WhatsApp with proof of payment and we'll activate your access manually shortly.",
   boostNoListing:"Create your shop first before boosting it.",
   boostSelectLabel:"Which shop would you like to boost?",
   boostDone:"Boost activated ✅ Your shop is now featured for 31 days.",
@@ -1548,14 +1550,7 @@ if(typeof addSuccessListener !== 'undefined'){
   addSuccessListener(function(response){
     const txnId = response && response.transactionId;
     if(paymentContext === 'subscription'){
-      setAccess(state.selectedPlan, txnId);
-      addHistory({ type:'subscription', label: state.selectedPlan.label[state.lang], price: state.selectedPlan.priceNew, expiry: getAccess().expiry });
-      renderAccessState();
-      renderProAccessState();
-      renderHistory();
-      renewMyListings();
-      alert(t('payConfirmed'));
-      showView('publish');
+      confirmSubscriptionServerSide(state.selectedPlan, txnId);
     } else if(paymentContext === 'boost'){
       finalizeBoost(txnId);
     }
@@ -1563,6 +1558,39 @@ if(typeof addSuccessListener !== 'undefined'){
   addFailedListener(function(){
     alert(t('payNotConfirmed'));
   });
+}
+
+// L'abonnement n'est plus activé sur simple confiance envers le navigateur :
+// le serveur vérifie d'abord auprès de Kkiapay que ce numéro de transaction
+// correspond à un paiement réel, du bon montant, jamais utilisé auparavant.
+async function confirmSubscriptionServerSide(plan, txnId){
+  const mine = getMyAnnonces();
+  const expiry = new Date(Date.now() + plan.days*86400000).toISOString();
+  const payload = {
+    action: 'confirmSubscription',
+    txnId: txnId || '',
+    expectedAmount: plan.priceNew,
+    plan: plan.id,
+    planWeight: plan.weight,
+    expiry: expiry,
+    ids: mine.map(m=>m.id).join(','),
+    ownerToken: getOwnerToken()
+  };
+  const result = await postToBackend(payload);
+  if(result.ok){
+    localStorage.setItem('donko_access', JSON.stringify({ plan: plan.id, weight: plan.weight, expiry: expiry, txnId: txnId||null }));
+    addHistory({ type:'subscription', label: plan.label[state.lang], price: plan.priceNew, expiry: expiry });
+    renderAccessState();
+    renderProAccessState();
+    renderHistory();
+    loadGallery();
+    alert(t('payConfirmed'));
+    showView('publish');
+  } else if(result.error && result.error.indexOf('verification_unavailable') === 0){
+    alert(t('payVerifyUnavailable'));
+  } else {
+    alert(t('payNotConfirmed'));
+  }
 }
 
 /* ================== MES BOUTIQUES / MES ANNONCES (stockage local) ================== */
@@ -1766,19 +1794,10 @@ async function finalizeBoost(txnId){
   loadGallery();
 }
 
-// Dès qu'un abonnement est (re)payé, toutes les annonces déjà publiées depuis cet
-// appareil (mêmes expirées) sont automatiquement réactivées avec le nouveau plan,
-// sans que le vendeur ait besoin de tout republier. Il garde la possibilité de
-// republier/modifier une annonce (via « Modifier ») s'il veut en changer le contenu.
-async function renewMyListings(){
-  const mine = getMyAnnonces();
-  if(mine.length === 0) return;
-  const access = getAccess();
-  if(!access) return;
-  const result = await postToBackend({ action:'renew', ids: mine.map(m=>m.id).join(','), plan: access.plan, planWeight: access.weight, expiry: access.expiry, ownerToken: getOwnerToken() });
-  if(result.ok) loadGallery();
-  // en cas d'échec, la prochaine ouverture de l'app (ou le prochain abonnement) réessaiera
-}
+// Dès qu'un abonnement est (re)payé et VÉRIFIÉ auprès de Kkiapay (voir
+// confirmSubscriptionServerSide plus haut), le serveur réactive lui-même
+// toutes les annonces déjà publiées depuis cet appareil avec le nouveau plan
+// — plus besoin de le refaire séparément ici.
 
 
 /* ================== HISTORY (abonnements + boosts) ================== */
